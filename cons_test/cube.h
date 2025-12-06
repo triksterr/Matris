@@ -1,6 +1,7 @@
 ﻿#pragma once
 // @file: cube.h
 #include <cstdint>
+#include "types.h"
 
 // Один числовой кубик с цветом
 class Cube final
@@ -10,22 +11,27 @@ private:
 	int y; // координата Y (относительно стакана/матрицы)
 	int sx; // смещение кубика в фигуре по Х относительно центрального кубика (0;0)
 	int sy; // смещение кубика в фигуре по Y
-	int num; // число в кубике
-	uint32_t color; // цвет
+	int digit; // число в кубике
+	RGBcolor color; // цвет
 	int type; // тип кубика: обычный = 0, шарик (*), пушка (=||=), ракетка (===), (вращающийся кубик???)...
 	bool visible; // видимость
 	bool deleted; // уничтожен - пометка о необходимости удалить
 
-	// Преобразование цвета RGB в цвет кубика
-	uint32_t rgbToColor(const int r, const int g, const int b) { return (r < 0 ? -r : r)*65536 + (g < 0 ? -g : g)*256 + (b < 0 ? -b : b); } // цвет в формате RGB
-	//! (r > 255 ? 255 : (r < 0 ? -r : r))
+	// Преобразование цветов в RGB в цвет кубика
+	RGBcolor rgbToColor(const int r, const int g, const int b)
+	{
+		color.r = (r > 255 ? 255 : (r < 0 ? 0 : r));
+		color.g = (g > 255 ? 255 : (g < 0 ? 0 : g));
+		color.b = (b > 255 ? 255 : (b < 0 ? 0 : b));
+		return color;
+	}
 
 public:
-	Cube(int x, int y, int num, uint32_t color, int type = 0)
+	Cube(int x, int y, int number, RGBcolor color, int type = 0)
 	{
 		this->x = x;
 		this->y = y;
-		this->num = num;
+		this->digit = number;
 		this->color = color;
 		visible = true; //! при создании видимость всегда или надо указывать?
 		this->type = type;
@@ -34,7 +40,7 @@ public:
 		deleted = false;
 	}
 
-	Cube(int x, int y, int num, int r, int g, int b) : Cube(x, y, num, rgbToColor(r, g, b)) {}
+	Cube(int x, int y, int number, int r, int g, int b, int type = 0) : Cube(x, y, number, rgbToColor(r, g, b)) {}
 
 	Cube(const int x, const int y): Cube(x, y, 0, rgbToColor(127, 127, 127)) {} //! не факт, что этот конструктор нужен
 	
@@ -47,7 +53,7 @@ public:
 	{
 		x = other.x;
 		y = other.y;
-		num = other.num;
+		digit = other.digit;
 		color = other.color;
 		visible = other.visible;
 		type = other.type;
@@ -61,7 +67,7 @@ public:
 	{
 		x = other.x;
 		y = other.y;
-		num = other.num;
+		digit = other.digit;
 		color = other.color;
 		visible = other.visible;
 		type = other.type;
@@ -78,9 +84,9 @@ public:
 	void setSX(int sx) { this->sx = sx; } // задать смещение кубика в фигуре по Х
 	void setSY(int sy) { this->sy = sy; } // задать смещение кубика в фигуре по Y
 	void setSXY(int sx, int sy) { this->sx = sx; this->sy = sy; } // задать смещение кубика в фигуре по Х и Y
-	void setRGB(int r, int g, int b) { this->color = rgbToColor(r, g, b); } // задать цвет в формате RGB
-	void setColor(uint32_t color) { this->color = color; } // задать цвет
-	void setNum(int num) { this->num = num; } // задать число в кубике
+	void setRGB(int r, int g, int b) { rgbToColor(r, g, b); } // задать цвет в формате RGB
+	void setColor(RGBcolor color) { this->color = color; } // задать цвет
+	void setNum(int number) { this->digit = number; } // задать число в кубике
 	void setType(int type) { this->type = type; } // задать тип кубика
 	void setVisible(bool visible) { this->visible = visible; } // задать видимость кубика
 
@@ -89,11 +95,11 @@ public:
 	int getY() const { return y; }	// получить координату Y 
 	int getSX() const { return sx; } // получить смещение кубика в фигуре по Х
 	int getSY() const { return sy; } // получить смещение кубика в фигуре по Y
-	int getNum() const { return num; } // получить число в кубике
-	uint32_t getRGB() const { return color; }	// получить цвет кубика - ?
-	int getR() const { return color & 0xFF; }	// получаем компоненты цвета
-	int getG() const { return (color >> 8) & 0xFF; }
-	int getB() const { return color >> 16; }
+	int getNum() const { return digit; } // получить число в кубике
+	RGBcolor getRGB() const { return color; }	// получить цвет кубика
+	int getR() const { return color.r; }	// получаем компоненты цвета
+	int getG() const { return color.g; }
+	int getB() const { return color.b; }
 	bool getVisible() const	{ return visible; }	// Получить  видимость кубика
 
 	void moveL(int shift = 1) { x -= shift; } // сдвинуть на 1 влево (как быть с проверкой краев?!!!!!!!!!) - а надо ли?

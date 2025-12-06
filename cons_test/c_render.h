@@ -1,8 +1,6 @@
 ﻿#pragma once
 // @file: c_render.h
 
-#include "i_render.h"
-#include "round.h"
 #include <windows.h>
 #include <consoleapi2.h>
 #include <consoleapi3.h>
@@ -10,12 +8,16 @@
 #include <processenv.h>
 #include <string>
 #include <cstring>
-#include "cube.h"
-
-#include "round.h"
 #include <iostream>
 #include <cstdlib>
 #include <algorithm>
+#include <climits>
+#include <vector>
+//#include <tuple>
+#include <utility>
+#include "i_render.h"
+#include "round.h"
+#include "cube.h"
 #include "info.h"
 
 // Вывод в консоль
@@ -94,40 +96,119 @@ private:
 		SetCurrentConsoleFontEx(hConsole, FALSE, &fontInfo);
 	}
 
-	// Преобразование цвета RGB в цвет консоли
+	// Преобразование цвета RGB в цвет консоли (0-15) - более точное
 	int rgbToConsoleColor(int r, int g, int b)
 	{
-		r = std::clamp(r, 0, 255);
-		g = std::clamp(g, 0, 255);
-		b = std::clamp(b, 0, 255);
+		std::swap(r, b); //! какая-то ошибка в порядке цветов!
 
-		// Рассчитываем яркость
-		double brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+		// Палитра цветов консоли (R, G, B)
+		//static const std::vector<std::tuple<int, int, int>> consoleColors = {
+		static const std::vector<RGBcolor> consoleColors = {
+			{0, 0, 0},       // 0: черный
+			{128, 0, 0},     // 1: красный
+			{0, 128, 0},     // 2: зеленый
+			{128, 128, 0},   // 3: желтый
+			{0, 0, 128},     // 4: синий
+			{128, 0, 128},   // 5: пурпурный
+			{0, 128, 128},   // 6: голубой
+			{192, 192, 192}, // 7: светло-серый
+			{128, 128, 128}, // 8: темно-серый
+			{255, 0, 0},     // 9: ярко-красный
+			{0, 255, 0},     // 10: ярко-зеленый
+			{255, 255, 0},   // 11: ярко-желтый
+			{0, 0, 255},     // 12: ярко-синий
+			{255, 0, 255},   // 13: ярко-пурпурный
+			{0, 255, 255},   // 14: ярко-голубой
+			{255, 255, 255}  // 15: белый
+		};
 
-		// Определяем базовые цвета
-		int color = 0;
+		int bestColor = 0;
+		int minDistance = INT_MAX;
 
-		// Определяем наличие цветовых компонентов
-		bool hasRed = r > 120;
-		bool hasGreen = g > 120;
-		bool hasBlue = b > 120;
+		for(int i = 0; i < 16; i++)
+		{
+			auto [cr, cg, cb] = consoleColors[i];
+			int distance = (r - cr) * (r - cr) + (g - cg) * (g - cg) + (b - cb) * (b - cb);
+			if(distance < minDistance)
+			{
+				minDistance = distance;
+				bestColor = i;
+			}
+		}
 
-		// Базовый цвет (первые 8 цветов)
-		if(hasRed && !hasGreen && !hasBlue) color = 1;    // Красный
-		else if(!hasRed && hasGreen && !hasBlue) color = 2; // Зеленый
-		else if(hasRed && hasGreen && !hasBlue) color = 3;  // Желтый
-		else if(!hasRed && !hasGreen && hasBlue) color = 4; // Синий
-		else if(hasRed && !hasGreen && hasBlue) color = 5;  // Пурпурный
-		else if(!hasRed && hasGreen && hasBlue) color = 6;  // Голубой
-		else if(hasRed && hasGreen && hasBlue) color = 7;   // Белый/серый
-		else color = 0; // Черный
-
-		// Если яркость высокая, добавляем 8 для получения светлой версии цвета
-		if(brightness > 127 && color != 0 && color != 7)
-			color += 8;
-
-		return color;
+		return bestColor;
 	}
+
+	// Преобразование цвета RGB в цвет консоли (0-15)
+	//int rgbToConsoleColor(int r, int g, int b)
+	//{
+	//	r = std::clamp(r, 0, 255);
+	//	g = std::clamp(g, 0, 255);
+	//	b = std::clamp(b, 0, 255);
+	//
+	//	// Рассчитываем яркость
+	//	double brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+	//
+	//	// Определяем интенсивность каждой компоненты
+	//	bool strongRed = r > 128;
+	//	bool strongGreen = g > 128;
+	//	bool strongBlue = b > 128;
+	//
+	//	bool weakRed = r > 64;
+	//	bool weakGreen = g > 64;
+	//	bool weakBlue = b > 64;
+	//
+	//	// Для серых тонов (все компоненты примерно равны)
+	//	int maxVal = std::max({r, g, b});
+	//	int minVal = std::min({r, g, b});
+	//	bool isGrayish = (maxVal - minVal) < 64;
+	//
+	//	if(isGrayish)
+	//	{
+	//		// Серые тона: черный, темно-серый, светло-серый, белый
+	//		if(brightness < 32) return 0;          // черный
+	//		else if(brightness < 96) return 8;     // темно-серый (яркий черный)
+	//		else if(brightness < 224) return 7;    // светло-серый
+	//		else return 15;                         // ярко-белый
+	//	}
+	//
+	//	// Определяем базовый цвет
+	//	int color = 0;
+	//
+	//	if(strongRed && !strongGreen && !strongBlue) { color = 1; }			// Красный
+	//	else if(!strongRed && strongGreen && !strongBlue) { color = 2; }	// Зеленый
+	//	else if(strongRed && strongGreen && !strongBlue) { color = 3; }		// Желтый
+	//	else if(!strongRed && !strongGreen && strongBlue) { color = 4; }	// Синий
+	//	else if(strongRed && !strongGreen && strongBlue) { color = 5; }		// Пурпурный
+	//	else if(!strongRed && strongGreen && strongBlue) { color = 6; }		// Голубой
+	//	else // Смешанные цвета - определяем доминирующую компоненту
+	//	{
+	//		if(r > g && r > b)
+	//		{
+	//			if(g > b) color = 3;  // ближе к желтому
+	//			else color = 5;         // ближе к пурпурному
+	//		}
+	//		else if(g > r && g > b)
+	//		{
+	//			if(r > b) color = 3;  // ближе к желтому
+	//			else color = 6;         // ближе к голубому
+	//		}
+	//		else if(b > r && b > g)
+	//		{
+	//			if(r > g) color = 5;  // ближе к пурпурному
+	//			else color = 6;         // ближе к голубому
+	//		}
+	//		else
+	//		{
+	//			color = 7;  // белый/серый (но это уже обработано выше)
+	//		}
+	//	}
+	//
+	//	// Если яркость высокая и цвет не из серой гаммы, используем яркую версию
+	//	if(brightness > 150 && color != 0 && color != 7) { color += 8; }
+	//
+	//	return color;
+	//}
 
 public:
 	// Конструктор
@@ -166,7 +247,7 @@ public:
 		// Высота: 2 поля экрана + 30 кубиков х1 квадратик + 1 толщина стакана + ?
 		ScreenW = 75; // размер экрана в пикселях 
 		ScreenH = 33;
-		UnitW = 1; // размер минимальной единицы отрисовки (квадратика)
+		UnitW = 1; // размер минимальной единицы отрисовки (квадратика) в пикселях
 		UnitH = 1;
 		FontSize = 15; // размер шрифта
 		FieldW = 1; // размеры полей
@@ -187,6 +268,8 @@ public:
 	void DrawGlass() override
 	{
 		Round &round = Round::getInstance();
+
+		setColor(); //! устанавливаем цвет стакана - считать из раунда
 
 		// Начинаем от 0;0 - текущие координаты
 		int curX = 0;
