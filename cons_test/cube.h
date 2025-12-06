@@ -27,6 +27,13 @@ private:
 	}
 
 public:
+	Cube()
+	{
+		// Получаем из фигуры координаты
+
+		// Получаем из фигуры цвет
+	}
+	
 	Cube(int x, int y, int number, RGBcolor color, int type = 0)
 	{
 		this->x = x;

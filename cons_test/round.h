@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "types.h"
 // @file: round.h
 //
 
@@ -18,12 +19,16 @@ public:
 		return instance;
 	}
 	
-	void Init() //! ??????? может и не надо
-	{}	// Инициализируем матрицу
+	void Init(); //! ??????? может и не надо
+	// Инициализируем матрицу ?
+
+	// Следующий раунд
+	void Next();
 		 
 	// геттеры и сеттеры
 	void setGlass(int width, int height) { glassW = width; glassH = height; }
-	//void setGlassColor(int color) { glassColor = color; }
+	void setGlassColor(RGBcolor color) { glassColor = color; }
+	void setGlassRGB(int r, int g, int b) { glassColor.r = r; glassColor.g = g; glassColor.b = b; }
 	void setCube(int width, int height) { cubeW = width; cubeH = height; }
 
 	// Геттеры для чтения значений
@@ -31,8 +36,6 @@ public:
 	int getGlassH() const { return glassH; }
 	int getCubeW() const { return cubeW; } // получение размеров кубика в единицах отрисовки
 	int getCubeH() const { return cubeH; }
-	int getOffsetX() const { return offsetX; }
-	int getOffsetY() const { return offsetY; }
 
 	//! Можно добавить методы для сброса состояния при перезапуске раунда - ???
 	void reset()
@@ -41,8 +44,7 @@ public:
 		glassH = 20;
 		cubeW = 3;
 		cubeH = 1;
-		offsetX = 1;
-		offsetY = 1;
+
 	}
 	
 private:
@@ -50,22 +52,22 @@ private:
 	Round() = default;
 	~Round() = default;
 
-	int number = 1; // порядковый номер раунда
+	int number = 1; // порядковый номер раунда (уровень)
 	int glassW = 5,
 		glassH = 20; // размеры стакана/матрицы кубиков в кубиках
 	int cubeW = 3, 
 		cubeH = 1; // размеры кубика в единицах отрисовки (лучше - в квадратиках)
-	int offsetX = 1, 
-		offsetY = 1; // Смещение начала матрицы кубиков 
+	RGBcolor glassColor = { 0, 0, 0 };
+
 	// Слева отступ - толщина стенки стакана в единицах отрисовки = 1
 	// Снизу отступ - толщина дна стакана в единицах отрисовки = 1
 	// Поля по экрану - отступы в единицах отрисовки (сейчас = 0)
 	
 	// временной такт - скорость падения
-	// разрядность чисел
+	// разрядность чисел и диапазон
 	// правила самого раунда
 	// Где и как появляются фигуры
-	// каие фигуры
+	// какие фигуры
 	// бонусы
 	// количество фигур в течение всего раунда
 	// правило уничтожения
@@ -73,6 +75,16 @@ private:
 	// максимальное количество кубиков в фигуре
 	// геометрия расположения - ограничения на фигуры
 	// цветовые правила
+
+
+	// Текущее состояние (static):
+	int score; // - очки
+	int time; //! - время игры - не int!
+	// - текущая и следующая фигуры
+	int figures; // - сколько фигур упало
+	int cubes; // - сколько кубиков уничтожено
+	int exercises; // - сколько примеров решено
+	
 	// сделать как в Digger: раунд может закончиться если упали все фигуры данного раунда или если что-то выполнили
 	// призовые фишки: уничтожение слоев, кубиков с  пушка, ракетка с шариком, .....
 
