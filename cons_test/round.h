@@ -1,7 +1,8 @@
 ﻿#pragma once
-#include "types.h"
 // @file: round.h
 //
+#include "types.h"
+
 
 // Раунд игры - все правила и данные текущего раунда
 

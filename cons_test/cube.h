@@ -1,6 +1,7 @@
 ﻿#pragma once
 // @file: cube.h
 #include <cstdint>
+#include "round.h"
 #include "types.h"
 
 // Один числовой кубик с цветом
@@ -27,9 +28,9 @@ private:
 	}
 
 public:
-	Cube()
+	Cube() // = default; // Конструктор из фигуры - при создании кубика в фигуре?
 	{
-		// Получаем из фигуры координаты
+		// Получаем из фигуры координаты - как? Мы же не знаем, какой именно это кубик в фигуре
 
 		// Получаем из фигуры цвет
 	}
@@ -45,6 +46,8 @@ public:
 		sx = 0;
 		sy = 0;
 		deleted = false;
+
+		//! Записать в матрицу!
 	}
 
 	Cube(int x, int y, int number, int r, int g, int b, int type = 0) : Cube(x, y, number, rgbToColor(r, g, b)) {}
@@ -109,10 +112,33 @@ public:
 	int getB() const { return color.b; }
 	bool getVisible() const	{ return visible; }	// Получить  видимость кубика
 
-	void moveL(int shift = 1) { x -= shift; } // сдвинуть на 1 влево (как быть с проверкой краев?!!!!!!!!!) - а надо ли?
-	void moveR(int shift = 1) { x += shift; } // сдвинуть на 1 вправо
-	void moveU(int shift = 1) { y += shift; } // сдвинуть на 1 вверх
-	void moveD(int shift = 1) { y -= shift; } // сдвинуть на 1 вниз
+	void moveL(const int shift = 1)  // сдвинуть на 1 влево
+	{
+		x -= shift;
+		if(outOfGlass())// проверяем вылет из стакана
+			x += shift; // сдвиг не выполняется
+	}
+
+	void moveR(const int shift = 1)  // сдвинуть (на 1) вправо
+	{ 
+		x += shift; 
+		if(outOfGlass())// проверяем вылет из стакана
+			x -= shift; // сдвиг не выполняется
+	}
+
+	void moveU(const int shift = 1)  // сдвинуть на 1 вверх
+	{ 
+		y += shift;
+		if(outOfGlass())// проверяем вылет из стакана
+			y -= shift; // сдвиг не выполняется
+	}
+
+	void moveD(const int shift = 1) // сдвинуть на 1 вниз 
+	{ 
+		y -= shift;
+		if(outOfGlass()) // проверяем вылет из стакана
+			y += shift; // сдвиг не выполняется
+	}
 
 	void hide() { visible = false; } // скрыть
 	void show() { visible = true; } // показать
@@ -120,8 +146,40 @@ public:
 	void del() { deleted = true; } // пометить для удаления
 	bool isDel() const { return deleted; } // помечен на удаление? или живой 
 
-	bool cGlass(); // Проверка касания кубика нижних слоев
-	bool cLayers(); // Проверка касания кубика краев стакана
+	// Проверка касания кубика краев стакана
+	bool contactGlassX() const 
+	{
+		Round &round = Round::getInstance(); // получаем раунд
+
+		if(x == 0 || x == round.getGlassW() - 1)
+			return true; // касается
+		else
+			return false;
+	}
+
+	// Проверка касания кубика дна стакана
+	bool contactGlassY() const 
+	{
+		Round &round = Round::getInstance(); // получаем раунд
+
+		if(y == 0)
+			return true; // касается
+		else
+			return false;
+	}
+	
+	// Проверка вылета координат кубика за стакан
+	bool outOfGlass() const 
+	{
+		Round &round = Round::getInstance(); // получаем раунд
+
+		if(x < 0 || x > round.getGlassW() - 1 || y < 0 || y > round.getGlassH() - 1)
+			return true; // вылетел
+		else
+			return false;
+	}
+
+	bool contactLayersY() const ; //! Проверка касания кубика нижних слоев
 };
 
 

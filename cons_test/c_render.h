@@ -264,6 +264,9 @@ public:
 		hideCursor(); // Выключаем курсор
 	}
 
+	// Отрисовка экрана (кадра) целиком
+
+
 	// Вывод стакана
 	void DrawGlass() override
 	{
@@ -306,6 +309,8 @@ public:
 		
 		// вывод
 	}
+
+	//---- Скорее всего - приватные:
 
 	// Вывод кубика
 	void DrawCube(Cube &cube) override
