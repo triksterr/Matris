@@ -149,34 +149,20 @@ public:
 	// Проверка касания кубика краев стакана
 	bool contactGlassX() const 
 	{
-		Round &round = Round::getInstance(); // получаем раунд
+		//Round &round = Round::getInstance(); // получаем раунд
 
-		if(x == 0 || x == round.getGlassW() - 1)
-			return true; // касается
-		else
-			return false;
+		return (x == 0 || x == Round::getInstance().getGlassW() - 1);
 	}
 
 	// Проверка касания кубика дна стакана
-	bool contactGlassY() const 
-	{
-		Round &round = Round::getInstance(); // получаем раунд
-
-		if(y == 0)
-			return true; // касается
-		else
-			return false;
-	}
+	bool contactGlassY() const { return (y == 0); }
 	
 	// Проверка вылета координат кубика за стакан
 	bool outOfGlass() const 
 	{
 		Round &round = Round::getInstance(); // получаем раунд
 
-		if(x < 0 || x > round.getGlassW() - 1 || y < 0 || y > round.getGlassH() - 1)
-			return true; // вылетел
-		else
-			return false;
+		return (x < 0 || x > round.getGlassW() - 1 || y < 0 || y > round.getGlassH() - 1);
 	}
 
 	bool contactLayersY() const ; //! Проверка касания кубика нижних слоев
