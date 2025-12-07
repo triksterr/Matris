@@ -26,17 +26,29 @@ public:
 	// Следующий раунд
 	void Next();
 		 
-	// геттеры и сеттеры
+	// сеттеры
 	void setGlass(int width, int height) { glassW = width; glassH = height; }
 	void setGlassColor(RGBcolor color) { glassColor = color; }
 	void setGlassRGB(int r, int g, int b) { glassColor.r = r; glassColor.g = g; glassColor.b = b; }
 	void setCube(int width, int height) { cubeW = width; cubeH = height; }
 
-	// Геттеры для чтения значений
+	// геттеры
 	int getGlassW() const { return glassW; } // получение размеров стакана в кубиках
 	int getGlassH() const { return glassH; }
 	int getCubeW() const { return cubeW; } // получение размеров кубика в единицах отрисовки
 	int getCubeH() const { return cubeH; }
+
+	////_________________________________________________________________________________________
+
+	// Info
+	// сеттеры
+	void nextLevel() { level++; }
+	void setLevel(int level) { this->level = level; }
+
+	void addScore() { levelScore++; totalScore++; } //! на сколько увеличивать счет?
+
+	// геттеры
+
 
 	//! Можно добавить методы для сброса состояния при перезапуске раунда - ???
 	void reset()
@@ -53,7 +65,6 @@ private:
 	Round() = default;
 	~Round() = default;
 
-	int number = 1; // порядковый номер раунда (уровень)
 	int glassW = 5,
 		glassH = 20; // размеры стакана/матрицы кубиков в кубиках
 	int cubeW = 3, 
@@ -78,17 +89,47 @@ private:
 	// цветовые правила
 
 
-	// Текущее состояние (static):
-	int score; // - очки
-	int time; //! - время игры - не int!
-	// - текущая и следующая фигуры
-	int figures; // - сколько фигур упало
-	int cubes; // - сколько кубиков уничтожено
-	int exercises; // - сколько примеров решено
-	
+	// Текущее состояние Info (static):
+	int level = 1;	// Текущий ровень (порядковый номер раунда)
+	int levelScore; // Счет раунда - очки
+	int totalScore; // Счет всей игры
+	int levelCubes = 0;	// Количество уничтоженных кубиков в этом раунде
+	int totalCubes = 0;	// Количество уничтоженных кубиков во всей игре
+	// Количество упавших кубиков - ?
+	int levelFigs = 0;	// Количество упавших фигур в этом раунде
+	int totalFigs = 0;	// Количество упавших фигур во всей игре
+	int levelTime = 0;	//! Время уровня(раунда) - Не int !
+	int totalTime = 0; //! Время всей игры - Не int !
+	int levelOps = 0; // Количество успешных операций (примеров) за раунд
+	int totalOps = 0; // Количество успешных операций (примеров) всего
+	int levelErrs = 0;	// Количество ошибок за раунд
+	int totalErrs = 0;	// Количество ошибок всего
+		//! - текущая и следующая фигуры - Не int !
+
+
 	// сделать как в Digger: раунд может закончиться если упали все фигуры данного раунда или если что-то выполнили
 	// призовые фишки: уничтожение слоев, кубиков с  пушка, ракетка с шариком, .....
 
+		// Текстовые константы
+	std::vector<std::string> txt_ru = {
+		"Счет:",		// 0
+		"Уровень:",		// 1
+		"Линий:",		// 2
+		"Фигур:",		// 3
+		"Время:",		// 4
+		"Следующая:",	// 5
+		"Операций:",	// 6
+	};
+
+	std::vector<std::string> txt_en = {
+		"Count:",		// 0
+		"Level:",		// 1
+		"Lines:",		// 2
+		"Figs:",		// 3
+		"Time:",		// 4
+		"Next:",		// 5
+		"Ops:",			// 6
+	};
 };
 
 // такт раунда - такт перерисовки, потому что больше на экране ничего принципиально не изменяется.

@@ -133,7 +133,6 @@
     <ClInclude Include="c_render.h" />
     <ClInclude Include="figure.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="info.h" />
     <ClInclude Include="i_audio.h" />
     <ClInclude Include="i_files.h" />
     <ClInclude Include="i_input.h" />
