@@ -59,6 +59,9 @@
     <ClInclude Include="rules.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="layers.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\prj\class.md" />

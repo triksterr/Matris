@@ -6,7 +6,8 @@
 #include "cube.h"
 #include "round.h"
 
-
+//! Возможно матрица и не нужна
+//! В любом случае, запись в нее идет из фигуры и из слоев - там делаются все проверки
 
 // Матрица всех кубиков в стакане
 class Matrix final
@@ -33,18 +34,10 @@ public:
 	}
 
 	// Получение элемента матрицы
-	Cube *get(int x, int y)
-	{
-		Round &round = Round::getInstance(); // получаем раунд
-		return data.at(y * round.getGlassW() + x);
-	}
+	Cube *get(int x, int y) { return data.at(y * Round::getInstance().getGlassW() + x); }
 
 	// Запись кубика в матрицу
-	void set(Cube *cube)
-	{
-		Round &round = Round::getInstance(); // получаем раунд
-		data.at(cube->getY() * round.getGlassW() + cube->getX()) = cube; // записываем указатель на кубик в матрицу
-	}
+	void set(Cube *cube) { data.at(cube->getY() * Round::getInstance().getGlassW() + cube->getX()) = cube;} // записываем указатель на кубик в матрицу
 
 private:
 	// Приватный конструктор и деструктор

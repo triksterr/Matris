@@ -1,0 +1,150 @@
+﻿#pragma once
+// @file: layers.h
+//
+
+#include <vector>
+#include "cube.h"
+#include "round.h"
+#include "game.h"
+
+
+// Матрица нижних слоев в стакане
+class Layers
+{
+public:
+// Удаляем копирование и присваивание
+	Layers(const Layers &other) = delete;
+	Layers &operator=(const Layers &other) = delete;
+
+	// Получение экземпляра синглтона
+	static Layers &getInstance()
+	{
+		static Layers instance;
+		return instance;
+	}
+
+	// Инициализация матрицы слоев - по раунду
+	void Init()
+	{
+		data.clear(); // сброс вектора
+
+		Round &round = Round::getInstance(); // получаем раунд
+		data.resize(round.getGlassW() * round.getGlassH(), nullptr); // задание размера и очистка вектора
+	}
+
+	//! Из раунда - координаты фигуры.	
+	//! Координаты кубика генерирует фигура!
+
+
+	// Записать кубик в матрицу
+	// @param cube - указатель на кубик
+	// @return true - если запись прошла успешно (место не было занято и в границах стакана)
+	bool writeCube(Cube *cube)
+	{
+		if(outOfGlass(cube->getX(), cube->getY())) // если вылет за стакан
+			return false;
+		if(isCube(cube->getX(), cube->getY())) // если позиция занята
+			return false;
+
+		data.at(Round::getInstance().getGlassW() * cube->getY() + cube->getX()) = cube;
+		return true;
+	}
+
+	// Считать кубик из позиции
+	// @param x - координата по x
+	// @param y - координата по y
+	// @return указатель на кубик (nullptr - если позиция пуста или вылет за стакан)
+	Cube *readCube(int x, int y) const 
+	{ 
+		if(outOfGlass(x, y))  // если вылет за стакан
+			return nullptr;
+
+		return data.at(Round::getInstance().getGlassW() * y + x); 
+	}
+	
+	// Удалить кубик из матрицы слоев по координатам
+	// @param x - координата по x
+	// @param y - координата по y
+	// @return true - если удаление прошло успешно (место было не пустое и в границах стакана)
+	bool delCube(int x, int y)
+	{
+		if(outOfGlass(x, y)) // если вылет за стакан
+			return false;
+
+		if(isCube(x, y)) // если позиция занята
+		{
+			data.at(Round::getInstance().getGlassW() * y + x) = nullptr;
+			return true;
+		}
+		else
+			return false;
+	}
+
+	// Удалить заданный кубик из матрицы слоев
+	// @param cube - указатель на кубик
+	// @return true - если удаление прошло успешно
+	bool delCube(Cube *cube) { return delCube(cube->getX(), cube->getY()); }
+
+	//! В какой момент помечаем кубик на удаление????!!!!!
+	
+	// Проверить наличие кубика
+	// @param x - координата по x
+	// @param y - координата по y
+	// @return true - если кубик есть
+	bool isCube(int x, int y) const
+	{ 
+		if(outOfGlass(x, y))  // если вылет за стакан
+			return false;
+		else
+			return (data.at(Round::getInstance().getGlassW() * y + x) != nullptr); 
+	}
+
+	bool isCube(Cube *cube) const { return isCube(cube->getX(), cube->getY()); }
+
+	// Проверить наличие кубика снизу
+	// @param x - координата по x
+	// @param y - координата по y
+	// @return true - если снизу есть кубик
+	bool isBelow(int x, int y) const { return (isCube(x, y - 1)); }
+
+	bool isBelow(Cube *cube) const { return isBelow(cube->getX(), cube->getY()); }
+
+	// Проверить наличие соседних кубиков по осям
+	// @param x - координата по x
+	// @param y - координата по y
+	// @return true - если соседи есть
+	bool isNearXY(int x, int y) const { return (isCube(x + 1, y) || isCube(x - 1, y) || isCube(x, y + 1) || isCube(x, y - 1)); }
+
+	bool isNearXY(Cube *cube) const { return isNearXY(cube->getX(), cube->getY()); }
+
+	// Проверить наличие соседних кубиков по диагоналям
+	// @param x - координата по x
+	// @param y - координата по y
+	// @return true - если соседи есть
+	bool isNearDiag(int x, int y) const { return (isCube(x + 1, y + 1) || isCube(x - 1, y - 1) || isCube(x - 1, y + 1) || isCube(x + 1, y - 1)); }
+
+	bool isNearDiag(Cube *cube) const { return isNearDiag(cube->getX(), cube->getY()); }
+
+	// Проверить наличие любых соседних кубиков
+	// @param x - координата по x
+	// @param y - координата по y
+	// @return true - если соседи есть
+	bool isNear(int x, int y) const { return (isNearXY(x, y) || isNearDiag(x, y)); }
+
+	bool isNear(Cube *cube) const { return isNear(cube->getX(), cube->getY()); }
+
+private:
+// Приватный конструктор и деструктор
+	Layers() = default;
+	~Layers() = default;
+
+	// Проверка вылета координат за стакан
+	bool outOfGlass(int x, int y) const
+	{
+		Round &round = Round::getInstance(); // получаем раунд
+
+		return (x < 0 || x > round.getGlassW() - 1 || y < 0 || y > round.getGlassH() - 1);
+	}
+
+	std::vector<Cube *> data; // вектор указателей на кубики
+};
