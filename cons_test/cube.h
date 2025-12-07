@@ -10,7 +10,7 @@ class Cube final
 private:
 	int x; // координата Х (относительно стакана/матрицы)
 	int y; // координата Y (относительно стакана/матрицы)
-	int sx; // смещение кубика в фигуре по Х относительно центрального кубика (0;0)
+	int sx; //! смещение кубика в фигуре по Х относительно центрального кубика (0;0) - а надо ли?!
 	int sy; // смещение кубика в фигуре по Y
 	int digit; // число в кубике
 	RGBcolor color; // цвет
@@ -41,10 +41,10 @@ public:
 		this->y = y;
 		this->digit = number;
 		this->color = color;
-		visible = true; //! при создании видимость всегда или надо указывать?
 		this->type = type;
-		sx = 0;
+		sx = 0; //! а надо ли?!
 		sy = 0;
+		visible = true; //! при создании видимость всегда или надо указывать?	
 		deleted = false;
 
 		//! Записать в матрицу!
@@ -112,32 +112,60 @@ public:
 	int getB() const { return color.b; }
 	bool getVisible() const	{ return visible; }	// Получить  видимость кубика
 
-	void moveL(const int shift = 1)  // сдвинуть на 1 влево
+	// сдвинуть (на 1) влево
+	// @param shift - на сколько сдвинуть
+	// @return успех сдвига true / false
+	bool moveL(const int shift = 1)  
 	{
 		x -= shift;
-		if(outOfGlass())// проверяем вылет из стакана
+		if(outOfGlass()) // проверяем вылет из стакана
+		{
 			x += shift; // сдвиг не выполняется
+			return false;
+		}
+		return true;
 	}
 
-	void moveR(const int shift = 1)  // сдвинуть (на 1) вправо
+	// сдвинуть (на 1) вправо
+	// @param shift - на сколько сдвинуть
+	// @return успех сдвига true / false
+	bool moveR(const int shift = 1)  
 	{ 
 		x += shift; 
-		if(outOfGlass())// проверяем вылет из стакана
+		if(outOfGlass()) // проверяем вылет из стакана
+		{
 			x -= shift; // сдвиг не выполняется
+			return false;
+		}
+		return true;
 	}
 
-	void moveU(const int shift = 1)  // сдвинуть на 1 вверх
+	// сдвинуть (на 1) вверх
+	// @param shift - на сколько сдвинуть
+	// @return успех сдвига true / false
+	bool moveU(const int shift = 1)  
 	{ 
 		y += shift;
-		if(outOfGlass())// проверяем вылет из стакана
+		if(outOfGlass()) // проверяем вылет из стакана
+		{
 			y -= shift; // сдвиг не выполняется
+			return false;
+		}
+		return true;
 	}
 
-	void moveD(const int shift = 1) // сдвинуть на 1 вниз 
+	// сдвинуть (на 1) вниз
+	// @param shift - на сколько сдвинуть
+	// @return успех сдвига true / false
+	bool moveD(const int shift = 1) 
 	{ 
 		y -= shift;
 		if(outOfGlass()) // проверяем вылет из стакана
+		{
 			y += shift; // сдвиг не выполняется
+			return false;
+		}
+		return true;
 	}
 
 	void hide() { visible = false; } // скрыть
@@ -147,12 +175,7 @@ public:
 	bool isDel() const { return deleted; } // помечен на удаление? или живой 
 
 	// Проверка касания кубика краев стакана
-	bool contactGlassX() const 
-	{
-		//Round &round = Round::getInstance(); // получаем раунд
-
-		return (x == 0 || x == Round::getInstance().getGlassW() - 1);
-	}
+	bool contactGlassX() const { return (x == 0 || x == Round::getInstance().getGlassW() - 1); }
 
 	// Проверка касания кубика дна стакана
 	bool contactGlassY() const { return (y == 0); }
@@ -165,7 +188,8 @@ public:
 		return (x < 0 || x > round.getGlassW() - 1 || y < 0 || y > round.getGlassH() - 1);
 	}
 
-	bool contactLayersY() const ; //! Проверка касания кубика нижних слоев
+	//! Проверка касания кубика нижних слоев
+	bool contactLayersY() const ; 
 };
 
 
