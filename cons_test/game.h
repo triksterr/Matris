@@ -2,8 +2,7 @@
 // @file: game.h
 //
 
-#include "types.h"
-#include "tools.h"
+#include "rules.h"
 
 
 // При создании игры надо зарегистрировать все интерфейсы

@@ -4,10 +4,36 @@
 #include "round.h"
 #include "types.h"
 #include "rules.h"
-#include "tools.h"
+#include <random>
+#include <chrono>
 
 
 // Функции-генераторы
+
+// Инициализация генератора случайных чисел
+std::mt19937 &initRnd()
+{
+	// текущее время в милисекундах
+	auto now = std::chrono::system_clock::now().time_since_epoch();
+	auto now_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
+
+	// вихрь Мерсенна
+	static std::mt19937 gen(now_ms);
+
+	//static std::mt19937 gen(std::random_device {}());
+
+	return gen;
+}
+
+// Получение случайного значения
+// @param left, right - границы диапазона выдаваемых значений
+int getRnd(int left, int right)
+{
+	// равномерное распределение с диапазоном
+	std::uniform_int_distribution<int> dist(left, right);
+
+	return dist(initRnd());
+}
 
 // Правила 
 
@@ -29,8 +55,20 @@
 // В конце - результаты
 
 //! Указатели на Генераторы - в раунде, а здесь - они сами и условия их инициализации и выдачи
+ 
+// Генератор целого
+int GenInt(int left, int right) { return getRnd(left, right); }
 
-//? Генераторы позиции появления фигуры
+//! Генератор цвета - в диапазонах!
+RGBcolor GenColor() { return {getRnd(0, 255), getRnd(0, 255), getRnd(0, 255)}; }
+
+// Генератор точки - в пределах стакана
+Point GenPoint() { return {getRnd(0, Round::getInstance().getGlassW() - 1), getRnd(0, Round::getInstance().getGlassH() - 1)}; }
+
+// Генератор точки - в заданных пределах
+Point GetPoint(int left, int bottom, int right, int top) { return {getRnd(left, right), getRnd(bottom, top)}; }
+
+//? --- Генераторы позиции появления фигуры
 
 // Генератор позиции появления фигуры - сверху в центре
 Point GenFigPos0()
@@ -70,6 +108,14 @@ RGBcolor GenFigColor0() { return {255, 255, 255}; }
 // Генератор цвета фигуры - случайный светлый
 RGBcolor GenFigColor1() { return {getRnd(100, 255), getRnd(100, 255), getRnd(100, 255)}; }
 
+//? --- Генераторы углов поворота фигуры
+
+// Генератор угла поворота фигуры - не поворачивать
+int GenAngle0() { return 0; }
+
+// Генератор угла поворота фигуры - 0, 90, 180, 270
+int GenAngle1() { return getRnd(0, 3) * 90; }
+
 //? --- Генераторы типов кубиков
 
 // Генератор типа кубика - обычный числовой кубик
@@ -86,7 +132,7 @@ RGBcolor GenCubeColor1() { return {getRnd(100, 255), getRnd(100, 255), getRnd(10
 //? --- Генераторы чисел в кубике
 
 // Генератор числа в кубике (0-9)
-int GenCubeNum0() { return getRnd(0, 9); }
+int GenCubeNum0() { return getRnd(1, 9); }
 
 // Функция вычисления правила уничтожения
 
@@ -97,3 +143,32 @@ int GenCubeNum0() { return getRnd(0, 9); }
 // Вычисления могут быть горизонтально, вертикально, по диагоналям
 
 // При задании типа фигуры может быть задана матрица типов кубиков
+
+
+
+// Поворот точки на фикс. углы (по 90) относительно начала координат
+Point rotate(Point point, int angle)
+{
+	while(angle > 270) //! убираем лишние обороты
+		angle -= 360;
+
+	if(angle == 90) // 90: (x, y) -> (-y, x)
+	{
+		std::swap(point.x, point.y);
+		point.x = -point.x;
+	}
+
+	if(angle == 180) // 180: (x, y) -> (-x, -y)
+	{
+		point.x = -point.x;
+		point.y = -point.y;
+	}
+
+	if(angle == 270) // 270: (x, y) -> (y, -x)
+	{
+		std::swap(point.x, point.y);
+		point.y = -point.y;
+	}
+
+	return point;
+}

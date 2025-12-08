@@ -129,8 +129,6 @@
   <ItemGroup>
     <ClCompile Include="cons_test.cpp" />
     <ClCompile Include="rules.cpp" />
-    <ClCompile Include="tools.cpp" />
-    <ClCompile Include="types.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="c_render.h" />
@@ -144,7 +142,6 @@
     <ClInclude Include="matrix.h" />
     <ClInclude Include="round.h" />
     <ClInclude Include="rules.h" />
-    <ClInclude Include="tools.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="cube.h" />
   </ItemGroup>

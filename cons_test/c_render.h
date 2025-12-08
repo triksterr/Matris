@@ -19,6 +19,7 @@
 #include "round.h"
 #include "cube.h"
 #include "types.h"
+#include "figure.h"
 
 
 // Вывод в консоль
@@ -376,13 +377,15 @@ public:
 	}
 
 	// Вывод фигуры - ?
-	void DrawFigure() override
+	void DrawFigure(Figure &figure) override
 	{
 		Round &round = Round::getInstance();
 
-		// цвет фигуры - считать из раунда
-		
-		// пробегаем по вектору кубиков
+		for(Cube &cube : figure.getCubes())	// пробегаем по вектору кубиков
+		{
+			DrawCube(cube);
+		}
+	
 		// получаем кординаты, цвета, типы, числа
 		// рисуем
 	}

@@ -33,6 +33,8 @@ public:
 		// Получаем из фигуры координаты - как? Мы же не знаем, какой именно это кубик в фигуре
 
 		// Получаем из фигуры цвет
+
+		// или из раунда!
 	}
 	
 	Cube(int x, int y, int number, RGBcolor color, int type = 0)
@@ -47,12 +49,12 @@ public:
 		visible = true; //! при создании видимость всегда или надо указывать?	
 		deleted = false;
 
-		//! Записать в матрицу!
+		//! Записать в матрицу! - ?
 	}
 
 	Cube(int x, int y, int number, int r, int g, int b, int type = 0) : Cube(x, y, number, rgbToColor(r, g, b)) {}
 
-	Cube(const int x, const int y): Cube(x, y, 0, rgbToColor(127, 127, 127)) {} //! не факт, что этот конструктор нужен
+	//Cube(const int x, const int y): Cube(x, y, 0, rgbToColor(127, 127, 127)) {} //! не факт, что этот конструктор нужен
 	
 	// деструктор
 	~Cube() = default;
@@ -94,7 +96,7 @@ public:
 	void setSX(int sx) { this->sx = sx; } // задать смещение кубика в фигуре по Х
 	void setSY(int sy) { this->sy = sy; } // задать смещение кубика в фигуре по Y
 	void setSXY(int sx, int sy) { this->sx = sx; this->sy = sy; } // задать смещение кубика в фигуре по Х и Y
-	void setRGB(int r, int g, int b) { rgbToColor(r, g, b); } // задать цвет в формате RGB
+	void setColor(int r, int g, int b) { rgbToColor(r, g, b); } // задать цвет в формате RGB
 	void setColor(RGBcolor color) { this->color = color; } // задать цвет
 	void setNum(int number) { this->digit = number; } // задать число в кубике
 	void setType(int type) { this->type = type; } // задать тип кубика

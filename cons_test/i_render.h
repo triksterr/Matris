@@ -3,6 +3,7 @@
 
 #include "cube.h"
 #include <string>
+#include "figure.h"
 
 // Интерфейс вывода на экран
 
@@ -29,7 +30,7 @@ public:
 	virtual void DrawGlass() = 0;
 
 	// Вывод фигуры - ?
-	virtual void DrawFigure() = 0;
+	virtual void DrawFigure(Figure &figure) = 0;
 
 	// Вывод слоев
 	virtual void DrawLayers() = 0;
