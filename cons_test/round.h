@@ -2,6 +2,7 @@
 // @file: round.h
 //
 #include "types.h"
+#include "rules.h"
 #include <vector>
 #include <string>
 
@@ -22,23 +23,28 @@ public:
 		return instance;
 	}
 	
-	void Init(); //! ??????? может и не надо
+	//void Init(); //! ??????? может и не надо
 	// Инициализируем матрицу ?
 
 	// Следующий раунд
 	void Next();
 		 
 	// сеттеры
-	void setGlass(int width, int height) { glassW = width; glassH = height; }
-	void setGlassColor(RGBcolor color) { glassColor = color; }
-	void setGlassRGB(int r, int g, int b) { glassColor.r = r; glassColor.g = g; glassColor.b = b; }
-	void setCube(int width, int height) { cubeW = width; cubeH = height; }
+	void setGlass(int width, int height) { glassW = width; glassH = height; } // размеры стакана
+	void setGlassColor(RGBcolor color) { glassColor = color; } // цвет стакана
+	void setGlassColor(int r, int g, int b) { glassColor.r = r; glassColor.g = g; glassColor.b = b; } // цвет стакана
+	void setCube(int width, int height) { cubeW = width; cubeH = height; } // размеры кубика
 
 	// геттеры
 	int getGlassW() const { return glassW; } // получение размеров стакана в кубиках
 	int getGlassH() const { return glassH; }
 	int getCubeW() const { return cubeW; } // получение размеров кубика в единицах отрисовки
 	int getCubeH() const { return cubeH; }
+	RGBcolor getGlassColor() const { return glassColor; }
+
+	intFuncPtr getGenFig() const { return figGen; } // получить генератор фигур
+	colorFuncPtr getGenFigColor() const { return figColorGen; } // получить генератор цвета фигур
+	pointFuncPtr getGenFigPos() const { return figPosGen; } // получить генератор начальной позиции фигур
 
 	////_________________________________________________________________________________________
 
@@ -53,13 +59,21 @@ public:
 
 
 	//! Можно добавить методы для сброса состояния при перезапуске раунда - ???
-	void reset()
+	void reset() //! по идее, надо сбрасывать все в 0 и затем записывать нужные значения
 	{
 		glassW = 5;
 		glassH = 20;
 		cubeW = 3;
 		cubeH = 1;
 
+		glassColor = { 127, 127, 127 };
+		level = 1;
+		levelScore = 0;
+		totalScore = 0;
+
+		figGen = GenFigType1;
+		figColorGen = GenFigColor1;
+		figPosGen = GenFigPos1;
 	}
 	
 private:
@@ -72,6 +86,7 @@ private:
 	int cubeW = 3, 
 		cubeH = 1; // размеры кубика в единицах отрисовки (лучше - в квадратиках)
 	RGBcolor glassColor = { 127, 127, 127 }; // цвет стакана
+
 	// Цвета текста
 
 	// Слева отступ - толщина стенки стакана в единицах отрисовки = 1
@@ -80,10 +95,10 @@ private:
 	
 	// временной такт - скорость падения
 	// правила самого раунда:
-	// - типы фигур - ссылка на функцию-генератор
-	// - цвета фигур - ссылка на функцию-генератор
+	intFuncPtr figGen; // - типы фигур - ссылка на функцию-генератор
+	colorFuncPtr figColorGen; // - цвета фигур - ссылка на функцию-генератор
 	// - углы поворота фигур - ссылка на функцию-генератор
-	// - места появления фигур - ссылка на функцию-генератор
+	pointFuncPtr figPosGen; // - места появления фигур - ссылка на функцию-генератор
 	// - типы кубиков - либо по типу фигуры, либо по правиам самого раунда
 	// - цвета кубиков - по правиам раунда - ссылка на функцию-генератор
 	// - правило расстановки чисел (знаков) в фигуре: разрядность чисел и диапазон, размещение

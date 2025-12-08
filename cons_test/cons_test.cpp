@@ -5,11 +5,14 @@
 #include "c_render.h"
 #include "cube.h"
 #include "round.h"
+#include "figure.h"
 #include "game.h"
 
 int main()
 {
     Round &round = Round::getInstance(); // получаем раунд
+
+	round.reset(); // инициализируем раунд
 
 	round.setGlass(10, 15); // размер стакана
 
@@ -28,7 +31,12 @@ int main()
 
     //________________________________________________________________
 
-    // инициализируем раунд вручную
+    // инициализируем раунд вручную - ?
+
+    // Фигура
+    Figure fig;
+
+
 
     //________________________________________________________________
     int i = _getch();

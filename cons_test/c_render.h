@@ -282,6 +282,9 @@ private:
 	//	return color;
 	//}
 
+	// Преобразование цвета RGB в цвет консоли (0-15) - более точное
+	int rgbToConsoleColor(RGBcolor color) { return rgbToConsoleColor(color.r, color.g, color.b); }
+
 public:
 	// Конструктор
 	CRender() // по умолчанию не меняем размеров
@@ -344,7 +347,8 @@ public:
 	{
 		Round &round = Round::getInstance();
 
-		//setColor(); //! устанавливаем цвет стакана - считать из раунда
+		// цвет стакана - считать из раунда
+		RGBcolor color = round.getGlassColor();
 
 		// Начинаем от 0;0 - текущие координаты
 		int curX = 0;
@@ -354,15 +358,15 @@ public:
 		curY += FieldH;
 
 		// Рисуем левую стенку
-		drawLine(curX, curY, curX, curY + round.getGlassH() * cubeH, rgbToConsoleColor(127, 127, 127), '|');
+		drawLine(curX, curY, curX, curY + round.getGlassH() * cubeH, rgbToConsoleColor(color), '|');
 		//for(int i = 0; i < curY + round.getGlassH() * cubeH; ++i)
 		//	DrawTxt("|", curX, curY + i);
 
 		// Рисуем правую стенку
-		drawLine(curX + round.getGlassW() * cubeW + 1, curY, curX + round.getGlassW() * cubeW + 1, curY + round.getGlassH() * cubeH, rgbToConsoleColor(127, 127, 127), '|');
+		drawLine(curX + round.getGlassW() * cubeW + 1, curY, curX + round.getGlassW() * cubeW + 1, curY + round.getGlassH() * cubeH, rgbToConsoleColor(color), '|');
 
 		// Рисуем линию дна
-		drawLine(curX, curY, curX + round.getGlassW() * cubeW + 1, curY, rgbToConsoleColor(127, 127, 127), '-');
+		drawLine(curX, curY, curX + round.getGlassW() * cubeW + 1, curY, rgbToConsoleColor(color), '-');
 		//for(int i = 0; i < round.getGlassW() * cubeW + 2; ++i)
 		//	DrawTxt("-", curX + i, curY);
 
@@ -374,6 +378,10 @@ public:
 	// Вывод фигуры - ?
 	void DrawFigure() override
 	{
+		Round &round = Round::getInstance();
+
+		// цвет фигуры - считать из раунда
+		
 		// пробегаем по вектору кубиков
 		// получаем кординаты, цвета, типы, числа
 		// рисуем
@@ -439,13 +447,6 @@ public:
 	}
 
 	//! Разобраться с прототипом и с реализацией дефолта по цвету!
-
-	// Структура для представления точки
-	struct Point
-	{
-		int x;
-		int y;
-	};
 
 	// Функция для "рисования" линии между двумя точками
 	// @param p1, p2 - начало и конец линии
