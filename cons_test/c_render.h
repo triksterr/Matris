@@ -18,7 +18,8 @@
 #include "i_render.h"
 #include "round.h"
 #include "cube.h"
-#include "info.h"
+#include "types.h"
+
 
 // Вывод в консоль
 class CRender final: public IRender
@@ -32,11 +33,38 @@ private:
 	// Установка позиции курсора
 	void setPosition(int x, int y) const
 	{
-		COORD coord;
+		COORD coord {};
 		y = height - y - 1;
 		coord.X = x > width - 1 ? width - 1 : (x < 0 ? 0 : x);
 		coord.Y = y > height - 1 ? height - 1 : (y < 0 ? 0 : y);
 		SetConsoleCursorPosition(hConsole, coord);
+	}
+
+	// setPosX(), setPosY() - ?
+
+	// Получение позиции курсора
+	void getPosition(int &x, int &y) const
+	{
+		CONSOLE_SCREEN_BUFFER_INFO info;
+		GetConsoleScreenBufferInfo(hConsole, &info);
+		x = info.dwCursorPosition.X;
+		y = height - info.dwCursorPosition.Y - 1;
+	}
+
+	// Получение X позиции курсора
+	int getX() const 
+	{ 
+		int x, y; 
+		getPosition(x, y); 
+		return x; 
+	}
+
+	// Получение Y позиции курсора
+	int getY() const 
+	{ 
+		int x, y; 
+		getPosition(x, y); 
+		return y; 
 	}
 
 	// Скрытие курсора
@@ -73,6 +101,8 @@ private:
 		this->height = height;
 	}
 
+	// getSize() - ?
+
 	// Очистка экрана
 	void clear() const { system("cls"); }
 
@@ -80,10 +110,52 @@ private:
 	void setColor(int textColor = 7, int backgroundColor = 0) const
 	{ SetConsoleTextAttribute(hConsole, (backgroundColor << 4) | textColor); }
 
+	// Установка цвета текста и фона
+	void setColor(RGBcolor colorF, RGBcolor colorB = {0,0,0})
+	{ SetConsoleTextAttribute(hConsole, (rgbToConsoleColor(colorB.r, colorB.g, colorB.b) << 4) | rgbToConsoleColor(colorF.r, colorF.g, colorF.b)); }
+
+	// Установка цвета текста
+	void setFColor(int textColor = 7) const { SetConsoleTextAttribute(hConsole, textColor); }
+
+	// Установка цвета фона
+	void setFColor(RGBcolor color) { setFColor(rgbToConsoleColor(color.r, color.g, color.b)); }
+
+	// Установка цвета фона
+	void setBColor(int backgroundColor = 0) const { SetConsoleTextAttribute(hConsole, backgroundColor << 4); }
+
+	// Установка цвета фона
+	void setBColor(RGBcolor color) { setBColor(rgbToConsoleColor(color.r, color.g, color.b)); }
+
+	// Получить цвет текста и фона в позиции с координатами x, y
+	int GetColor(int x, int y) const
+	{
+		COORD coord = {x, y};
+		WORD attributes = 0;
+		DWORD charsRead = 0;
+
+		ReadConsoleOutputAttribute(hConsole, &attributes, 1, coord, &charsRead);
+		return attributes;
+	}
+
+	// Получить цвет текста и фона из текущей позиции курсора
+	int GetColor() const {return GetColor(getX(), getY()); }
+
+	// Получение цвета шрифта
+	int getFColor(int x, int y) { return GetColor(x, y) & 0x0F;	}
+
+	// Получение цвета шрифта из текущей позиции курсора
+	int getFColor() { return getFColor(getX(), getY()); }
+
+	// Получение цвета фона
+	int getBColor(int x, int y) { return (GetColor(x, y) & 0xF0) >> 4; }	//return GetColor(x, y) >> 4;
+
+	// Получение цвета фона из текущей позиции курсора
+	int getBColor() { return getBColor(getX(), getY()); }
+
 	// Установка шрифта
 	void setFont(const std::wstring &fontName, const int height = 15, const int width = 5) const
 	{
-		CONSOLE_FONT_INFOEX fontInfo;
+		CONSOLE_FONT_INFOEX fontInfo {};
 		fontInfo.cbSize = sizeof(fontInfo);
 		GetCurrentConsoleFontEx(hConsole, FALSE, &fontInfo); // Получаем текущий шрифт
 
@@ -272,7 +344,7 @@ public:
 	{
 		Round &round = Round::getInstance();
 
-		setColor(); //! устанавливаем цвет стакана - считать из раунда
+		//setColor(); //! устанавливаем цвет стакана - считать из раунда
 
 		// Начинаем от 0;0 - текущие координаты
 		int curX = 0;
@@ -280,20 +352,32 @@ public:
 		// Смещаемся с учетом полей в начало координат для сткана
 		curX += FieldW;
 		curY += FieldH;
+
 		// Рисуем левую стенку
-		for(int i = 0; i < curY + round.getGlassH() * cubeH; ++i)
-			DrawTxt("|", curX, curY + i);
-		// Рисуем линию дна
-		for(int i = 0; i < round.getGlassW() * cubeW + 2; ++i)
-			DrawTxt("-", curX + i, curY);
+		drawLine(curX, curY, curX, curY + round.getGlassH() * cubeH, rgbToConsoleColor(127, 127, 127), '|');
+		//for(int i = 0; i < curY + round.getGlassH() * cubeH; ++i)
+		//	DrawTxt("|", curX, curY + i);
+
 		// Рисуем правую стенку
-		for(int i = 1; i < curY + round.getGlassH() * cubeH; ++i)
-			DrawTxt("|", curX + round.getGlassW() * cubeW + 1, curY + i);
+		drawLine(curX + round.getGlassW() * cubeW + 1, curY, curX + round.getGlassW() * cubeW + 1, curY + round.getGlassH() * cubeH, rgbToConsoleColor(127, 127, 127), '|');
+
+		// Рисуем линию дна
+		drawLine(curX, curY, curX + round.getGlassW() * cubeW + 1, curY, rgbToConsoleColor(127, 127, 127), '-');
+		//for(int i = 0; i < round.getGlassW() * cubeW + 2; ++i)
+		//	DrawTxt("-", curX + i, curY);
+
+		// Рисуем правую стенку
+		//for(int i = 1; i < curY + round.getGlassH() * cubeH; ++i)
+		//	DrawTxt("|", curX + round.getGlassW() * cubeW + 1, curY + i);
 	}
 
 	// Вывод фигуры - ?
 	void DrawFigure() override
-	{}
+	{
+		// пробегаем по вектору кубиков
+		// получаем кординаты, цвета, типы, числа
+		// рисуем
+	}
 
 	// Вывод слоев
 	void DrawLayers() override
@@ -303,14 +387,14 @@ public:
 	void DrawInfo() override
 	{
 		// Читаем текущую информацию по игре
-		Info &round = Info::getInstance();
+		Round &round = Round::getInstance();
 
 		// get!
 		
 		// вывод
 	}
 
-	//---- Скорее всего - приватные:
+	//---- Скорее всего - private:
 
 	// Вывод кубика
 	void DrawCube(Cube &cube) override
@@ -329,5 +413,118 @@ public:
 	{
 		setPosition(x, y);
 		std::cout << text;
+	}
+
+	// Вывод текста - в private
+	// @param text - текст для вывода
+	// @param x, y - координаты начала вывода
+	// @param color - цвет текста
+	void DrawTxtC(std::string text, int x, int y, int color)
+	{
+		setPosition(x, y);
+		setFColor(color);
+		std::cout << text;
+	}
+
+	// Вывод текста - в private
+	// @param text - текст для вывода
+	// @param x, y - координаты начала вывода
+	// @param color - цвет текста
+	// @param back - цвет фона
+	void DrawTxtC(std::string text, int x, int y, int color, int back)
+	{
+		setPosition(x, y);
+		setColor(color, back);
+		std::cout << text;
+	}
+
+	//! Разобраться с прототипом и с реализацией дефолта по цвету!
+
+	// Структура для представления точки
+	struct Point
+	{
+		int x;
+		int y;
+	};
+
+	// Функция для "рисования" линии между двумя точками
+	// @param p1, p2 - начало и конец линии
+	// @param bl, ur - границы холста
+	// @return vector с точками линии в границах холста
+	std::vector<Point> calcLine(Point p1, Point p2, Point bl, Point ur)
+	{
+		std::vector<Point> linePoints;
+
+		int x1 = p1.x;
+		int y1 = p1.y;
+		int x2 = p2.x;
+		int y2 = p2.y;
+
+		// Вычисляем разницы
+		int dx = abs(x2 - x1);
+		int dy = abs(y2 - y1);
+
+		// Определяем направления
+		int sx = (x1 < x2) ? 1 : -1;
+		int sy = (y1 < y2) ? 1 : -1;
+
+		int err = dx - dy;
+
+		while(true)
+		{
+			// Добавляем текущую точку
+			linePoints.push_back(Point(x1, y1));
+
+			// Если достигли конечной точки
+			if(x1 == x2 && y1 == y2) break;
+
+			int e2 = 2 * err;
+
+			if(e2 > -dy)
+			{
+				err -= dy;
+				x1 += sx;
+			}
+
+			if(e2 < dx)
+			{
+				err += dx;
+				y1 += sy;
+			}
+		}
+
+		// Проверяем координаты на вылет за границы области и обрезаем хвосты
+
+		int x0 = bl.x; // граничные значения
+		int y0 = bl.y;
+		int xm = ur.x;
+		int ym = ur.y;
+
+		// Если в точке одна из координат вылетает за граничные значения - удаляем ее
+		linePoints.erase(std::remove_if(linePoints.begin(), linePoints.end(), 
+						 [x0, y0, xm, ym](Point p) { return (p.x < x0 || p.y < y0 || p.x > xm || p.y > ym); }), 
+						 linePoints.end());
+
+		return linePoints;
+	}
+
+	// Рисуем линию
+	// координаты - в единицах отрисовки
+	// @param size - толщина в единицах отрисовки
+	void drawLine(int x1, int y1, int x2, int y2, int color, /*int back,*/ /*int size = 1,*/ char sim = '*')
+	{
+		Point p1 = {x1, y1}; // точка начала
+		Point p2 = {x2, y2}; // точка конца
+		Point bl = {0, 0};
+		Point ur = {this->width-1, this->height-1};	// получаем размеры
+		
+		std::vector<Point> line = calcLine(p1, p2, bl, ur); // обсчитываем линию
+
+		std::string s {sim};
+		// выводим линию
+		for(Point p : line)
+		{
+			DrawTxtC(s, p.x, p.y, color);
+		}
 	}
 };

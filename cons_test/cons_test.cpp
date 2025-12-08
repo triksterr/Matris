@@ -20,9 +20,9 @@ int main()
 
     render->DrawGlass();
 
-    render->DrawTxt("Hello", 9, 18);
+    //render->DrawTxtC("Hello", 9, 18, {255, 0, 0});
 
-    Cube cube(9, 2, 9, 100, 100, 100); //! нет проверки на вылет за стакан!!!
+    Cube cube(9, 2, 9, 255, 255, 100); //! нет проверки на вылет за стакан!!!
 
     render->DrawCube(cube);
 
