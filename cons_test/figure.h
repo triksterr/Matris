@@ -2,9 +2,10 @@
 // @file: figure.h
 //
 
+#include <vector>
+#include <algorithm>
 #include "cube.h"
 #include "types.h"
-#include <vector>
 #include "rules.h"
 #include "round.h"
 
@@ -22,32 +23,52 @@ public:
 	Figure()
 	{
 		Round &round = Round::getInstance(); // получаем раунд
-		
+
 		type = (round.getGenFig())(); // Получаем из раунда тип фигуры
 
 		color = (round.getGenFigColor())(); // Получаем из раунда цвет фигуры
 
 		int angle = (round.getGenAngle())(); // Получаем из раунда угол поворота фигуры
 
-		Point p;
-		y = round.getGlassH() - 1; 	// Получаем из раунда координаты центра фигуры
-		p = (round.getGenFigPos())();
+		Point p = (round.getGenFigPos())();
+		y = p.y; // round.getGlassH() - 1; 	// Получаем из раунда координаты центра фигуры
 		x = p.x;
 
 		sizes = figSizes[type]; // Получаем по типу растояния до краев 
-		
-		// пересчитываем их с учетом поворота
-		p.x = sizes.l;
-		p.y = sizes.d;
-		p = rotate(p, angle);
-		sizes.l = p.x;
-		sizes.r = p.y;
 
-		p.x = sizes.r;
+		int l, r, u, d; // временные левая, правая, верхняя, нижняя
+
+		// пересчитываем их с учетом поворота
+		// Поворачиваем левую нижнюю точку
+		p.x = -sizes.l; // изначально отрицательные
+		p.y = -sizes.d;
+		p = rotate(p, angle);
+		l = p.x;
+		d = p.y;
+
+		// Поворачиваем правую верхнюю точку
+		p.x = sizes.r; // изначально положительные
 		p.y = sizes.u;
 		p = rotate(p, angle);
-		sizes.r = p.x;
-		sizes.u = p.y;
+		r = p.x;
+		u = p.y;
+
+		// проверяем на отрицательные значения и перераспределяем их
+		// Находим минимальные и максимальные значения после поворота
+		int min_x = (std::min)(l, r);
+		int max_x = (std::max)(l, r);
+		int min_y = (std::min)(u, d);
+		int max_y = (std::max)(u, d);
+
+		// Обновляем границы фигуры
+		sizes.l = std::abs(min_x);
+		sizes.r = max_x;
+		sizes.u = max_y;
+		sizes.d = std::abs(min_y);
+
+		//! Нужно логирование
+		// TODO Функция вывода вместо данных игры данных лога
+		// И правило по которому фигура появляется и через несколько сек пропадает, заменяясь новой
 
 		// и корректируем их относительно стенок стакана и верхней границы
 		// стакан по ширине от 0 до round.getGlassW() - 1
@@ -59,6 +80,8 @@ public:
 		// стакан по высоте от 0 до round.getGlassH() - 1
 		if((y + sizes.u) > (round.getGlassH() - 1))
 			y = round.getGlassH() - 1 - sizes.u;
+
+		//! вернуть в раунд потом!
 		
 		//! Получаем из раунда правило расстановки чисел (знаков) или типов кубиков в фигуре
 

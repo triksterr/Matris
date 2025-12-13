@@ -73,10 +73,11 @@ public:
 		levelScore = 0;
 		totalScore = 0;
 
-		figGen = GenFigType1;
+		figGen = GenFigType4; // любая фигура
 		figColorGen = GenFigColor1;
 		figPosGen = GenFigPos1;
 		figAngleGen = GenAngle1;
+		//figAngleGen = GenAngle0; // не поворачивать
 		cubeNumGen = GenCubeNum0;
 	}
 	

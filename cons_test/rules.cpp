@@ -84,10 +84,17 @@ Point GenFigPos0()
 Point GenFigPos1()
 {
 	Point p;
-	p.x = getRnd(0, Round::getInstance().getGlassW() - 1);
-	p.y = Round::getInstance().getGlassH() - 1;
+	Round &round = Round::getInstance(); // получаем раунд
+	p.x = getRnd(0, round.getGlassW() - 1);
+	p.y = round.getGlassH() - 1;
 	return p;
 }
+
+// Генератор позиции появления фигуры - тестовый: справа вверху
+Point GenFigPosTest() { return {Round::getInstance().getGlassW() - 1, Round::getInstance().getGlassH() - 1}; }
+
+// Генератор позиции появления фигуры - тестовый: слева вверху
+Point GenFigPosTest1() { return {0, Round::getInstance().getGlassH() - 1}; }
 
 //? --- Генераторы типов фигур
 
@@ -100,13 +107,26 @@ int GenFigType1() { return getRnd(0, 1); }
 // Генератор типа фигуры (0 - 2) Одиночный кубик, Палка из 2 кубиков, Палка из 3 кубиков
 int GenFigType2() { return getRnd(0, 2); }
 
+// Генератор типа фигуры (0 - 4) Одиночный кубик, Палки, уголок, квадратик
+int GenFigType3() { return getRnd(0, 4); }
+
+// Генератор типа фигуры - тестовый: крестик
+int GenFigTypeTest1() { return 11; }
+
+// Генератор типа фигуры - тестовый: квадратик
+int GenFigTypeTest() { return 4; }
+
+// Генератор типа фигуры (0 - 12) 
+int GenFigType4() { return getRnd(0, 12); }
+
 //? --- Генераторы цвета фигур
 
 // Генератор цвета фигуры - белый
 RGBcolor GenFigColor0() { return {255, 255, 255}; }
 
 // Генератор цвета фигуры - случайный светлый
-RGBcolor GenFigColor1() { return {getRnd(100, 255), getRnd(100, 255), getRnd(100, 255)}; }
+RGBcolor GenFigColor1() { return {getRnd(10, 255), getRnd(10, 255), getRnd(10, 255)}; }
+//! Нужно исключать цвет фона раунда - обязательно!!!
 
 //? --- Генераторы углов поворота фигуры
 
@@ -134,6 +154,8 @@ RGBcolor GenCubeColor1() { return {getRnd(100, 255), getRnd(100, 255), getRnd(10
 // Генератор числа в кубике (0-9)
 int GenCubeNum0() { return getRnd(1, 9); }
 
+
+
 // Функция вычисления правила уничтожения
 
 //! После того, как фигура уперлась (не может больше падать) она переходит в слои, затем запускается функция проверки всех кубиков в слоях на предмет выполнения правил уничтожения. Если правило уничтожения сработало, а в слоях еще есть кубики, функция проверки запускается снова. И так до тех пор, пока после полного прохода правило уничтожения не сработало.
@@ -149,26 +171,16 @@ int GenCubeNum0() { return getRnd(1, 9); }
 // Поворот точки на фикс. углы (по 90) относительно начала координат
 Point rotate(Point point, int angle)
 {
-	while(angle > 270) //! убираем лишние обороты
-		angle -= 360;
+	angle = ((angle % 360) + 360) % 360; // убираем лишние обороты
 
 	if(angle == 90) // 90: (x, y) -> (-y, x)
-	{
-		std::swap(point.x, point.y);
-		point.x = -point.x;
-	}
+		return {-point.y, point.x};
 
-	if(angle == 180) // 180: (x, y) -> (-x, -y)
-	{
-		point.x = -point.x;
-		point.y = -point.y;
-	}
+	else if(angle == 180) // 180: (x, y) -> (-x, -y)
+		return {-point.x, -point.y};
 
-	if(angle == 270) // 270: (x, y) -> (y, -x)
-	{
-		std::swap(point.x, point.y);
-		point.y = -point.y;
-	}
+	else if(angle == 270) // 270: (x, y) -> (y, -x)
+		return {point.y, -point.x};
 
 	return point;
 }

@@ -1,12 +1,6 @@
 ﻿#pragma once
 // @file: types.h
 
-#include <vector>
-#include <cstdlib>
-#include <random>
-
-#include <chrono>
-
 #include <functional>
 
 // Типы кубиков
