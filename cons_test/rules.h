@@ -86,4 +86,4 @@ int GenCubeNum0();
 
 
 // Поворот точки на фикс. углы (по 90) относительно начала координат
-Point rotate(Point point, int angle);
+Point rotateP(Point point, int angle);

@@ -169,7 +169,7 @@ int GenCubeNum0() { return getRnd(1, 9); }
 
 
 // Поворот точки на фикс. углы (по 90) относительно начала координат
-Point rotate(Point point, int angle)
+Point rotateP(Point point, int angle)
 {
 	angle = ((angle % 360) + 360) % 360; // убираем лишние обороты
 
