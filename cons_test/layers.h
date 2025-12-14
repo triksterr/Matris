@@ -31,6 +31,9 @@ public:
 
 		Round &round = Round::getInstance(); // получаем раунд
 		data.resize(round.getGlassW() * round.getGlassH(), nullptr); // задание размера и очистка вектора
+
+		// Начальное заполнение слоев по правилу раунда
+
 	}
 
 	//! Из раунда - координаты фигуры.	
@@ -88,7 +91,7 @@ public:
 
 	//! В какой момент помечаем кубик на удаление????!!!!!
 	
-	// Проверить наличие кубика
+	// Проверить наличие в слоях кубика
 	// @param x - координата по x
 	// @param y - координата по y
 	// @return true - если кубик есть
@@ -100,7 +103,17 @@ public:
 			return (data.at(Round::getInstance().getGlassW() * y + x) != nullptr); 
 	}
 
+	// Проверить наличие в слоях кубика по его указателю
+	// @param cube - указатель на кубик
+	// @return true - если этот кубик есть в слоях
 	bool isCube(Cube *cube) const { return isCube(cube->getX(), cube->getY()); }
+
+	// Проверить наличие кубика по смещению от данного кубика
+	// @param cube - указатель на кубик
+	// @param sx - смещение по x
+	// @param sy - смещение по y
+	// @return true - если по смещению от данного кубика есть кубик
+	bool isNear(Cube *cube, int sx, int sy) const { return isCube(cube->getX() + sx, cube->getY() + sy); }
 
 	// Проверить наличие кубика снизу
 	// @param x - координата по x
@@ -110,7 +123,7 @@ public:
 
 	bool isBelow(Cube *cube) const { return isBelow(cube->getX(), cube->getY()); }
 
-	// Проверить наличие соседних кубиков по осям
+	// Проверить наличие соседних кубиков по осям (по крестику)
 	// @param x - координата по x
 	// @param y - координата по y
 	// @return true - если соседи есть
@@ -118,7 +131,7 @@ public:
 
 	bool isNearXY(Cube *cube) const { return isNearXY(cube->getX(), cube->getY()); }
 
-	// Проверить наличие соседних кубиков по диагоналям
+	// Проверить наличие соседних кубиков по диагоналям (по диагональному крестику)
 	// @param x - координата по x
 	// @param y - координата по y
 	// @return true - если соседи есть
@@ -130,9 +143,9 @@ public:
 	// @param x - координата по x
 	// @param y - координата по y
 	// @return true - если соседи есть
-	bool isNear(int x, int y) const { return (isNearXY(x, y) || isNearDiag(x, y)); }
+	bool isNears(int x, int y) const { return (isNearXY(x, y) || isNearDiag(x, y)); }
 
-	bool isNear(Cube *cube) const { return isNear(cube->getX(), cube->getY()); }
+	bool isNears(Cube *cube) const { return isNears(cube->getX(), cube->getY()); }
 
 private:
 // Приватный конструктор и деструктор
