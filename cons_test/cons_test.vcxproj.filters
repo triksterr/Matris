@@ -75,5 +75,6 @@
     <None Include="..\prj\Quantum Blocks.md" />
     <None Include="..\prj\Readme.md" />
     <None Include="..\prj\Spectral Fall.md" />
+    <None Include="..\prj\GameLoop.md" />
   </ItemGroup>
 </Project>
