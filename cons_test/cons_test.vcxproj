@@ -161,6 +161,7 @@
     <None Include="..\prj\Quantum Blocks.md" />
     <None Include="..\prj\Readme.md" />
     <None Include="..\prj\Spectral Fall.md" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\prj\Screen.txt" />
