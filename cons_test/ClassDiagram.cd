@@ -1,105 +1,105 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1">
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
   <Class Name="CRender" Collapsed="true">
-    <Position X="4.75" Y="1.75" Width="1.5" />
+    <Position X="0.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEEQMBhAEAgAAAgAAEAAAAATAAGC0gDAACACAGAIgAQ=</HashCode>
       <FileName>c_render.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Figure" Collapsed="true">
-    <Position X="9" Y="0.5" Width="1.5" />
+    <Position X="8.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAAICgBBAAACAEAABBfgFAAARgBECCABAhiiGAKBUY=</HashCode>
       <FileName>figure.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Game" Collapsed="true">
-    <Position X="10.75" Y="0.5" Width="1.5" />
+    <Position X="8.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAIICAAAAAAAAgAAAAAAAiAEAQAAAAgAAIAAAg=</HashCode>
       <FileName>game.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="IAudio" Collapsed="true">
-    <Position X="12.5" Y="0.5" Width="1.5" />
+    <Position X="5.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAEAAAAAAAAAAAAAAAACAAAAAAAABQAAAAAAAAA=</HashCode>
       <FileName>i_audio.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="IFiles" Collapsed="true">
-    <Position X="7.25" Y="1.5" Width="1.5" />
+    <Position X="4" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAIIABAAAAAIAAAAAIAAAgAEAQAAAAAAIAABA=</HashCode>
       <FileName>i_files.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="IInput" Collapsed="true">
-    <Position X="9" Y="1.5" Width="1.5" />
+    <Position X="2.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AASAAAAAAAAAAAAAAAAAAAAgAAAAAAAAACAAAABAAAA=</HashCode>
       <FileName>i_input.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="IRender" Collapsed="true">
-    <Position X="4.75" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAEBAAAgAAAQAQCgBAgABAAAAAAAAAAACCAAAiAQ=</HashCode>
       <FileName>i_render.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Layers" Collapsed="true">
-    <Position X="10.75" Y="1.5" Width="1.5" />
+    <Position X="7.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AACAAAAAAAAAAAAAAAAIIAAAABAAIAQEAQAyAAEgAQA=</HashCode>
       <FileName>layers.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Matrix" Collapsed="true">
-    <Position X="12.5" Y="1.5" Width="1.5" />
+    <Position X="9.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAAAAAAAAAAAQAQAAAAAAgAAQAAAAyAAAAAAA=</HashCode>
       <FileName>matrix.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Round" Collapsed="true">
-    <Position X="9" Y="2.5" Width="1.5" />
+    <Position X="8.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>TgNAAEBEQAAEDBUIgIABAgAIkUcIAAQAAGAgGAKAQDA=</HashCode>
       <FileName>round.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RGBcolor" Collapsed="true">
-    <Position X="7.25" Y="2.5" Width="1.5" />
+    <Position X="12.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAIAQAhEAAEAAA=</HashCode>
       <FileName>types.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Cube" Collapsed="true">
-    <Position X="7.25" Y="0.5" Width="1.5" />
+    <Position X="8.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gQQAAAgxAAAKCARAAAAOgBAACBgBgKCBxAhgSGAoAQg=</HashCode>
       <FileName>cube.h</FileName>
     </TypeIdentifier>
   </Class>
   <Struct Name="Rules" Collapsed="true">
-    <Position X="10.75" Y="3.75" Width="1.5" />
+    <Position X="12.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>rules.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="Point" Collapsed="true">
-    <Position X="9" Y="3.75" Width="1.5" />
+    <Position X="12.75" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
       <FileName>types.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="figSize" Collapsed="true">
-    <Position X="7.25" Y="3.75" Width="1.5" />
+    <Position X="12.75" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAIBAAAAAAA=</HashCode>
       <FileName>types.h</FileName>
