@@ -210,6 +210,10 @@ public:
 		return (x < 0 || x > round.getGlassW() - 1 || y < 0 || y > round.getGlassH() - 1);
 	}
 
+	// Проверка качания стакана
+
+	// Проверка вылета за стакан
+
 	//! Проверка касания кубика нижних слоев - добавить в move!
 	bool contactLayersB() const
 	{
