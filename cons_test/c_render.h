@@ -381,7 +381,7 @@ public:
 	{
 		Round &round = Round::getInstance();
 
-		for(Cube &cube : figure.getCubes())	// пробегаем по вектору кубиков
+		for(Cube cube : figure.getCubes())	// пробегаем по вектору кубиков
 		{
 			DrawCube(cube);
 		}

@@ -134,6 +134,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="cons_test.cpp" />
+    <ClCompile Include="cube.cpp" />
     <ClCompile Include="rules.cpp" />
   </ItemGroup>
   <ItemGroup>

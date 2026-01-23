@@ -123,7 +123,7 @@ public:
 	// @return true - если снизу есть кубик
 	bool isBelow(int x, int y) const { return (isCube(x, y - 1)); }
 
-	bool isBelow(Cube *cube) const { return isBelow(cube->getX(), cube->getY()); }
+	bool isBelow(const Cube *cube) const { return isBelow(cube->getX(), cube->getY()); }
 
 	// Проверить наличие соседних кубиков по осям (по крестику)
 	// @param x - координата по x
@@ -148,6 +148,17 @@ public:
 	bool isNears(int x, int y) const { return (isNearXY(x, y) || isNearDiag(x, y)); }
 
 	bool isNears(Cube *cube) const { return isNears(cube->getX(), cube->getY()); }
+
+	// Цикл прохода по всем кубикам слоёв с заданной функцией
+	//template<typename Func> // с шаблоном
+	//bool eachCube(Func&& fun)
+	bool eachCube(bool (*fun)(Cube)) // или void ?
+	{
+		for(auto &cube : data)
+			if(!fun(*cube))
+				return false;
+		return true;
+	}
 
 private:
 // Приватный конструктор и деструктор

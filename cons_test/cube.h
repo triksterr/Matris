@@ -4,8 +4,6 @@
 #include "round.h"
 #include "types.h"
 
-#include "layers.h"
-
 // Один числовой кубик с цветом
 class Cube final
 {
@@ -51,6 +49,7 @@ public:
 		sy = 0;
 		visible = true; //! при создании видимость всегда или надо указывать?	
 		deleted = false;
+		status = 0;
 
 		//! Записать в матрицу! - ?
 	}
@@ -75,6 +74,7 @@ public:
 		sx = other.sx;
 		sy = other.sy;
 		deleted = other.deleted;
+		status = other.status;
 	}
 	
 	// Оператор	присваивания
@@ -175,7 +175,7 @@ public:
 	// @return успех сдвига true / false
 	bool moveD(const int shift = 1) //! сдвиг не на 1 - довольно нетипичная ситуация ?
 	{ 
-		if(Layers::getInstance().isBelow(this)) // проверяем наличие в слоях снизу кубика
+		if(contactLayersB()) // проверяем наличие в слоях снизу кубика
 			return false;
 
 		//! если сдвиг не на 1, надо проверять, а есть ли кубики в слоях на всем пути сдвига!
@@ -210,17 +210,12 @@ public:
 		return (x < 0 || x > round.getGlassW() - 1 || y < 0 || y > round.getGlassH() - 1);
 	}
 
-	// Проверка качания стакана
+	// Проверка каcания стакана
 
 	// Проверка вылета за стакан
 
 	//! Проверка касания кубика нижних слоев - добавить в move!
-	bool contactLayersB() const
-	{
-		Layers &layers = Layers::getInstance(); // получаем слои
-
-
-	}
+	bool contactLayersB() const;
 
 	//! Проверка пересечения (наложения) с нижними слоями - добавить в move!
 

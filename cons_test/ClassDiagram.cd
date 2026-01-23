@@ -10,7 +10,7 @@
   <Class Name="Figure" Collapsed="true">
     <Position X="8.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAAAICgBBAAACAEAABBfgFAAARgBECCABAhiiGAKBUY=</HashCode>
+      <HashCode>BAAQYCgBBAAACAGAABBfoFAAARgBECCABAhiiGAKBUY=</HashCode>
       <FileName>figure.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -52,7 +52,7 @@
   <Class Name="Layers" Collapsed="true">
     <Position X="7.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAAAAAAAAAAAAAAIIAAAABAAIAQEAQAyAAEgAQA=</HashCode>
+      <HashCode>AACQAAAAAAAAAAAAAAAIIAAAABAAIAQEAQAyAAEgAQA=</HashCode>
       <FileName>layers.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -77,20 +77,13 @@
       <FileName>types.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Cube" Collapsed="true">
+  <Class Name="Cube">
     <Position X="8.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gQQAAAgxAAAKCARAAAAOgBAACBgBgKCBxAhgSGAoAQg=</HashCode>
       <FileName>cube.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Struct Name="Rules" Collapsed="true">
-    <Position X="12.75" Y="2.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>rules.h</FileName>
-    </TypeIdentifier>
-  </Struct>
   <Struct Name="Point" Collapsed="true">
     <Position X="12.75" Y="2" Width="1.5" />
     <TypeIdentifier>
