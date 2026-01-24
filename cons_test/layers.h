@@ -117,6 +117,8 @@ public:
 	// @return true - если по смещению от данного кубика есть кубик
 	bool isNear(Cube *cube, int sx, int sy) const { return isCube(cube->getX() + sx, cube->getY() + sy); }
 
+	bool isNear(int x, int y, int sx, int sy) const { return isCube(x + sx, y + sy); }
+
 	// Проверить наличие кубика снизу
 	// @param x - координата по x
 	// @param y - координата по y
@@ -148,6 +150,20 @@ public:
 	bool isNears(int x, int y) const { return (isNearXY(x, y) || isNearDiag(x, y)); }
 
 	bool isNears(Cube *cube) const { return isNears(cube->getX(), cube->getY()); }
+
+	// Определить самый верхний кубик в столбце
+	// @param x - координата по x
+	// @return координата y самого верхнего кубика в столбце
+	int getYmax(int x) const
+	{
+		Round& round = Round::getInstance(); // получаем раунд
+
+		for(int i = round.getGlassH() - 1; i >= 0; i--)
+			if(readCube(x, i) != nullptr)
+				return i;
+		
+		return -1; // столбец пуст
+	}
 
 	// Цикл прохода по всем кубикам слоёв с заданной функцией
 	//template<typename Func> // с шаблоном

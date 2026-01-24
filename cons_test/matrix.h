@@ -33,11 +33,19 @@ public:
 		data.resize(round.getGlassW() * round.getGlassH(), nullptr); // задание размера и очистка вектора
 	}
 
-	// Получение элемента матрицы
+	// Получение элемента матрицы - указателя на кубик
+	// @param x - координата Х (0 - слева)
+	// @param y - координата Y (0 - снизу)
+	// @return указатель на кубик
 	Cube *get(int x, int y) { return data.at(y * Round::getInstance().getGlassW() + x); }
 
 	// Запись кубика в матрицу
 	void set(Cube *cube) { data.at(cube->getY() * Round::getInstance().getGlassW() + cube->getX()) = cube;} // записываем указатель на кубик в матрицу
+
+	// Удаление кубика из матрицы
+	// @param x - координата Х (0 - слева)
+	// @param y - координата Y (0 - снизу)
+	void del(int x, int y) { data.at(y * Round::getInstance().getGlassW() + x) = nullptr; }
 
 private:
 	// Приватный конструктор и деструктор
