@@ -146,7 +146,6 @@
     <ClInclude Include="i_input.h" />
     <ClInclude Include="i_render.h" />
     <ClInclude Include="layers.h" />
-    <ClInclude Include="matrix.h" />
     <ClInclude Include="round.h" />
     <ClInclude Include="rules.h" />
     <ClInclude Include="types.h" />
