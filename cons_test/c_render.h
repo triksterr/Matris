@@ -200,7 +200,7 @@ private:
 
 		for(int i = 0; i < 16; i++)
 		{
-			auto &[cr, cg, cb] = consoleColors[i]; //! добавили & - разобраться и проверить!!!!!
+			auto &[cr, cg, cb] = consoleColors[i]; //! TEST #001 - добавили & - разобраться и проверить!!!!!
 			int distance = (r - cr) * (r - cr) + (g - cg) * (g - cg) + (b - cb) * (b - cb);
 			if(distance < minDistance)
 			{
