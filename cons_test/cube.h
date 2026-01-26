@@ -192,10 +192,84 @@ public:
 	}
 
 	// поворот кубика относительно заданного центра
-	void rotate();
+	void rotate(int xC, int yC, int angle)
+	{
+		if(x - xC == 0 && y - yC == 0) // кубик совпадает с центром поворота
+			return;
 
-	// поворот кубика в фигуре (если смещение != 0)
-	void figRotate();
+		// считаем смещения кубика относительно заданного центра
+		int rx = x - xC;
+		int ry = y - yC;
+
+		// считаем центр фигуры
+		int fx = x - sx;
+		int fy = y - sy;
+
+		// поворачмвем смещения
+		angle = ((angle % 360) + 360) % 360; // убираем лишние обороты
+
+		if(angle == 90) // 90: (x, y) -> (-y, x)
+		{
+			int tx = rx;
+			rx = -ry;
+			ry = tx;
+		}
+		else if(angle == 180) // 180: (x, y) -> (-x, -y)
+		{
+			rx = -rx;
+			ry = -ry;
+		}
+		else if(angle == 270) // 270: (x, y) -> (y, -x)
+		{
+			int tx = rx;
+			rx = ry;
+			ry = -tx;
+		}
+
+		// считаем новые координаты
+		x = xC + rx;
+		y = yC + ry;
+
+		// считаем новые смещения кубика в фигуре
+		sx = x - fx;
+		sy = y - fy;
+	}
+
+	// поворот кубика в фигуре (если его смещение != 0)
+	void figRotate(int angle)
+	{
+		if(sx == 0 && sy == 0) // центральный кубик
+			return;
+		
+		// считаем центр фигуры
+		int fx = x - sx;
+		int fy = y - sy;
+
+		// поворачмвем смещения
+		angle = ((angle % 360) + 360) % 360; // убираем лишние обороты
+
+		if(angle == 90) // 90: (x, y) -> (-y, x)
+		{
+			int tx = sx;
+			sx = -sy;
+			sy = tx;
+		}
+		else if(angle == 180) // 180: (x, y) -> (-x, -y)
+		{
+			sx = -sx;
+			sy = -sy;
+		}
+		else if(angle == 270) // 270: (x, y) -> (y, -x)
+		{
+			int tx = sx;
+			sx = sy;
+			sy = -tx;
+		}
+
+		// пересчитываем координаты относительно центра
+		x = fx + sx;
+		y = fy + sy;
+	}
 
 	void hide() { visible = false; } // скрыть
 	void show() { visible = true; } // показать
