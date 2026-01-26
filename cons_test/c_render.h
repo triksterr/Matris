@@ -130,7 +130,7 @@ private:
 	// Получить цвет текста и фона в позиции с координатами x, y
 	int GetColor(int x, int y) const
 	{
-		COORD coord = {x, y};
+		COORD coord = {(short)x, (short)y};
 		WORD attributes = 0;
 		DWORD charsRead = 0;
 
@@ -200,7 +200,7 @@ private:
 
 		for(int i = 0; i < 16; i++)
 		{
-			auto [cr, cg, cb] = consoleColors[i];
+			auto &[cr, cg, cb] = consoleColors[i]; //! добавили & - разобраться и проверить!!!!!
 			int distance = (r - cr) * (r - cr) + (g - cg) * (g - cg) + (b - cb) * (b - cb);
 			if(distance < minDistance)
 			{
