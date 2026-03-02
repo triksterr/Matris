@@ -8,6 +8,7 @@
 #include "figure.h"
 #include "game.h"
 
+
 int main()
 {
     Round &round = Round::getInstance(); // получаем раунд
