@@ -27,7 +27,7 @@ public:
 	// Инициализируем матрицу ?
 
 	// Следующий раунд
-	void Next();
+	//void Next();
 		 
 	// сеттеры
 	void setGlass(int width, int height) { glassW = width; glassH = height; } // размеры стакана

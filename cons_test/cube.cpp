@@ -1,13 +1,13 @@
-// file: cube.cpp
+п»ї// file: cube.cpp
 
 #include "cube.h"
 #include "layers.h"
 
-// Проверка касания кубика нижних слоев
-// @return true - если снизу есть кубик
+// РџСЂРѕРІРµСЂРєР° РєР°СЃР°РЅРёСЏ РєСѓР±РёРєР° РЅРёР¶РЅРёС… СЃР»РѕРµРІ
+// @return true - РµСЃР»Рё СЃРЅРёР·Сѓ РµСЃС‚СЊ РєСѓР±РёРє
 bool Cube::contactLayersB() const
 {
-	Layers& layers = Layers::getInstance(); // получаем слои
+	Layers& layers = Layers::getInstance(); // РїРѕР»СѓС‡Р°РµРј СЃР»РѕРё
 
-	return Layers::getInstance().isBelow(this); // проверяем наличие в слоях снизу кубика
+	return Layers::getInstance().isBelow(this); // РїСЂРѕРІРµСЂСЏРµРј РЅР°Р»РёС‡РёРµ РІ СЃР»РѕСЏС… СЃРЅРёР·Сѓ РєСѓР±РёРєР°
 }
