@@ -90,6 +90,7 @@ public:
 		sx = other.sx;
 		sy = other.sy;
 		deleted = other.deleted;
+		status = other.status;
 		return *this;
 	}
 

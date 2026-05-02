@@ -171,8 +171,12 @@ public:
 	bool eachCube(bool (*fun)(Cube)) // или void ?
 	{
 		for(auto &cube : data)
+		{
+			if(cube == nullptr)
+				continue;
 			if(!fun(*cube))
 				return false;
+		}
 		return true;
 	}
 

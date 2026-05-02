@@ -175,7 +175,7 @@ RGBcolor GenCubeColor1() { return {getRnd(100, 255), getRnd(100, 255), getRnd(10
 
 //? --- Генераторы чисел в кубике
 
-// Генератор числа в кубике (0-9)
+// Генератор числа в кубике (1-9)
 int GenCubeNum0() { return getRnd(1, 9); }
 
 

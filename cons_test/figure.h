@@ -26,6 +26,8 @@ public:
 
 		type = (round.getGenFig())(); // Получаем из раунда тип фигуры
 
+		// Получаем количество кубиков из типа фигуры
+
 		color = (round.getGenFigColor())(); // Получаем из раунда цвет фигуры
 
 		Point p = (round.getGenFigPos())();
