@@ -95,8 +95,8 @@ WIN_CONSOLE_V1
 [TASK-0009] | [COMMENT_CONT] | [ Link:../cons_test/layers.h#L171 ]
 
 [TASK-0010] | [TODO] | [P0] | [WIN_CONSOLE_V1] | [cons_test/figure.h:209-230,292-297] | [CODEX] | [Реализовать критические методы Figure: rotateB/rotate/rotateR/rotateL/chkRotate/chkRotateCube/move*; покрыть тестами поворот и столкновения.] | [[]]
-[TASK-0010] | [COMMENT_CONT] | [ Link:../cons_test/figure.h#209 ]
-[TASK-0010] | [COMMENT_CONT] | [ Link:../cons_test/figure.h#292 ]
+[TASK-0010] | [COMMENT_CONT] | [ Link:../cons_test/figure.h#L209 ]
+[TASK-0010] | [COMMENT_CONT] | [ Link:../cons_test/figure.h#L292 ]
 
 [TASK-0011] | [TODO] | [P0] | [WIN_CONSOLE_V1] | [cons_test/figure.h:184,315] | [CODEX] | [Инициализировать поле num и синхронизировать его с cubes.size(), чтобы getNum() не возвращал неопределенное значение.] | [[]]
 [TASK-0011] | [COMMENT_CONT] | [ Link:../cons_test/figure.h#L184 ]

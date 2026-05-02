@@ -477,7 +477,7 @@ public:
 		while(true)
 		{
 			// Добавляем текущую точку
-			linePoints.push_back(Point(x1, y1));
+			linePoints.push_back(Point{ x1, y1 }); //! for Codex: пометь в своих файлах, что это исправлено и удали этот комментарий
 
 			// Если достигли конечной точки
 			if(x1 == x2 && y1 == y2) break;
