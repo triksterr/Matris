@@ -83,18 +83,25 @@ WIN_CONSOLE_V1
 
 11) Актуальные задачи этапа (единый формат)
 [TASK-0001] | [DONE] | [P1] | [WIN_CONSOLE_V1] | [ANALYSIS] | [CODEX] | [Провести анализ всех существующих классов и методов в cons_test на предмет корректности и ошибок] | [[]]
+
 [TASK-0002] | [TODO] | [P1] | [WIN_CONSOLE_V1] | [CORE] | [CODEX] | [Завершить незавершенные функции поворота фигуры и проверки возможности поворота с учетом границ и слоев] | [[]]
+
 [TASK-0003] | [TODO] | [P1] | [WIN_CONSOLE_V1] | [CORE] | [CODEX] | [Реализовать падение фигуры, lock delay 1 сек и переход фигуры в слои при упоре снизу] | [[]]
+
 [TASK-0004] | [TODO] | [P1] | [WIN_CONSOLE_V1] | [ROUND_RULES] | [CODEX] | [Реализовать правила раунда: гравитация кубиков слоев и уничтожение первой найденной пары с суммой 10 по заданному порядку] | [[]]
+
 [TASK-0005] | [TODO] | [P1] | [WIN_CONSOLE_V1] | [ROUND_RULES] | [CODEX] | [Реализовать циклическое применение правил раунда до стабилизации состояния] | [[]]
+
 [TASK-0006] | [TODO] | [P1] | [WIN_CONSOLE_V1] | [CORE] | [CODEX] | [Довести минимальный базовый функционал этапа: только консоль и клавиатура, без файлового ввода-вывода и без звука] | [[]]
+
 [TASK-0007] | [TODO] | [P1] | [WIN_CONSOLE_V1] | [TESTS] | [CODEX] | [Покрыть автоматическими тестами (GoogleTest) все публичные методы ключевых классов и ключевые сценарии раунда] | [[]]
+
 [TASK-0008] | [TODO] | [P1] | [WIN_CONSOLE_V1] | [MANUAL_QA] | [CODEX] | [Разработать методику ручного тестирования и выполнить ручное тестирование базового платформонезависимого функционала] | [[]]
 
 [TASK-0009] | [DONE] | [P0] | [WIN_CONSOLE_V1] | [cons_test/layers.h:171-175] | [CODEX] | [Исправить eachCube: перед вызовом callback проверять cube на nullptr; пустые ячейки пропускать и продолжать обход.] | [[]]
 [TASK-0009] | [COMMENT_CONT] | [ Link:../cons_test/layers.h#L171 ]
 
-[TASK-0010] | [TODO] | [P0] | [WIN_CONSOLE_V1] | [cons_test/figure.h:209-230,292-297] | [CODEX] | [Реализовать критические методы Figure: rotateB/rotate/rotateR/rotateL/chkRotate/chkRotateCube/move*; покрыть тестами поворот и столкновения.] | [[]]
+[TASK-0010] | [TODO] | [P0] | [WIN_CONSOLE_V1] | [cons_test/figure.h:209-230,292-297] | [CODEX] | [Реализовать критические методы Figure: rotateB/rotate/rotateR/rotateL/chkRotate/chkRotateCube/move*; покрыть тестами повороты и столкновения.] | [[]]
 [TASK-0010] | [COMMENT_CONT] | [ Link:../cons_test/figure.h#L209 ]
 [TASK-0010] | [COMMENT_CONT] | [ Link:../cons_test/figure.h#L292 ]
 
@@ -118,14 +125,18 @@ WIN_CONSOLE_V1
 [TASK-0016] | [COMMENT_CONT] | [ Link:../cons_test/c_render.h#L384 ]
 [TASK-0016] | [COMMENT_CONT] | [ Link:../cons_test/figure.h#L191 ]
 
-[TASK-0017] | [TODO] | [P0] | [WIN_CONSOLE_V1] | [cons_test/c_render.h:480] | [CODEX] | [Исправить конструирование Point в calcLine: использовать Point{x1, y1}.] | [[]]
+[TASK-0017] | [DONE] | [P0] | [WIN_CONSOLE_V1] | [cons_test/c_render.h:480] | [USER] | [Исправить конструирование Point в calcLine: использовать Point{x1, y1}.] | [[]]
 [TASK-0017] | [COMMENT_CONT] | [ Link:../cons_test/c_render.h#L480 ]
 
-[TASK-0018] | [TODO] | [P0] | [WIN_CONSOLE_V1] | [cons_test/rules.h:14,55] | [CODEX] | [Сделать rules.h самодостаточным: добавить include/объявления для Point и RGBcolor.] | [[]]
+[TASK-0018] | [DONE] | [P0] | [WIN_CONSOLE_V1] | [cons_test/rules.h:14,55] | [USER] | [Сделать rules.h самодостаточным: добавить include/объявления для Point и RGBcolor.] | [[]]
 [TASK-0018] | [COMMENT_CONT] | [ Link:../cons_test/rules.h#L14 ]
 [TASK-0018] | [COMMENT_CONT] | [ Link:../cons_test/rules.h#L55 ]
 
 12) Результаты выполнения задач
 [TASK-0001] | [2026-05-02 00:11] | [Полный статический анализ классов и методов cons_test выполнен, найденные дефекты и риски зафиксированы] | [Статический анализ исходников по файлам/методам] | [/prj/class_method_analysis_report.md] | [Перейти к TASK-0002 и закрыть блокеры A-001, A-002, A-003, A-004, A-006] | [[]]
-[TASK-0009] | [2026-05-02 17:52] | [Исправлен eachCube: добавлен пропуск nullptr перед callback, пустые ячейки больше не разыменовываются.] | [Проверка кода + сборка Debug|x64 через MSBuild (остановка на известной ошибке TASK-0017 в c_render.h:480, не связана с TASK-0009).] | [cons_test/layers.h] | [Перейти к TASK-0010.] | [[]]
 
+[TASK-0009] | [2026-05-02 17:52] | [Исправлен eachCube: добавлен пропуск nullptr перед callback, пустые ячейки больше не разыменовываются.] | [Проверка кода + сборка Debug|x64 через MSBuild (остановка на известной ошибке TASK-0017 в c_render.h:480, не связана с TASK-0009).] | [cons_test/layers.h] | [Перейти к TASK-0017.] | [[]]
+
+[TASK-0017] | [2026-05-04 17:50] | [Исправлено: вместо Point(x1, y1) - Point{x1, y1}. Исправления сделаны USER самомтоятельно.] | [Проверка кода + сборка Debug|x64 через MS Visual Studio: Сборка: успешно выполнено. Программа запускается. В консоли - ожидаемое изображение.] | [cons_test/c_render.h] | [Перейти к TASK-0018.] | [[]]
+
+[TASK-0018] | [2026-05-09 20:33] | [Исправлено: добавлено #include "types.h". rules.h стал самодостаточным.] | [Проверка кода + сборка Debug|x64 через MS Visual Studio: Сборка: успешно выполнено. Программа запускается. В консоли - ожидаемое изображение.] | [cons_test/rules.h] | [Перейти к TASK-0010.] | [[]]

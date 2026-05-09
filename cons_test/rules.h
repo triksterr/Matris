@@ -1,8 +1,9 @@
 ﻿#pragma once
+// @file: rules.h
 #include <utility>
 #include <random>
-// @file: rules.h
 
+#include "types.h"
 
 // Инициализация генератора случайных чисел
 std::mt19937 &initRnd();
