@@ -103,3 +103,29 @@ RISKS:
 
 NEXT:
 - migrate active tasks into task files
+
+---
+
+[2026-05-13]
+
+TASK: TASK-0012
+STATUS: DONE
+SUBSYSTEM: entity_cube
+
+SUMMARY:
+Стабилизирован default state конструктора Cube: убрана неинициализированная ветка состояния.
+
+CHANGES:
+- cons_test/cube.h
+
+VERIFICATION:
+- MSBuild matris.sln /p:Configuration=Debug /p:Platform=x64: success
+- Cube initialization verification: default ctor делегирован в полный конструктор с явной инициализацией всех полей
+- deterministic default state verification: значения по умолчанию фиксированы и не зависят от внешнего контекста
+
+RISKS:
+- smoke runtime test не выполнялся (entry point ожидает интерактивный _getch)
+- unrelated warning remained: rules.cpp C4244
+
+NEXT:
+- TASK-0010
