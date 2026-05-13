@@ -1,5 +1,6 @@
 ﻿#pragma once
 // @file: rules.h
+
 #include <utility>
 #include <random>
 

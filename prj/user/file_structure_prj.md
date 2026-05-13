@@ -46,15 +46,22 @@ prj/
 │   └── ...
 ├── risks/
 │   └── known_risks.md - Operational registry известных architectural, workflow и technical risks проекта.
-├── legacy/
+├── legacy/ - старые файлы предыдущих этапов workflow
 │   ├── Codex.txt
 │   ├── chat_context_snapshot.md
 │   ├── class_method_analysis_report.md
 │   └── Codex_todo.txt
-└── archive/
+├── archive/ - архивные файлы workflow проекта
+│   └── ...
+└── user/ - файлы пользователя, не имеющие прямого отношения в workflow проекта
     └── ...
 
+
 ---
+
+# Будущие возможные дополнения
+
+## Vocabulary
 
 workflow/workflow_vocabulary.md - сейчас не нужен:
 
@@ -74,7 +81,9 @@ workflow становится слишком большим.
 
 ---
 
-adr/ADR-template.md - не обязателен.
+## ADR template
+
+adr/ADR-template.md - сейчас не нужен:
 
 На текущем этапе отдельный ADR template не обязателен.
 
@@ -83,5 +92,3 @@ adr/ADR-template.md - не обязателен.
 минимизация лишних workflow artifacts;
 отсутствие premature abstraction;
 repository grows incrementally.
-
----

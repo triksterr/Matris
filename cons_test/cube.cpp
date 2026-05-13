@@ -7,7 +7,7 @@
 // @return true - если снизу есть кубик
 bool Cube::contactLayersB() const
 {
-	Layers& layers = Layers::getInstance(); // получаем слои
+	//! Layers& layers = Layers::getInstance(); // получаем слои
 
 	return Layers::getInstance().isBelow(this); // проверяем наличие в слоях снизу кубика
 }

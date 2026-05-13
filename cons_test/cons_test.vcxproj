@@ -132,9 +132,12 @@
     <ClCompile Include="rules.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\prj\user\!todo.h">
+    <Text Include="..\prj\user\!todo.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Text>
     <ClInclude Include="c_render.h" />
     <ClInclude Include="figure.h" />
     <ClInclude Include="game.h" />

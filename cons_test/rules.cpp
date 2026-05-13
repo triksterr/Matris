@@ -1,5 +1,4 @@
-﻿#pragma once
-// @file: rules.h
+﻿// @file: rules.h
 
 #include "round.h"
 #include "types.h"

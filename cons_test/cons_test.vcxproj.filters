@@ -62,9 +62,6 @@
     <ClInclude Include="layers.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\prj\user\!todo.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -77,5 +74,8 @@
   <ItemGroup>
     <Text Include="..\prj\user\!todo_last_update.txt" />
     <Text Include="..\prj\user\!todo_my.txt" />
+    <Text Include="..\prj\user\!todo.h">
+      <Filter>Файлы заголовков</Filter>
+    </Text>
   </ItemGroup>
 </Project>
