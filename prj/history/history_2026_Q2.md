@@ -133,6 +133,56 @@ NEXT:
 ---
 
 [2026-05-14]
+CORRECTION FOR: TASK-0011
+
+REASON:
+Тест синхронизации Figure::num перенесен из `cons_test.cpp` в отдельный GoogleTest проект.
+
+DETAILS:
+TASK-0011 history запись ссылается на временную реализацию в production entry point.
+Актуальное состояние: проверка выполняется в `matris_tests` (test/test_figure_num_sync.cpp).
+
+NO HISTORY REWRITE.
+APPEND-ONLY POLICY.
+
+---
+
+[2026-05-14]
+
+TASK: TASK-0007
+STATUS: DONE
+SUBSYSTEM: testing
+
+SUMMARY:
+Внедрена система unit-тестов на GoogleTest через vcpkg и создан отдельный проект `matris_tests` в `matris.sln`.
+
+CHANGES:
+- matris.sln
+- test/matris_tests.vcxproj
+- test/matris_tests.vcxproj.filters
+- test/test_figure_num_sync.cpp
+- cons_test/cons_test.cpp
+- prj/workflow/testing.md
+- prj/workflow/build_commands.md
+- prj/workflow/test_system.md
+- prj/workflow/file_registry.md
+- prj/tasks/backlog.md
+
+VERIFICATION:
+- C:\Users\Alex\Documents\prog\vcpkg\vcpkg.exe install gtest:x64-windows: success
+- MSBuild matris.sln /p:Configuration=Debug /p:Platform=x64: success
+- x64\Debug\matris_tests.exe --gtest_color=no: 1 test passed
+
+RISKS:
+- в build log есть предупреждение про `pwsh.exe` fallback в vcpkg applocal step (сборку не блокирует)
+- legacy warning C4244 в rules.cpp остается
+
+NEXT:
+- TASK-0010
+
+---
+
+[2026-05-14]
 
 TASK: TASK-0011
 STATUS: DONE

@@ -54,6 +54,26 @@ Debug|x64
 
 ---
 
+## Test Project
+
+Тестовый проект:
+`matris_tests`
+
+Расположение:
+`C:\Users\Alex\Documents\prog\matris\test\matris_tests.vcxproj`
+
+---
+
+## vcpkg (GoogleTest)
+
+Использовать vcpkg:
+`C:\Users\Alex\Documents\prog\vcpkg\vcpkg.exe`
+
+Установка GoogleTest:
+`C:\Users\Alex\Documents\prog\vcpkg\vcpkg.exe install gtest:x64-windows`
+
+---
+
 ## MSBuild
 
 Использовать: MSBuild из PATH
@@ -66,6 +86,13 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBu
 
 Пример:
 MSBuild matris.sln /p:Configuration=Debug /p:Platform=x64
+
+---
+
+## Сборка только тестового проекта
+
+Пример:
+MSBuild test\matris_tests.vcxproj /p:Configuration=Debug /p:Platform=x64
 
 ---
 
@@ -178,6 +205,16 @@ Unit tests:
 - должны собираться отдельно;
 - не должны изменять production build pipeline;
 - не должны требовать platform-specific hacks.
+
+---
+
+## Test Run Command
+
+Запуск всех unit-тестов:
+`x64\Debug\matris_tests.exe --gtest_color=no`
+
+Фильтр запуска:
+`x64\Debug\matris_tests.exe --gtest_filter=FigureNumSync.*`
 
 ---
 

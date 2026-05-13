@@ -415,6 +415,52 @@ Rare
 
 ---
 
+## workflow/test_system.md
+
+### Purpose
+Практические правила работы с unit-test системой (GoogleTest + vcpkg).
+
+### Authority
+Medium
+
+### When Loaded
+- при добавлении/изменении unit-тестов;
+- при настройке test project;
+- при верификации test execution workflow.
+
+### Update Frequency
+Incremental
+
+### Update Policy
+Обновляется при:
+- изменении test infrastructure;
+- изменении framework/tooling для тестов;
+- изменении test project structure.
+
+### Must NOT Contain
+- subsystem implementation details;
+- длинные архитектурные обсуждения;
+- дублирование полного testing policy.
+
+### Contains
+- test framework choice;
+- test project layout;
+- test build/run commands;
+- обязательные тестовые правила.
+
+### Related Files
+- workflow/testing.md
+- workflow/build_commands.md
+- tasks/active_tasks.md
+
+### Notes
+Файл:
+- operational and practical;
+- focused on test-system execution;
+- complementary to high-level testing policy.
+
+---
+
 ## workflow/reporting.md
 
 ### Purpose

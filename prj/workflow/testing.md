@@ -81,6 +81,31 @@ Unit tests обязательны для:
 
 ---
 
+## Test Framework Policy
+
+Основной framework unit-тестов:
+- GoogleTest (gtest);
+- dependency management через vcpkg.
+
+Встроенные test-only ветки в production entry point:
+- не использовать как постоянную тестовую систему;
+- переносить в `matris_tests`.
+
+---
+
+## Test Project Policy
+
+Структура тестовой системы:
+- отдельный проект `matris_tests` в составе `matris.sln`;
+- исходники тестов размещаются в `matris/test/`;
+- production проект `cons_test` не должен содержать runtime test switches.
+
+Запуск unit-тестов:
+- через `matris_tests.exe`;
+- через стандартные gtest-параметры (`--gtest_filter`, `--gtest_repeat`, ...).
+
+---
+
 ## Unit Test Isolation
 
 Unit tests должны:

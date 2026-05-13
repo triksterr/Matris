@@ -60,7 +60,7 @@ WIN_CONSOLE_V1
 - TASK-0010
   Figure rotation/chkRotate stabilization
 
-- TASK-0011
+- TASK-0011 [DONE]
   Figure::num synchronization stabilization
 
 - TASK-0012 [DONE]
@@ -114,7 +114,7 @@ WIN_CONSOLE_V1
 
 ### P1
 
-- TASK-0007
+- TASK-0007 [DONE]
   GoogleTest coverage
 
 - TASK-0008
