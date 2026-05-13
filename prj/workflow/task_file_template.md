@@ -222,6 +222,16 @@ Task считается завершенной только если:
 
 ---
 
+## Completion Actions
+
+After successful completion:
+- update active_tasks.md
+- update backlog.md if required
+- append history record
+- archive completed task file
+
+---
+
 ## History Records
 
 Связанные history records:

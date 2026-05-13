@@ -63,13 +63,13 @@ WIN_CONSOLE_V1
 - TASK-0011
   Figure::num synchronization stabilization
 
-- TASK-0012
+- TASK-0012 [DONE]
   Cube default constructor stabilization
 
 - TASK-0013
   IRender lifetime ownership stabilization
 
-- TASK-0014
+- TASK-0014 [DONE]
   Layers nullptr guard checks
 
 - TASK-0015

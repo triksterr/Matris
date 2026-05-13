@@ -92,26 +92,6 @@ Goal:
 
 ---
 
-### TASK-0012
-Priority: P0
-Subsystem: entity_cube
-Status: READY
-
-Goal:
-- initialize Cube default state correctly.
-
----
-
-### TASK-0014
-Priority: P0
-Subsystem: layers
-Status: READY
-
-Goal:
-- add nullptr guards to Layers methods.
-
----
-
 ### TASK-0015
 Priority: P0
 Subsystem: entity_cube

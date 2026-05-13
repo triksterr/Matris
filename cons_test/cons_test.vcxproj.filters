@@ -70,6 +70,7 @@
     <None Include="..\prj\user\GameLoop.md" />
     <None Include="..\prj\user\ideas.md" />
     <None Include="..\prj\user\Matris.md" />
+    <None Include="..\prj\tasks\backlog.md" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\prj\user\!todo_last_update.txt" />

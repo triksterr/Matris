@@ -129,3 +129,29 @@ RISKS:
 
 NEXT:
 - TASK-0010
+
+---
+
+[2026-05-13]
+
+TASK: TASK-0014
+STATUS: DONE
+SUBSYSTEM: layers
+
+SUMMARY:
+Добавлены nullptr guards в pointer-based методы Layers для исключения unsafe dereference.
+
+CHANGES:
+- cons_test/layers.h
+
+VERIFICATION:
+- MSBuild matris.sln /p:Configuration=Debug /p:Platform=x64: success
+- targeted nullptr-path review для методов writeCube/delCube/isCube/isNear/isBelow/isNearXY/isNearDiag/isNears
+- regression-check: поведение методов для валидных указателей сохранено
+
+RISKS:
+- runtime smoke test не выполнялся
+- unrelated warning remained: rules.cpp C4244
+
+NEXT:
+- TASK-0010

@@ -152,6 +152,7 @@
     <ClInclude Include="cube.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\prj\tasks\backlog.md" />
     <None Include="..\prj\user\!!AI todo.md" />
     <None Include="..\prj\user\class.md" />
     <None Include="..\prj\user\GameLoop.md" />

@@ -170,6 +170,37 @@ Codex:
 
 ---
 
+## Task Completion Procedure
+
+After successful completion:
+1. Run required verification.
+2. Append history record.
+3. Update task status to DONE.
+4. Remove task from active queue.
+5. Update backlog if required.
+6. Move completed task file to archive/completed_tasks/.
+7. Report concise operational summary.
+
+---
+
+## Task Archive Policy
+
+Completed task files:
+- should be removed from active task area;
+- should be moved to archive after completion;
+- should remain immutable after archival.
+
+Archive:
+- historical storage only;
+- not operational execution context;
+- not loaded by default.
+
+Corrections:
+- handled through history correction records;
+- not through task file rewrites.
+
+---
+
 ## Task Granularity Policy
 
 Предпочтительный размер задачи:
