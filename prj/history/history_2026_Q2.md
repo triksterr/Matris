@@ -132,6 +132,32 @@ NEXT:
 
 ---
 
+[2026-05-14]
+
+TASK: TASK-0011
+STATUS: DONE
+SUBSYSTEM: entity_figure
+
+SUMMARY:
+Стабилизирован lifecycle поля Figure::num и добавлен тест на соответствие фактическому количеству кубиков.
+
+CHANGES:
+- cons_test/figure.h
+- cons_test/cons_test.cpp
+
+VERIFICATION:
+- MSBuild matris.sln /p:Configuration=Debug /p:Platform=x64: success
+- MATRIS_TEST_FIGURE_NUM_SYNC=1 + запуск x64/Debug/cons_test.exe: TEST Figure::num sync: OK
+- code review: num инициализируется и синхронизируется через cubes.size()
+
+RISKS:
+- тест интегрирован в entry point и запускается через env flag (не отдельный unit-test проект)
+
+NEXT:
+- TASK-0010
+
+---
+
 [2026-05-13]
 
 TASK: TASK-0014

@@ -78,5 +78,6 @@
     <Text Include="..\prj\user\!todo.h">
       <Filter>Файлы заголовков</Filter>
     </Text>
+    <Text Include="..\prj\legacy\Codex_todo.md" />
   </ItemGroup>
 </Project>

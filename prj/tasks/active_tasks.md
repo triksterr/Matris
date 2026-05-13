@@ -81,17 +81,6 @@ Goal:
 
 ---
 
-### TASK-0011
-Priority: P0
-Subsystem: entity_figure
-Status: READY
-
-Goal:
-- stabilize Figure::num lifecycle;
-- synchronize with cubes.size().
-
----
-
 ### TASK-0015
 Priority: P0
 Subsystem: entity_cube

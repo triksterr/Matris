@@ -132,6 +132,7 @@
     <ClCompile Include="rules.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\prj\legacy\Codex_todo.md" />
     <Text Include="..\prj\user\!todo.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
