@@ -127,17 +127,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\prj\todo.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="cons_test.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="rules.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\prj\user\!todo.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="c_render.h" />
     <ClInclude Include="figure.h" />
     <ClInclude Include="game.h" />
@@ -152,18 +149,16 @@
     <ClInclude Include="cube.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\prj\class.md" />
-    <None Include="..\prj\Classes.vsdx" />
-    <None Include="..\prj\GameLoop.md" />
-    <None Include="..\prj\ideas.md" />
-    <None Include="..\prj\instruments.md" />
-    <None Include="..\prj\Matris.md" />
-    <None Include="..\prj\project.md" />
-    <None Include="..\prj\Readme.md" />
+    <None Include="..\prj\user\!!AI todo.md" />
+    <None Include="..\prj\user\class.md" />
+    <None Include="..\prj\user\GameLoop.md" />
+    <None Include="..\prj\user\ideas.md" />
+    <None Include="..\prj\user\Matris.md" />
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\prj\Screen.txt" />
+    <Text Include="..\prj\user\!todo_last_update.txt" />
+    <Text Include="..\prj\user\!todo_my.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

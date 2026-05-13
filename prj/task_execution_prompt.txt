@@ -1,0 +1,8 @@
+Load and execute task:
+tasks/active/TASK-0012-cube-default-state.md
+
+Follow repository workflow.
+Use bounded context loading only.
+Load only task-relevant subsystem/source files.
+Maintain minimal mutation scope.
+Report only concise operational results.

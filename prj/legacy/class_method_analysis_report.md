@@ -1,5 +1,9 @@
 # Отчет анализа классов и методов (cons_test)
 
+LEGACY FILE.
+Not part of active workflow.
+Reference only.
+
 ## Область анализа
 - Проект: `cons_test`
 - Цель: поиск ошибок и рисков корректности в существующих классах и методах

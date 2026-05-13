@@ -21,9 +21,6 @@
     <ClCompile Include="rules.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\prj\todo.c">
-      <Filter>Файлы ресурсов</Filter>
-    </ClCompile>
     <ClCompile Include="cube.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -65,21 +62,20 @@
     <ClInclude Include="layers.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="..\prj\user\!todo.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\prj\class.md" />
-    <None Include="..\prj\ideas.md" />
-    <None Include="..\prj\instruments.md" />
-    <None Include="..\prj\Matris.md" />
-    <None Include="..\prj\project.md" />
-    <None Include="..\prj\Quantum Blocks.md" />
-    <None Include="..\prj\Readme.md" />
-    <None Include="..\prj\Spectral Fall.md" />
-    <None Include="..\prj\GameLoop.md" />
     <None Include="ClassDiagram.cd" />
-    <None Include="..\prj\Classes.vsdx" />
+    <None Include="..\prj\user\!!AI todo.md" />
+    <None Include="..\prj\user\class.md" />
+    <None Include="..\prj\user\GameLoop.md" />
+    <None Include="..\prj\user\ideas.md" />
+    <None Include="..\prj\user\Matris.md" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\prj\Screen.txt" />
+    <Text Include="..\prj\user\!todo_last_update.txt" />
+    <Text Include="..\prj\user\!todo_my.txt" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,10 @@
 Codex_todo.txt
+
 Единый журнал задач и результатов проекта Matris
+
+LEGACY FILE.
+Not part of active workflow.
+Reference only.
 
 1) Назначение
 - Файл хранит только задачи, их статусы, приоритеты и результаты проверок.

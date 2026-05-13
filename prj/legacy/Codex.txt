@@ -1,4 +1,8 @@
-Файл контекста проекта для Codex
+# Файл контекста проекта для Codex
+
+LEGACY FILE.
+Not part of active workflow.
+Reference only.
 
 1. Общие правила
 - Язык кода: C++17

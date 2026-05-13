@@ -1,58 +1,208 @@
-# Chat Context Snapshot (Matris)
+# Chat Context Snapshot
 
-Дата снимка: 2026-05-02
-Источник: текущий рабочий чат проекта
+## Project
 
-## Назначение
-- Файл хранит краткий переносимый контекст для новых чатов проекта.
-- Использовать как стартовую сводку, а не как единственный источник истины.
+Matris
 
-## Источники истины (по приоритету)
-1. Последнее сообщение пользователя в текущем чате.
-2. `C:\Users\Alex\Documents\prog\matris\prj\Codex.txt`
-3. `C:\Users\Alex\Documents\prog\matris\prj\Codex_todo.txt`
-4. `C:\Users\Alex\Documents\prog\matris\prj\class_method_analysis_report.md`
-5. Этот файл (`chat_context_snapshot.md`)
+Экспериментальный AI-assisted игровой проект с deterministic workflow и bounded-context execution.
 
-## Текущий этап и рамки
-- Этап: `WIN_CONSOLE_V1`
-- Базовый фокус: платформонезависимая игровая логика + консоль + клавиатура
-- На этом этапе исключены: файловый ввод-вывод и звук (как функциональные цели этапа)
+---
 
-## Технические договоренности (кратко)
-- Язык: C++17, комментарии и диалог на русском.
-- Исключения `try/catch` запрещены; обработка ошибок через `bool/enum/коды ошибок`.
-- RTTI запрещен до явной необходимости.
-- Макросы: include guards и платформенные `#if` разрешены; функциональные макросы запрещены.
-- Любые обнаруженные изменения файлов считать изменениями пользователя по умолчанию.
-- Откат пользовательских изменений допускается только после явного подтверждения пользователя.
-- Для ссылок в коде использовать формат ` Link: ... ` (по правилам плагина пользователя).
+## Snapshot Role
 
-## Логика раунда (текущая)
-- Шаг падения фигуры: 1 секунда.
-- Lock delay после касания: 1 секунда.
-- Во время lock delay разрешено только движение влево-вправо.
-- Поворот вокруг центрального кубика; при невозможности поворот отменяется.
-- Условие Game Over: новая фигура пересекается со слоями при появлении.
-- Правило 1: гравитация кубиков слоев до упора.
-- Правило 2: удаление первой найденной пары с суммой 10 в порядке: вертикаль, слева, справа, сверху.
-- Цикл правил: `гравитация -> уничтожение` до стабилизации.
+Snapshot:
+- bootstrap entry point;
+- compact operational context;
+- recovery layer after context loss.
 
-## Текущие приоритеты задач
-- Список задач и приоритеты смотреть в `Codex_todo.txt` (разделы с TASK и результатами).
-- Работать последовательно: по одной задаче за шаг, с фиксацией результата.
+Snapshot НЕ является:
+- architecture source of truth;
+- subsystem documentation;
+- workflow specification;
+- execution history.
 
-## Известные блокеры из анализа
-- См. `class_method_analysis_report.md`, записи `A-001 ... A-012`.
-- Критичные блокеры перед следующими этапами: `A-001`, `A-002`, `A-003`, `A-004`, `A-006`.
+---
 
-## Сборка
-- Использовать `MSBuild` из `PATH`.
-- Если `MSBuild` не найден, использовать:
-  `C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe`
+## Current Workflow State
 
-## Как использовать в новом чате
-1. Прочитать этот файл целиком.
-2. Прочитать только нужные разделы из `Codex.txt` и `Codex_todo.txt` под текущую задачу.
-3. Подгружать только релевантные исходники/отчеты, без полного чтения всех файлов проекта.
-4. После важных решений обновлять этот снимок коротко и без дублирования больших текстов.
+Workflow:
+- Production Workflow V1 active;
+- subsystem-first loading;
+- bounded-context execution;
+- task-oriented mutations.
+
+Execution model:
+- sequential semi-autonomous;
+- deterministic;
+- review-oriented.
+
+---
+
+## Core Governance
+
+USER:
+- architecture authority;
+- scope authority;
+- final approval authority.
+
+Codex:
+- bounded execution;
+- implementation;
+- verification;
+- reporting.
+
+Source code authoritative.
+
+---
+
+## Core Repository Rules
+
+Primary carrier state:
+- repository files;
+- not chat history.
+
+History:
+- append-only;
+- audit-oriented;
+- non-authoritative operationally.
+
+---
+
+## Current Stage
+
+WIN_CONSOLE_V1
+
+Stage goals:
+- gameplay core stabilization;
+- ownership/lifetime stabilization;
+- deterministic gameplay behavior;
+- workflow stabilization.
+
+---
+
+## Active Subsystems
+
+Current primary subsystems:
+- entity_cube
+- entity_figure
+- layers
+- round_rules
+- game_loop
+- platform_console
+
+---
+
+## Critical Architecture Facts
+
+- gameplay core platform-independent;
+- Figure owns active cubes;
+- Layers stores non-owning Cube*;
+- platform adapters isolated;
+- source code authoritative.
+
+Primary ownership migration direction:
+`std::vector<std::unique_ptr<Cube>>`
+
+---
+
+## Current Stabilization Focus
+
+Current focus:
+- rotation/collision stabilization;
+- ownership/lifetime stabilization;
+- nullptr safety;
+- deterministic gameplay execution;
+- bounded workflow execution.
+
+---
+
+## Workflow Priorities
+
+Operational priorities:
+1. correctness
+2. repository stability
+3. bounded scope
+4. reviewability
+5. token efficiency
+6. deterministic execution
+
+---
+
+## Bootstrap Order
+
+Recommended loading order:
+1. snapshot
+2. current_stage
+3. subsystem doc
+4. task file
+5. relevant source files
+
+---
+
+## Context Discipline
+
+Load:
+- only active subsystem;
+- only active task;
+- only relevant source files.
+
+Avoid:
+- full repository loading;
+- unrelated subsystem analysis;
+- full history loading;
+- speculative context expansion.
+
+---
+
+## Current Execution Strategy
+
+Execution flow:
+1. load minimal context;
+2. identify subsystem;
+3. identify task scope;
+4. execute bounded mutation;
+5. verify;
+6. report;
+7. append history.
+
+---
+
+## Important Constraints
+
+Avoid:
+- uncontrolled refactoring;
+- speculative redesign;
+- autonomous architecture drift;
+- oversized diffs;
+- uncontrolled context growth.
+
+Prefer:
+- isolated tasks;
+- incremental stabilization;
+- deterministic execution;
+- reviewable mutations.
+
+---
+
+## Drift Rule
+
+If snapshot diverges from source code:
+- source code authoritative;
+- snapshot updated selectively;
+- drift reported explicitly.
+
+---
+
+## Snapshot Rules
+
+Snapshot:
+- bootstrap-only;
+- compact;
+- operational;
+- rarely updated.
+
+Snapshot should:
+- minimize token usage;
+- avoid duplicated architecture;
+- avoid duplicated workflow rules;
+- avoid detailed gameplay mechanics.

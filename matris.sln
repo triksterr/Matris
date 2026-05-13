@@ -7,9 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cons_test", "cons_test\cons
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}"
 	ProjectSection(SolutionItems) = preProject
-		prj\!todo last update.txt = prj\!todo last update.txt
-		prj\class_method_analysis_report.md = prj\class_method_analysis_report.md
-		prj\Codex.txt = prj\Codex.txt
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject

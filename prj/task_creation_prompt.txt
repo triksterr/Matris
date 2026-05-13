@@ -1,0 +1,11 @@
+Create operational task file for existing backlog task TASK-0014.
+
+Requirements:
+- bounded scope
+- explicit mutation scope
+- explicit verification scope
+- minimal relevant context
+- deterministic task structure
+
+Update only task-related documentation.
+Do not modify unrelated workflow files.

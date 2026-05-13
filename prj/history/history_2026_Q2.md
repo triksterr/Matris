@@ -1,0 +1,105 @@
+# History 2026 Q2
+
+## Назначение
+
+Operational history:
+- WIN_CONSOLE_V1
+- workflow migration
+- subsystem stabilization
+- bounded-context transition
+
+Append-only.
+
+---
+
+[2026-05-02]
+
+TASK: TASK-0001
+STATUS: DONE
+SUBSYSTEM: analysis
+
+SUMMARY:
+Выполнен полный статический анализ классов и методов cons_test.
+
+CHANGES:
+- class_method_analysis_report.md
+- Codex_todo.txt
+
+VERIFICATION:
+- static review
+- source analysis
+
+RISKS:
+- выявлены критические блокеры A-001 ... A-012
+
+NEXT:
+- stabilization critical P0 tasks
+
+---
+
+[2026-05-02]
+
+TASK: TASK-0009
+STATUS: DONE
+SUBSYSTEM: layers
+
+SUMMARY:
+Добавлен nullptr guard в Layers::eachCube.
+
+CHANGES:
+- cons_test/layers.h
+
+VERIFICATION:
+- code review
+- Debug|x64 build attempt
+
+RISKS:
+- unrelated known build issue in c_render.h remained
+
+NEXT:
+- TASK-0010
+
+---
+
+[2026-05-11]
+
+ADR: ADR-0001
+
+SUMMARY:
+Принят bounded-context AI-native workflow.
+
+IMPACT:
+- subsystem-first loading
+- task-oriented execution
+- append-only history
+- sequential semi-autonomous workflow
+- minimal mutation policy
+
+---
+
+[2026-05-11]
+
+TASK: WORKFLOW-MIGRATION
+STATUS: DONE
+SUBSYSTEM: workflow
+
+SUMMARY:
+Создан production workflow v1.
+
+CHANGES:
+- workflow/*
+- subsystems/*
+- runtime/*
+- tasks/*
+- history/*
+- adr/*
+- risks/*
+
+VERIFICATION:
+- manual structural review
+
+RISKS:
+- requires operational validation during real tasks
+
+NEXT:
+- migrate active tasks into task files
