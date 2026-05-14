@@ -1,5 +1,5 @@
 Load and execute task:
-tasks/active/TASK-0012-cube-default-state.md
+tasks/TASK-0012-cube-default-state.md
 
 Follow repository workflow.
 Use bounded context loading only.

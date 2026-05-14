@@ -200,6 +200,21 @@ Medium-High authority repository structure policy.
 
 ---
 
+## tasks/completed_tasks/TASK-XXXX.md
+
+Назначение:
+- immutable completed task record;
+- historical task scope snapshot;
+- non-operational archival storage.
+
+Используется:
+- только при selective historical lookup.
+
+По умолчанию:
+- не загружается в active execution context.
+
+---
+
 # Task Lists
 
 ## tasks/active_tasks.md
@@ -317,4 +332,5 @@ workflow/file_registry.md:
 - file responsibilities должны оставаться narrow;
 - context loading должен оставаться bounded;
 - navigation должна оставаться predictable.
+
 

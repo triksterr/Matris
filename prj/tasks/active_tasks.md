@@ -131,6 +131,7 @@ Requires:
 Completed tasks:
 - удаляются из active queue;
 - append в history;
+- move task files from tasks/ to tasks/completed_tasks/.
 - при необходимости архивируются отдельно.
 
 ---

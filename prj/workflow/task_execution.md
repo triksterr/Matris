@@ -178,7 +178,7 @@ After successful completion:
 3. Update task status to DONE.
 4. Remove task from active queue.
 5. Update backlog if required.
-6. Move completed task file to archive/completed_tasks/.
+6. Move completed task file from tasks/ to tasks/completed_tasks/.
 7. Report concise operational summary.
 
 ---
@@ -187,7 +187,7 @@ After successful completion:
 
 Completed task files:
 - should be removed from active task area;
-- should be moved to archive after completion;
+- should be moved from tasks/ to tasks/completed_tasks/ after completion;
 - should remain immutable after archival.
 
 Archive:
@@ -250,3 +250,4 @@ Execution workflow должен:
 избегать:
 - uncontrolled reasoning expansion;
 - speculative redesign during recovery.
+

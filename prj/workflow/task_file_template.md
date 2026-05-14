@@ -228,7 +228,7 @@ After successful completion:
 - update active_tasks.md
 - update backlog.md if required
 - append history record
-- archive completed task file
+- move completed task file from tasks/ to tasks/completed_tasks/
 
 ---
 
@@ -286,3 +286,4 @@ Task file должен:
 - оставаться compact;
 - быть operational;
 - не превращаться в long-form documentation.
+

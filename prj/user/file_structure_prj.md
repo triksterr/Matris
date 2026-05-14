@@ -22,6 +22,7 @@ prj/
 │   ├── session_bootstrap.md - Определяет deterministic bootstrap workflow для новых chat/session execution cycles.
 │   ├── build_commands.md - Определяет deterministic build workflow и build verification rules проекта.
 │   ├── context_ignore_rules.md - Определяет Context/File/Folder Ignore Rules.
+│   ├── test_system.md - Файл фиксирует практические правила работы с системой unit-тестов.
 │   └── file_registry.md - Central metadata registry всех operational repository files.
 ├── subsystems/
 │   ├── subsystem_index.md - Defines high-level subsystem map и architecture navigation structure.
