@@ -147,6 +147,28 @@ Build report:
 
 ---
 
+# USER Manual Check Block (Required)
+
+Every completed task report must include a dedicated block:
+- `Manual Check For USER`;
+- what USER should verify manually;
+- concise checklist with expected outcomes.
+- `Manual Check Accents` sub-block with task-specific focus points.
+
+Current baseline checklist:
+1. Code review of changed files.
+2. Build in MS Visual Studio 2022: Debug configuration.
+3. Build in MS Visual Studio 2022: Release configuration.
+4. Review PVS-Studio diagnostics/messages.
+5. Repeated application launches with interaction attempts.
+
+`Manual Check Accents` requirements:
+1. Additional manual actions specific to current task risk.
+2. What behavior/areas require extra attention.
+3. Expected signals of correct behavior and potential failure signs.
+
+---
+
 # Reporting Granularity
 
 Предпочитать:

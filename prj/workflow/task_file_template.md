@@ -245,6 +245,8 @@ After successful completion:
 Required:
 - concise mutation summary
 - concise verification summary
+- manual check block for USER (what to verify manually)
+- manual check accents for USER (what to additionally do and focus on)
 - detected risks/issues if present
 
 Avoid:

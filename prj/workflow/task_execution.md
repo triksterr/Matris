@@ -179,7 +179,8 @@ After successful completion:
 4. Remove task from active queue.
 5. Update backlog if required.
 6. Move completed task file from tasks/ to tasks/completed_tasks/.
-7. Report concise operational summary.
+7. Provide mandatory USER manual check block with task-specific focus accents.
+8. Report concise operational summary.
 
 ---
 

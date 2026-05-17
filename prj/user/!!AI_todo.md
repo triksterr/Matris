@@ -8,6 +8,9 @@ MSBuild - проверить и
 
 Зафиксировать в файлах проекта в ОС и в MS Visual Studio, где находится vcpkg.
 
+План тестирования вручную:
+file://C:\Users\Alex\Documents\prog\matris\prj\user\testing.md
+
 1.
 Codex - как менеджер задач.?
 

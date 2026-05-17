@@ -76,6 +76,8 @@ Checklist:
 - убедиться что scope не расширился;
 - убедиться что build стабилен;
 - убедиться что verification выполнен;
+- подготовить блок `Manual Check For USER` с шагами ручной проверки;
+- подготовить блок `Manual Check Accents` с дополнительными действиями и зонами внимания;
 - обновить history/task results;
 - зафиксировать known issues.
 

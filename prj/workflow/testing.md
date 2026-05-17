@@ -151,6 +151,22 @@ Manual smoke-test обязателен для:
 
 ---
 
+## Manual Verification Baseline (Current)
+
+At task completion, manual verification baseline includes:
+1. Code review of changed files.
+2. Build in MS Visual Studio 2022, Debug configuration.
+3. Build in MS Visual Studio 2022, Release configuration.
+4. PVS-Studio diagnostics/messages review.
+5. Repeated application launches with attempts to interact in runtime.
+
+Additionally, Codex must provide task-specific manual check accents:
+1. Extra runtime actions beyond baseline, if needed.
+2. Focus zones for manual attention (logic branches, edge cases, unstable paths).
+3. Failure indicators USER should watch for during manual runs.
+
+---
+
 ## Smoke Test Scope
 
 Минимальный smoke scope:
