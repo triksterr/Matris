@@ -1,4 +1,4 @@
-﻿// @file: rules.h
+﻿// @file: rules.cpp
 
 #include "round.h"
 #include "types.h"
@@ -17,7 +17,11 @@ std::mt19937 &initRnd()
 	auto now_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
 
 	// вихрь Мерсенна
-	static std::mt19937 gen(now_ms);
+	static std::mt19937 gen(static_cast<unsigned int>(now_ms));
+
+	// Варианты:
+	//std::seed_seq seq { static_cast<unsigned int>(now_ms), static_cast<unsigned int>(now_ms >> 32) };
+	//static std::mt19937 gen(seq);
 
 	//static std::mt19937 gen(std::random_device {}());
 

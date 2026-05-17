@@ -75,11 +75,11 @@ WIN_CONSOLE_V1
 - TASK-0015
   Cube copy operator unit tests
 
-- TASK-0016
-  Remove unnecessary Figure/Cube copies
-
-- TASK-0018
+- TASK-0018 [DONE]
   rules.h self-contained includes stabilization
+
+- TASK-0019
+  Figure/Layers unique_ptr ownership + move transfer + copy elimination
 
 ---
 
@@ -181,3 +181,4 @@ Backlog workflow должен:
 - поддерживать predictable prioritization;
 - поддерживать bounded execution planning;
 - сохранять manageable operational complexity.
+

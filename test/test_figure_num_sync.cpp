@@ -1,7 +1,13 @@
-#include "gtest/gtest.h"
+﻿// file: test_figure_num_sync.cpp
+
+#include <gtest/gtest.h>
+//#include <gmock/gmock.h>
 
 #include "round.h"
 #include "figure.h"
+#include "cube.h"
+
+////__________________________________________________________________________________
 
 TEST(FigureNumSync, MatchesCubeVectorSizeAfterConstruction)
 {
@@ -17,3 +23,5 @@ TEST(FigureNumSync, MatchesCubeVectorSizeAfterConstruction)
 		EXPECT_EQ(fig.getNum(), realCount);
 	}
 }
+
+////__________________________________________________________________________________

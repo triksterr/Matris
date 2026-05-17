@@ -91,26 +91,18 @@ Goal:
 
 ---
 
-### TASK-0016
+### TASK-0019
 Priority: P0
-Subsystem: entity_figure
+Subsystem: entity_figure, layers
 Status: READY
 
 Goal:
-- remove unnecessary vector/Cube copies.
+- migrate Figure and Layers to `std::unique_ptr<Cube>` ownership model;
+- transfer cubes from Figure to Layers via move semantics;
+- enforce single-owner invariant: cube is owned either by Figure or by Layers.
+- remove unnecessary Figure/Cube copies caused by ownership transfer paths.
 
 ---
-
-### TASK-0018
-Priority: P0
-Subsystem: round_rules
-Status: READY
-
-Goal:
-- stabilize rules.h dependencies/includes.
-
----
-
 # BLOCKED
 
 ### TASK-0013
@@ -187,3 +179,4 @@ Task queue должна:
 - оставаться reviewable;
 - поддерживать deterministic execution order;
 - минимизировать operational ambiguity.
+

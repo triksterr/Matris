@@ -231,3 +231,29 @@ RISKS:
 
 NEXT:
 - TASK-0010
+
+---
+
+[2026-05-16]
+
+TASK: TASK-0018
+STATUS: DONE
+SUBSYSTEM: round_rules
+
+SUMMARY:
+Стабилизированы include-зависимости `rules.h`: заголовок сделан самодостаточным через явное подключение `types.h`.
+
+CHANGES:
+- cons_test/rules.h
+- prj/tasks/active_tasks.md
+- prj/tasks/backlog.md
+
+VERIFICATION:
+- code review: `rules.h` использует типы `Point` и `RGBcolor`, объявленные в `types.h`
+- MSBuild matris.sln /p:Configuration=Debug /p:Platform=x64: success
+
+RISKS:
+- unrelated warning remained: rules.cpp C4244
+
+NEXT:
+- TASK-0010
