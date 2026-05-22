@@ -257,3 +257,63 @@ RISKS:
 
 NEXT:
 - TASK-0010
+
+---
+
+[2026-05-17]
+
+TASK: TASK-0008
+STATUS: DONE
+SUBSYSTEM: testing, workflow
+
+SUMMARY:
+Стандартизирован manual QA workflow: добавлен обязательный блок ручной проверки для USER и task-specific акценты проверки в completion-отчётах.
+
+CHANGES:
+- prj/workflow/task_execution.md
+- prj/workflow/reporting.md
+- prj/workflow/testing.md
+- prj/workflow/task_file_template.md
+- prj/workflow/task_execution_checklist.md
+- prj/tasks/backlog.md
+
+VERIFICATION:
+- policy review: обязательные блоки `Manual Check For USER` и `Manual Check Accents` закреплены в workflow
+- consistency check: требования синхронизированы между execution/testing/reporting/template/checklist
+
+RISKS:
+- manual QA quality зависит от полноты task-specific accents в каждом отчёте
+
+NEXT:
+- TASK-0010
+
+---
+
+[2026-05-17]
+
+TASK: TASK-0010
+STATUS: DONE
+SUBSYSTEM: entity_figure
+
+SUMMARY:
+Реализована и стабилизирована логика `Figure::move` и `Figure::rotate/chkRotate` с валидацией границ стакана и коллизий со слоями.
+
+CHANGES:
+- cons_test/figure.h
+- test/test_figure_move_rotate.cpp
+- test/test.vcxproj
+- prj/tasks/TASK-0010-figure-rotation.md
+- prj/tasks/active_tasks.md
+- prj/tasks/backlog.md
+
+VERIFICATION:
+- MSBuild matris.sln /p:Configuration=Debug /p:Platform=x64: success
+- x64\Debug\test.exe --gtest_color=no: 6 tests passed
+- added tests: move bounds invariant, move collision block, rotate collision block
+
+RISKS:
+- rotate/move покрыты только на текущей модели `Figure` (value-based `std::vector<Cube>`)
+- upcoming ownership migration task (TASK-0019) потребует адаптации тестов и методов
+
+NEXT:
+- TASK-0015

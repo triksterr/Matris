@@ -63,10 +63,38 @@ public:
 // Типы фигур
 
 // Координаты точки
-struct Point
+class Point
 {
+public:
 	int x; // смещение по Х
 	int y; // смещение по Y
+
+	// Операторы сравнения
+	bool operator<(const Point& other) const //! не все так однозначно!
+	{
+		if(x != other.x)
+			return x < other.x;
+
+		return y < other.y;
+	}
+
+	bool operator>(const Point& other) const //! не все так однозначно!
+	{
+		if(x != other.x)
+			return x > other.x;
+
+		return y > other.y;
+	}
+
+	bool operator==(const Point& other) const
+	{
+		return x == other.x && y == other.y;
+	}
+
+	bool operator!=(const Point& other) const
+	{
+		return x != other.x || y != other.y;
+	}
 };
 
 // Расстояния до краев для фигуры

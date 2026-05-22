@@ -70,17 +70,6 @@ NOT USED.
 
 ## READY
 
-### TASK-0010
-Priority: P0
-Subsystem: entity_figure
-Status: READY
-
-Goal:
-- stabilize rotate/chkRotate/move logic;
-- cover collisions and rotation validation.
-
----
-
 ### TASK-0015
 Priority: P0
 Subsystem: entity_cube

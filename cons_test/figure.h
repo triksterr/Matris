@@ -8,6 +8,7 @@
 #include "types.h"
 #include "rules.h"
 #include "round.h"
+#include "layers.h"
 #include <utility>
 
 
@@ -211,7 +212,7 @@ public:
 	void del() { deleted = true; } // пометить для удаления - ?
 	bool isDel() const { return deleted; } // помечена на удаление? или живая 
 
-	//TODO поворот границ (расстояний до краев) фигуры - private! - служебная
+	//Поворот границ (расстояний до краев) фигуры - private! - служебная
 	void rotateB(int angle);
 
 	//TODO поворот фигуры на любой угол (с шагом 90 градусов) - служебная
@@ -234,10 +235,10 @@ public:
 
 	//TODO Проверка поворота всей фигуры на касание нижних слоёв - служебная
 	bool chkRotate(int angle);
+
 	//TODO поворот тоже требует проверки - надо смотреть, есть ли место для поворота, в том числе, проверять место по диагоналям!!!
 	
 
-	//x Определение "торчащих" кубиков - нереально!
 	//TODO Проверка поворота кубика на задевание им кубиков нижних слоёв при повороте
 	bool chkRotateCube(); // параметры: кубик, угол поворота
 	// Считаем длину вектора от центра центрального кубика до центра этого кубика
@@ -297,10 +298,18 @@ public:
 	// Сдвиг фигуры на X и Y 
 	void move(int x, int y);
 	
-	void moveL(int shift = 1); //TODO сдвинуть на 1 влево (как быть с проверкой краев?!!!!!!!!!) - прорверка - в каждом кубике, и везде и здесь и в кубике возврат успех или неудача - true или false. причина - край стакана иди кубики из нижних слоев
+	// Сдвинуть фигуру на 1 влево
+	void moveL(int shift = 1); 
+	//TODO сдвинуть на 1 влево (как быть с проверкой краев?!!!!!!!!!) - прорверка - в каждом кубике, и везде и здесь и в кубике возврат успех или неудача - true или false. причина - край стакана иди кубики из нижних слоев
+	
+	// Сдвинуть фигуру на 1 вправо
 	void moveR(int shift = 1); //TODO сдвинуть на 1 вправо
-	void moveU(int shift = 1); //TODO сдвинуть на 1 вверх
-	void moveD(int shift = 1); //TODO сдвинуть на 1 вниз
+
+	// Сдвинуть фигуру на 1 вверх
+	void moveU(int shift = 1);
+
+	// Сдвинуть фигуру на 1 вниз
+	void moveD(int shift = 1);
 	// Сдвигаем центр и все кубики
 
 	//TODO Проверка касания фигуры нижних слоев
@@ -366,6 +375,152 @@ private:
 	};
 };
 
-//TODO фигура может быть динамической: пушка или ракетка с шариком, то есть, координаты отдельных кубиков могут меняться
+
+
+// 
+inline void Figure::rotateB(int rotAngle)
+{
+	rotAngle = ((rotAngle % 360) + 360) % 360;
+
+	if(rotAngle == 90)
+	{
+		int t = sizes.u;
+		sizes.u = sizes.r;
+		sizes.r = sizes.d;
+		sizes.d = sizes.l;
+		sizes.l = t;
+	}
+	else if(rotAngle == 180)
+	{
+		std::swap(sizes.l, sizes.r);
+		std::swap(sizes.u, sizes.d);
+	}
+	else if(rotAngle == 270)
+	{
+		int t = sizes.u;
+		sizes.u = sizes.l;
+		sizes.l = sizes.d;
+		sizes.d = sizes.r;
+		sizes.r = t;
+	}
+}
+
+//
+inline bool Figure::chkRotate(int rotAngle)
+{
+	rotAngle = ((rotAngle % 360) + 360) % 360; // убираем лишние обороты
+	if(rotAngle == 0)
+		return true;
+
+	Round &round = Round::getInstance();
+	Layers &layers = Layers::getInstance();
+
+	for(const Point &p : cpos)
+	{
+		const Point rp = rotateP(p, rotAngle);
+		const int nx = x + rp.x;
+		const int ny = y + rp.y;
+
+		if(nx < 0 || nx > round.getGlassW() - 1 || ny < 0 || ny > round.getGlassH() - 1)
+			return false;
+
+		if(layers.isCube(nx, ny))
+			return false;
+	}
+
+	return true;
+}
+
+// 
+inline void Figure::rotate(int rotAngle)
+{
+	rotAngle = ((rotAngle % 360) + 360) % 360;
+	if(rotAngle == 0)
+		return;
+
+	for(Point &p : cpos)
+		p = rotateP(p, rotAngle);
+
+	rotateB(rotAngle);
+
+	const std::size_t n = (std::min)(cubes.size(), cpos.size());
+	for(std::size_t i = 0; i < n; ++i)
+		cubes[i].setXY(x + cpos[i].x, y + cpos[i].y);
+
+	angle = (angle + rotAngle) % 360;
+}
+
+// 
+inline void Figure::rotateR()
+{
+	if(chkRotate(90))
+		rotate(90);
+}
+
+// 
+inline void Figure::rotateL()
+{
+	if(chkRotate(270))
+		rotate(270);
+}
+
+// Сдвиг фигуры на заданные значения
+// @param shiftX - сдвиг по Х
+// @param shiftY - сдвиг по Y
+// @return true - если сдвиг возможен и выполнен / false
+inline void Figure::move(int shiftX, int shiftY)
+{
+	if(shiftX == 0 && shiftY == 0) // Если сдвиги не заданы
+		return;
+
+	Round &round = Round::getInstance();
+	Layers &layers = Layers::getInstance();
+
+	for(const Cube &cube : cubes)
+	{
+		const int nx = cube.getX() + shiftX;
+		const int ny = cube.getY() + shiftY;
+
+		if(nx < 0 || nx > round.getGlassW() - 1 || ny < 0 || ny > round.getGlassH() - 1)
+			return;
+
+		if(layers.isCube(nx, ny))
+			return;
+	}
+
+	x += shiftX;
+	y += shiftY;
+
+	for(Cube &cube : cubes)
+		cube.setXY(cube.getX() + shiftX, cube.getY() + shiftY);
+}
+
+// Сдвинуть фигуру на 1 влево
+inline void Figure::moveL(int shift)
+{
+	if(shift > 0)
+		move(-shift, 0);
+}
+
+// Сдвинуть фигуру на 1 вправо
+inline void Figure::moveR(int shift)
+{
+	if(shift > 0)
+		move(shift, 0);
+}
+
+// Сдвинуть фигуру на 1 вверх
+inline void Figure::moveU(int shift)
+{
+	if(shift > 0)
+		move(0, shift);
+}
+
+// Сдвинуть фигуру на 1 вниз
+inline void Figure::moveD(int shift)
+{
+	if(shift > 0)
+		move(0, -shift);
+}
 
 

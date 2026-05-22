@@ -57,7 +57,7 @@ WIN_CONSOLE_V1
 
 ### P0
 
-- TASK-0010
+- TASK-0010 [DONE]
   Figure rotation/chkRotate stabilization
 
 - TASK-0011 [DONE]
@@ -117,7 +117,7 @@ WIN_CONSOLE_V1
 - TASK-0007 [DONE]
   GoogleTest coverage
 
-- TASK-0008
+- TASK-0008 [DONE]
   Manual QA workflow
 
 ---

@@ -129,6 +129,7 @@
     <ClCompile Include="..\cons_test\cube.cpp" />
     <ClCompile Include="..\cons_test\rules.cpp" />
     <ClCompile Include="test.cpp" />
+    <ClCompile Include="test_figure_move_rotate.cpp" />
     <ClCompile Include="test_figure_num_sync.cpp" />
   </ItemGroup>
   <ItemGroup>
