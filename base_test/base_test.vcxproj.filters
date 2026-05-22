@@ -40,7 +40,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="todo.md" />
+    <None Include="todo.h" />
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
