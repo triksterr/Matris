@@ -1,54 +1,69 @@
 ﻿#pragma once
 // file: cube.h
 
-#include "RGBcolor.h"
+#include "rgbcolor.h"
 
 // Kубик
-class cube
+class Cube
 {
+public:
 
-	// конструктор по умолчанию
-	cube() : digit(0), color({ 0,0,0 }), type(0)
+	// default конструктор
+	//! можно просто заменить на присваивание полям нулевых значений!
+	Cube() : digit(0), color({ 0,0,0 }), type(0)
 	{}
 
-	// конструктор
-	cube(int digit = 0, RGBcolor color = { 0,0,0 }, int type = 0) : digit(digit), color(color), type(type)
+	// конструктор явной инициализации
+	// @param digit - числовое значение кубика
+	// @param color - цвет кубика
+	// @param type - тип кубика
+	Cube(int digit = 0, RGBcolor color = { 0,0,0 }, int type = 0) : digit(digit), color(color), type(type)
 	{}
 
-	//! TODO Получать цвет из фигуры - в конструкторе, вызываемом из фигуры - с учетом правил раунда
+	//! TODO Получать цвет конструкторе, вызываемом из фигуры - с учетом правил раунда
+	//! TODO Получать тип конструкторе, вызываемом из фигуры
+	//! TODO Получать число конструкторе, вызываемом из фигуры
+	// Фигура при вызовк конструктора кубика передает ему результат работы функций-правил раунда
 
-	// деструктор
-	~cube() = default;
+	// Деструктор: внешних ресурсов кубик не держит
+	~Cube() = default;
 
+	// Изменение числового значения кубика
 	void setDigit(int digit)
 	{
 		this->digit = digit;
 	}
 
+	// Изменение цвета по отдельным RGB-компонентам
 	void setColor(int r, int g, int b)
 	{
 		color = { r, g, b };
 	}
+	// Изменение цвета структурой RGBcolor.
 	void setColor(RGBcolor color)
 	{
 		this->color = color;
 	}
 
+	// Изменение типа кубика (обычный/спец-тип и т.д.).
 	void setType(int type)
 	{
 		this->type = type;
 	}
 
+	// Получение числа в кубике.
 	int getDigit() const
 	{
 		return digit;
 	}
 
+	// Получение цвета кубика.
 	RGBcolor getColor() const
 	{
 		return color;
 	}
 
+	// Получение типа кубика.
 	int getType() const
 	{
 		return type;
@@ -58,6 +73,9 @@ private:
 	int digit; //! IDEA число в кубике - float? - для вариантов: 2.5  0.7  и т.п. ????
 	RGBcolor color; // цвет
 	int type; // тип кубика: обычный = 0, шарик (*), "пушка", "ракетка", ...
+	void *owner; //! кому принадлежит кубик - где его искать??????????? - надо понять, надо ли нам идти от кубика в каких-то ситуациях!!!
+	//! Надо ли вообще его где-то искать?
+	//! DrawCube() - не нужен, потому что это внутренняя функция рендера. Внешние - отрисовка фигуры и слоев, но они сами владеют своими кубиками.
 	//bool visible; // видимость - ??? - в тип?
 	//bool deleted; // уничтожен - пометка о необходимости удалить - ???
 };

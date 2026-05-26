@@ -5,20 +5,20 @@
 class RGBcolor
 {
 public:
-	int r;
-	int g;
-	int b;
+	int r = 0;
+	int g = 0;
+	int b = 0;
 
-	// Конструктор по умолчанию
-	RGBcolor() : r(0), g(0), b(0) {}
+	// default конструктор - ?
+	//RGBcolor() = default;
 
-	// Конструктор
+	// конструктор
 	RGBcolor(int r, int g, int b) : r(r), g(g), b(b) {}
 
-	// Конструктор копирования
+	// copy конструктор
 	RGBcolor(const RGBcolor& other) : r(other.r), g(other.g), b(other.b) {}
 
-	// Оператор присваивания копированием
+	// copy присваивание
 	RGBcolor& operator=(const RGBcolor& other)
 	{
 		r = other.r;
@@ -27,10 +27,10 @@ public:
 		return *this;
 	}
 
-	// Конструктор перемещения
+	// move конструктор
 	RGBcolor(RGBcolor&& other) noexcept : r(other.r), g(other.g), b(other.b) {}
 
-	// Оператор присваивания перемещением
+	// move присваивание
 	RGBcolor& operator=(RGBcolor&& other) noexcept
 	{
 		r = other.r;
@@ -39,7 +39,7 @@ public:
 		return *this;
 	}
 
-	// Деструктор
+	// деструктор
 	~RGBcolor() = default;
 
 	// Операторы сравнения

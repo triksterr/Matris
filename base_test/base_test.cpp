@@ -6,4 +6,5 @@ int main()
 {
     std::cout << "Test!\n";
 
+    // Запускаем game
 }

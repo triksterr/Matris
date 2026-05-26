@@ -1,21 +1,34 @@
 ﻿#pragma once
 // file: point.h
 
+// Алиас класса Point для хранения размеров
+// Size w, h
+using Size = Point;
+
 // Класс двумерной точки (X, Y) - пары int
 class Point
 {
 public:
-	int x; 
-	int y;
+	union
+	{
+		int x = 0;
+		int w; // ширина при обращении через алиас Size
+	};
 
-	Point() : x(0), y(0) {}
+	union
+	{
+		int y = 0;
+		int h; // высота при обращении через алиас Size
+	};
+
+	//Point() = default;
 
 	Point(int x=0, int y=0) : x(x), y(y) {}
 	
-	// Копирующий конструктор
+	// copy конструктор
 	Point(const Point& other) : x(other.x), y(other.y) {}
 
-	// Присваивание копированием
+	// copy присваивание
 	Point& operator=(const Point& other)
 	{
 		x = other.x;
@@ -23,10 +36,10 @@ public:
 		return *this;
 	}
 
-	// Перемещающий конструктор
+	// move конструктор
 	Point(Point&& other) noexcept : x(other.x), y(other.y) {}
 
-	// Присваивание перемещением
+	// move присваивание
 	Point& operator=(Point&& other) noexcept
 	{
 		x = other.x;
@@ -34,7 +47,7 @@ public:
 		return *this;
 	}
 
-	// Деструктор
+	// деструктор
 	~Point() = default;
 
 	// Операторы сравнения

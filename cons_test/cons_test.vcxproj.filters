@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-    <None Include="..\prj\user\!!AI todo.md" />
     <None Include="..\prj\user\class.md" />
     <None Include="..\prj\user\GameLoop.md" />
     <None Include="..\prj\user\ideas.md" />

@@ -23,13 +23,13 @@ public:
 	int b;
 
 	// Конструктор по умолчанию
-	RGBcolor() : r(0), g(0), b(0) {}
+	constexpr RGBcolor() : r(0), g(0), b(0) {} //! добавили конструкторам - constexpr 
 
 	// Конструктор
-	RGBcolor(int r, int g, int b) : r(r), g(g), b(b) {}
+	constexpr RGBcolor(int r, int g, int b) : r(r), g(g), b(b) {}
 
 	// Конструктор копирования
-	RGBcolor(const RGBcolor& other) : r(other.r), g(other.g), b(other.b) {}
+	constexpr RGBcolor(const RGBcolor& other) : r(other.r), g(other.g), b(other.b) {}
 
 	// Оператор присваивания копированием
 	RGBcolor& operator=(const RGBcolor& other)
@@ -41,7 +41,7 @@ public:
 	}
 
 	// Конструктор перемещения
-	RGBcolor(RGBcolor&& other) noexcept : r(other.r), g(other.g), b(other.b) {}
+	constexpr RGBcolor(RGBcolor&& other) noexcept : r(other.r), g(other.g), b(other.b) {}
 
 	// Оператор присваивания перемещением
 	RGBcolor& operator=(RGBcolor&& other) noexcept

@@ -38,9 +38,40 @@
     <ClInclude Include="types.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="round.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="rules\rules.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="rules\cube_rules.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="rules\figure_rules.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="rules\layer_rules.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="rules\common_rules.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="rules\round_rules.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="rules\game_rules.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="todo.h" />
     <None Include="ClassDiagram.cd" />
+    <None Include="doc\todo.h">
+      <Filter>Файлы заголовков</Filter>
+    </None>
+    <None Include="doc\game_loop.md" />
+    <None Include="doc\class.md" />
   </ItemGroup>
 </Project>

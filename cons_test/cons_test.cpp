@@ -17,7 +17,7 @@ int main()
 	round.setGlass(10, 15); // размер стакана
 
     IRender *render;
-    render = new(CRender);
+    render = new(CRender); //! надо исправить наследуемые методы - лишить их параметров!
 
     render->Init();
 

@@ -80,6 +80,10 @@ public:
 		//figAngleGen = GenAngle0; // не поворачивать
 		cubeNumGen = GenCubeNum0;
 	}
+
+	// Запуск раунда (здесь реализуется его цикл)
+	void srart()
+	{ }
 	
 private:
 	// Приватный конструктор и деструктор
