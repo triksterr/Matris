@@ -4,9 +4,12 @@
 #include <string>
 #include <vector>
 
+#include "json.hpp"
 #include "..\..\..\!lib\err\err_codes.h"
 
 #include "..\application.h"
+
+// NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Class::testStr, id, name, value) - преобразование testStr из класса Class с заданными полями  в JSON
 
 //универсальный доступ через интерфейс
 //auto fm = fileMan();   // получаем указатель на iFiles
@@ -107,26 +110,56 @@ public:
 
 //!protected: // Нижний уровень  _________________________________________________________
 
-	// чтение в JSON
-	ErrC readJSON(const std::string name) // нужна ссылка на структуру в параметрах
+	// Чтение JSON из файла и десериализация в переданную структуру
+	template<typename T>
+	ErrC readJSON(const std::string& path, T& value)
 	{
-		// - читаем из файла текст в Буфер readText(
-		// - проверяем на соответствие JSON
-		// - преобразeм в структуру
-		
-		
-		return NotImplemented; // метод не реализован
+		std::string text;
+		ErrC err = readText(path, text); // Читаем текст из файла
+
+		if(err != ErrC::Ok)
+			return ErrC::FileNotFound;  // Файл не существует
+
+		try
+		{
+			// Парсим JSON и заполняем структуру
+			nlohmann::json j = nlohmann::json::parse(text);
+			value = j.get<T>();
+		}
+		catch(const nlohmann::json::parse_error&)
+		{
+			return ErrC::JsonParseFailed;    // Некорректный JSON
+		}
+		catch(const nlohmann::json::type_error&)
+		{
+			return ErrC::JsonIncorrectStrucrure;  // JSON не соответствует структуре
+		}
+		catch(...)
+		{
+			return ErrC::UnknownError;
+		}
+
+		return ErrC::Ok;
 	}
 
-	// запись в JSON
-	ErrC writeJSON(const std::string name)
+	// Сериализация структуры в JSON и запись в файл
+	template<typename T>
+	ErrC writeJSON(const std::string& path, const T& value)
 	{
-		// Берем структуру
-		// - преобразeм в JSON
-		// - пишем в буфер
-		// - Пишем буфер в файл
-		
-		return NotImplemented; // метод не реализован
+		try
+		{
+			nlohmann::json j = value;          // использует ADL to_json
+			std::string text = j.dump(4);      // отступы для читаемости
+			return writeText(path, text);
+		}
+		catch(const nlohmann::json::exception&)
+		{
+			return ErrC::SerializationError;
+		}
+		catch(...)
+		{
+			return ErrC::UnknownError;
+		}
 	}
 
 	// Проверка существования файла
@@ -145,7 +178,7 @@ public:
 	virtual ErrC writeBinary(const std::string& path, const std::vector<uint8_t>& data) = 0;
 };
 
-// фабричный метод
+// фабричный метод для файлового обработчика
 std::unique_ptr<iFiles> fileMan();
 // универсальный доступ через интерфейс:
 //auto fm = fileMan();   // получаем указатель на iFiles

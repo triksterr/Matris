@@ -18,12 +18,15 @@
     <ClCompile Include="f_test.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="w_files.cpp">
+    <ClCompile Include="..\base_test\win_files\w_files.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="w_files.h">
+    <ClInclude Include="..\base_test\win_files\w_files.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="..\base_test\interface\i_files.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

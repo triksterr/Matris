@@ -9,9 +9,9 @@
 #include <vector>
 #include <cstdint>
 
-#include "err_codes.h"
+#include "..\interface\i_files.h" // err_codes.h - уже здесь
 
-// Реализация для Windows
+// Реализация i_files для Windows
 class wFiles : public iFiles 
 {
 public:
@@ -21,14 +21,17 @@ public:
         std::error_code ec;
         if (!std::filesystem::exists(path, ec)) 
 		{
-            if (ec) return ErrC::UNKNOWN_ERROR;
-            return ErrC::FILE_NOT_FOUND;
+            if(ec)
+            {
+                return ErrC::UnknownError;
+            }
+            return ErrC::FileNotFound;
         }
         if (!std::filesystem::is_regular_file(path, ec)) 
 		{
-            return ErrC::NOT_A_FILE;
+            return ErrC::NotAFile;
         }
-        return ErrC::SUCCESS;
+        return ErrC::Ok;
     }
 
     // Чтение текстового файла (кодировка: системная ANSI/UTF-8, без BOM)
@@ -36,12 +39,12 @@ public:
 	{
         // Сначала проверяем, что файл существует и является файлом
         ErrC ec = exists(path);
-        if (ec != ErrC::SUCCESS) return ec;
+        if (ec != ErrC::Ok) return ec;
 
         std::ifstream ifs(path);
         if (!ifs.is_open()) 
 		{
-            return ErrC::PERMISSION_DENIED;
+            return ErrC::FileAccessFailed;
         }
 
         // Читаем весь файл в строку через streambuf
@@ -49,10 +52,10 @@ public:
         buffer << ifs.rdbuf();
         if (ifs.bad()) 
 		{
-            return ErrC::READ_ERROR;
+            return ErrC::FileReadFailed;
         }
         text = buffer.str();
-        return ErrC::SUCCESS;
+        return ErrC::Ok;
     }
 
     // Запись текстового файла (создаётся или перезаписывается)
@@ -62,48 +65,48 @@ public:
         std::error_code ec;
         if (std::filesystem::exists(path, ec) && std::filesystem::is_directory(path, ec)) 
 		{
-            return ErrC::NOT_A_FILE;
+            return ErrC::NotAFile;
         }
 
         std::ofstream ofs(path);
         if (!ofs.is_open()) 
 		{
-            return ErrC::PERMISSION_DENIED;
+            return ErrC::FileAccessFailed;
         }
         ofs << text;
         if (ofs.fail()) 
 		{
-            return ErrC::WRITE_ERROR;
+            return ErrC::FileWriteFailed;
         }
-        return ErrC::SUCCESS;
+        return ErrC::Ok;
     }
 
     // Чтение бинарного файла
     ErrC readBinary(const std::string& path, std::vector<uint8_t>& data) const override 
 	{
         ErrC ec = exists(path);
-        if (ec != ErrC::SUCCESS) return ec;
+        if (ec != ErrC::Ok) return ec;
 
         std::ifstream ifs(path, std::ios::binary);
         if (!ifs.is_open()) 
 		{
-            return ErrC::PERMISSION_DENIED;
+            return ErrC::FileAccessFailed;
         }
 
         // Определяем размер файла
         ifs.seekg(0, std::ios::end);
         std::streamsize size = ifs.tellg();
         if (size == -1) {
-            return ErrC::READ_ERROR;
+            return ErrC::FileReadFailed;
         }
         ifs.seekg(0, std::ios::beg);
 
         data.resize(static_cast<size_t>(size));
         if (!ifs.read(reinterpret_cast<char*>(data.data()), size)) 
 		{
-            return ErrC::READ_ERROR;
+            return ErrC::FileReadFailed;
         }
-        return ErrC::SUCCESS;
+        return ErrC::Ok;
     }
 
     // Запись бинарного файла
@@ -112,19 +115,19 @@ public:
         std::error_code ec;
         if (std::filesystem::exists(path, ec) && std::filesystem::is_directory(path, ec)) 
 		{
-            return ErrC::NOT_A_FILE;
+            return ErrC::NotAFile;
         }
 
         std::ofstream ofs(path, std::ios::binary);
         if (!ofs.is_open()) 
 		{
-            return ErrC::PERMISSION_DENIED;
+            return ErrC::FileAccessFailed;
         }
         ofs.write(reinterpret_cast<const char*>(data.data()), data.size());
         if (ofs.fail()) 
 		{
-            return ErrC::WRITE_ERROR;
+            return ErrC::FileWriteFailed;
         }
-        return ErrC::SUCCESS;
+        return ErrC::Ok;
     }
 };
