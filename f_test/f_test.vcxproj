@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{0f8f9b1c-bcb0-41ac-bc4a-f66433c1e8ee}</ProjectGuid>
-    <RootNamespace>basetest</RootNamespace>
+    <ProjectGuid>{eb19115d-22cd-41e0-88c6-05ba8afb30bd}</ProjectGuid>
+    <RootNamespace>ftest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,47 +127,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="base_test.cpp" />
-    <ClCompile Include="checkers.cpp" />
+    <ClCompile Include="f_test.cpp" />
+    <ClCompile Include="w_files.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\!lib\err\err_codes.h" />
-    <ClInclude Include="application.h" />
-    <ClInclude Include="checkers.h" />
-    <ClInclude Include="cube.h" />
-    <None Include="doc\class.md" />
-    <None Include="doc\game_loop.md" />
-    <None Include="doc\todo.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
-    </None>
-    <ClInclude Include="figure.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="interface\i_audio.h" />
-    <ClInclude Include="interface\i_files.h" />
-    <ClInclude Include="interface\i_input.h" />
-    <ClInclude Include="interface\i_render.h" />
-    <ClInclude Include="layers.h" />
-    <ClInclude Include="point.h" />
-    <ClInclude Include="rgbcolor.h" />
-    <ClInclude Include="round.h" />
-    <ClInclude Include="rules\common_rules.h" />
-    <ClInclude Include="rules\cube_rules.h" />
-    <ClInclude Include="rules\figure_rules.h" />
-    <ClInclude Include="rules\game_rules.h" />
-    <ClInclude Include="rules\layer_rules.h" />
-    <ClInclude Include="rules\round_rules.h" />
-    <ClInclude Include="rules\rules.h" />
-    <ClInclude Include="types.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <ClInclude Include="w_files.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

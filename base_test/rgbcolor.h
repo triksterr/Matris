@@ -9,8 +9,8 @@ public:
 	int g = 0;
 	int b = 0;
 
-	// default конструктор - ?
-	//RGBcolor() = default;
+	// default конструктор
+	RGBcolor() = default;
 
 	// конструктор
 	RGBcolor(int r, int g, int b) : r(r), g(g), b(b) {}
