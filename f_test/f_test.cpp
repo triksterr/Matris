@@ -4,28 +4,39 @@
 
 struct testStr 
 {
-	std::string name;
-	std::string surname;
-    int level;
-	int age;
+    std::string name = {};
+	std::string surname = {};
+    int level = {};
+	int age = {};
 
-    // оператор сравнения
-	bool operator==(const testStr& other) const 
-    {
-		return name == other.name && surname == other.surname && level == other.level && age == other.age;
-	}
+    // оператор сравнения - по полям
+	//bool operator==(const testStr& other) const 
+    //{
+	//	return name == other.name && surname == other.surname && level == other.level && age == other.age;
+	//}
 };
-//NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(main::testStr, name, surname, level, age);
+
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(testStr, name, surname, level, age);
+
+// оператор сравнения структур через JSON
+ // уже определили to_json / from_json (NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE()), -> можно сравнить через nlohmann::json:
+bool operator==(const testStr& a, const testStr& b)
+{
+    return nlohmann::json(a) == nlohmann::json(b);
+}
+
 
 int main() 
 {
     //универсальный доступ через интерфейс
     auto fm = fileMan();   // получаем указатель на iFiles
 
-    // Надо проверять JSON
+    // Операции верхнего уровня
 
-    testStr settings; //struct test settings
+
+    // --- Проверяем JSON - Тесты пройдены!
+
+    testStr settings; // struct test settings
     settings.name = "Alex";
 	settings.surname = "Smith";
 	settings.level = 10;
@@ -52,8 +63,8 @@ int main()
 	else
 		std::cout << "JSON Mismatch\n";
 
-
-    // Тесты пройдены!
+    // --- Файловые операции - Тесты пройдены!
+    
     // Проверка существования
     if (fm->exists("test.txt") == ErrC::Ok) 
         std::cout << "File exists\n";
@@ -81,4 +92,5 @@ int main()
     else
         std::cout << "Binary Error\n";
 
+    return 0;
 }
