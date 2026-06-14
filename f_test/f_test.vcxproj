@@ -131,6 +131,9 @@
     <ClCompile Include="f_test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\!lib\err\err.h" />
+    <ClInclude Include="..\..\!lib\err\err_codes.h" />
+    <ClInclude Include="..\base_test\application.h" />
     <ClInclude Include="..\base_test\interface\i_files.h" />
     <ClInclude Include="..\base_test\win_files\w_files.h" />
   </ItemGroup>

@@ -2,8 +2,11 @@
 // file: application.h
 
 #include "game.h"
-#include "..\..\!lib\err\err_codes.h"
+//#include "..\..\!lib\err\err_codes.h"
 #include "..\..\!lib\err\err.h"
+#include "interface\json.hpp"
+#include "interface\i_files.h"
+
 
 // само приложение
 class Application
@@ -12,14 +15,16 @@ public:
 // Ќастройки программы и игры
 	struct gameSettings
 	{
+		std::string sig = "Game Matris settings file JSON. 2026";
 		uint32_t version = 1; //! ++ при любом изменении структуры
-		
 		uint32_t level = 0; // уровень сложности
-
 		std::string userName = "Alumno"; // им€ пользовател€ 
+		std::string comment = "Ёто базова€ верси€ файла настроек: полей настроек нет.";
+
 		//TODO ограничение строк по длинне!!!
 	};
-
+	// ћакрос дл€ автоматической сериализации/десериализации
+	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Application::gameSettings, sig, version, level, userName, comment)
 
 public:
 // ”дал€ем копирование и присваивание

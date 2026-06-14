@@ -1,6 +1,7 @@
 {
-    "age": 20,
-    "level": 10,
-    "name": "Alex",
-    "surname": "Smith"
+    "sig": "Game Matris settings file JSON. 2026",
+    "version": 0,
+	"level": 0,
+	"userName": "Alumno", 
+	"comment": "Это базовая версия файла настроек: полей настроек нет."
 }
