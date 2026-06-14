@@ -225,6 +225,9 @@ public:
 	ErrC loadState()
 	{
 		// читаем JSON
+
+		//! логику!
+
 		return NotImplemented; // метод не реализован
 	}
 
@@ -238,6 +241,9 @@ public:
 	ErrC loadResults()
 	{
 		// читаем JSON
+
+		//! логику!
+
 		return NotImplemented; // метод не реализован
 	}
 
@@ -275,6 +281,8 @@ public:
 //!protected: // Нижний уровень  _________________________________________________________
  
 	// Чтение любого JSON в структуру nlohmann::json
+	// @param path - путь к файлу
+	// @param outJson - ссылка на структуру
 	ErrC readJSONRaw(const std::string& path, nlohmann::json& outJson) const
 	{
 		std::string text;
@@ -298,13 +306,15 @@ public:
 	}
 
 	// Создание бэкапа
-	ErrC backupFile(const std::string& path, const std::string& suffix) const
+	// @param path - путь к файлу
+	// @param suffix - суффикс имени бэкап-файла
+	ErrC backupFile(const std::string& path, const std::string& suffix)
 	{
 		using namespace std::chrono;
 		auto now = system_clock::now();
 		auto ms = duration_cast<milliseconds>(now.time_since_epoch());
-		auto seconds = duration_cast<seconds>(ms);
-		time_t t = seconds.count();
+		auto sec = duration_cast<seconds>(ms);
+		time_t t = sec.count();
 		struct tm tm_buf;
 
 		#ifdef _WIN32
@@ -331,6 +341,9 @@ public:
 	}
 
 	// Запись JSON в файл с повторами
+	// @param path - путь к файлу
+	// @param data - ссылка на структуру
+	// @param retries - количество повторов
 	ErrC writeJSONWithRetry(const std::string& path, const nlohmann::json& data, int retries = 3)
 	{
 		std::string content = data.dump(4); // отступы для читаемости
@@ -356,7 +369,7 @@ public:
 	// @param dataStruct - ссылка на структуру
 	// @return код ошибки ErrC
 	template<typename T>
-	ErrC readJSON(const std::string& path, T& dataStruct)
+	ErrC readJSON(const std::string& path, T& dataStruct) const
 	{
 		std::string text;
 		ErrC err = readText(path, text); // Читаем текст из файла
@@ -431,7 +444,11 @@ std::unique_ptr<iFiles> fileMan();
 //auto fm = fileMan();   // получаем указатель на iFiles
 
 
-
+//! Нужны тесты!!!!!
+//! writeJSONWithRetry
+//! backupFile
+//! readJSONRaw
+//! loadSettings
 
 ////__________________________________________________________________________________________________
  

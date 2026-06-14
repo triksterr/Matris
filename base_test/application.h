@@ -21,10 +21,10 @@ public:
 		std::string userName = "Alumno"; // имя пользователя 
 		std::string comment = "Это базовая версия файла настроек: полей настроек нет.";
 
+		//! Изменения полей отразить здесь: link:application.h:NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE
+	 
 		//TODO ограничение строк по длинне!!!
 	};
-	// Макрос для автоматической сериализации/десериализации
-	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Application::gameSettings, sig, version, level, userName, comment)
 
 public:
 // Удаляем копирование и присваивание
@@ -80,3 +80,5 @@ private:
 	~Application() = default;
 };
 
+// Макрос для автоматической сериализации/десериализации
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Application::gameSettings, sig, version, level, userName, comment)
