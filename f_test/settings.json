@@ -1,7 +1,7 @@
 {
+    "comment": "��� ������� ������ ����� ��������: ����� �������� ���.",
+    "level": 0,
     "sig": "Game Matris settings file JSON. 2026",
-    "version": 0,
-	"level": 0,
-	"userName": "Alumno", 
-	"comment": "Это базовая версия файла настроек: полей настроек нет."
+    "userName": "Alumno",
+    "version": 1
 }

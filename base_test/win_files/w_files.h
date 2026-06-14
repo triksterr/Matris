@@ -16,7 +16,7 @@ class wFiles : public iFiles
 {
 public:
     // Проверка существования файла (и что это именно файл, а не директория)
-    ErrC exists(const std::string& path) const override 
+    ErrC fExists(const std::string& path) const override 
 	{
         std::error_code ec;
         if (!std::filesystem::exists(path, ec)) 
@@ -38,7 +38,7 @@ public:
     ErrC readText(const std::string& path, std::string& text) const override 
 	{
         // Сначала проверяем, что файл существует и является файлом
-        ErrC ec = exists(path);
+        ErrC ec = fExists(path);
         if (ec != ErrC::Ok) return ec;
 
         std::ifstream ifs(path);
@@ -84,7 +84,7 @@ public:
     // Чтение бинарного файла
     ErrC readBinary(const std::string& path, std::vector<uint8_t>& data) const override 
 	{
-        ErrC ec = exists(path);
+        ErrC ec = fExists(path);
         if (ec != ErrC::Ok) return ec;
 
         std::ifstream ifs(path, std::ios::binary);

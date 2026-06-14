@@ -29,12 +29,12 @@ public:
 	virtual ~iFiles() = default;
 
 	// Заргузка настроек
-	ErrC loadSettings(Application::gameSettings& settings)
+	ErrC loadSettings(Application::GameSettings& settings)
 	{
 		const std::string path = "settings.json"; // путь можно параметризовать, если нужно
 
-		// 1. Файл не существует -> запись default
-		if(exists(path) != ErrC::Ok) 
+		// Файл не существует -> запись default
+		if(fExists(path) != ErrC::Ok) 
 		{
 			nlohmann::json default_json = settings;   // сериализуем текущую структуру (она уже содержит значения по умолчанию)
 			ErrC err = writeJSONWithRetry(path, default_json);
@@ -44,7 +44,7 @@ public:
 			return ErrC::Ok;
 		}
 
-		// 2. Чтение и парсинг JSON из файла
+		// Чтение и парсинг JSON из файла
 		nlohmann::json file_json;
 		ErrC read_err = readJSONRaw(path, file_json);
 		if(read_err != ErrC::Ok) 
@@ -59,7 +59,7 @@ public:
 			return ErrC::Ok;
 		}
 
-		// 3. Проверка сигнатуры
+		// Проверка сигнатуры
 		nlohmann::json default_json = settings;
 		if(!file_json.contains("signature") || file_json["signature"] != default_json["signature"]) 
 		{
@@ -71,7 +71,7 @@ public:
 			return ErrC::Ok;
 		}
 
-		// 4. Проверка наличия поля version
+		// Проверка наличия поля version
 		if(!file_json.contains("version")) 
 		{
 			// сброс без бэкапа
@@ -84,7 +84,7 @@ public:
 		int file_version = file_json["version"];
 		int prog_version = default_json["version"];
 
-		// 5. Случай равных версий
+		// Если версии совпадают
 		if(prog_version == file_version) 
 		{
 			// Проверяем каждое поле default_json
@@ -112,10 +112,10 @@ public:
 					return write_err;
 				return ErrC::Ok;
 			}
-			// Все проверки пройдены, загружаем данные в settings
+			// Все проверки пройдены, загружаем данные из файла в settings
 			try 
 			{
-				settings = file_json.get<Application::gameSettings>();
+				settings = file_json.get<Application::GameSettings>();
 			}
 			catch(const nlohmann::json::exception&) 
 			{
@@ -124,7 +124,7 @@ public:
 			return ErrC::Ok;
 		}
 
-		// 6. Программа новее (апгрейд)
+		// Программа новее, чем файл (апгрейд)
 		if(prog_version > file_version) 
 		{
 			nlohmann::json result = default_json; // копия дефолта
@@ -162,7 +162,7 @@ public:
 			// Загружаем result в settings
 			try 
 			{
-				settings = result.get<Application::gameSettings>();
+				settings = result.get<Application::GameSettings>();
 			}
 			catch(const nlohmann::json::exception&) 
 			{
@@ -171,7 +171,7 @@ public:
 			return ErrC::Ok;
 		}
 
-		// 7. Программа старше (даунгрейд)
+		// Файл новее чем программа (даунгрейд)
 		if(prog_version < file_version) 
 		{
 			backupFile(path, ".v" + std::to_string(file_version));
@@ -196,7 +196,7 @@ public:
 				return write_err;
 			try 
 			{
-				settings = result.get<Application::gameSettings>();
+				settings = result.get<Application::GameSettings>();
 			}
 			catch(const nlohmann::json::exception&) 
 			{
@@ -208,17 +208,12 @@ public:
 		return ErrC::Ok;
 	}
 
-
-
 	// Запись настроек, счета, текущего состояния
-	ErrC saveSettings(const Application::gameSettings &settings)
+	ErrC saveSettings(const Application::GameSettings& settings)
 	{
-		// Берем структуру настроек
-		// - преобразeм в JSON
-		// Просто пишем в файл
-		// И смотрим на реакцию - на ошибки
-
-		return NotImplemented; // метод не реализован
+		const std::string path = "settings.json";
+		nlohmann::json j = settings;           // сериализация (макрос NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE)
+		return writeJSONWithRetry(path, j);
 	}
 
 	// Загрузка текущего состояния игры
@@ -346,7 +341,9 @@ public:
 	// @param retries - количество повторов
 	ErrC writeJSONWithRetry(const std::string& path, const nlohmann::json& data, int retries = 3)
 	{
-		std::string content = data.dump(4); // отступы для читаемости
+		// Используем error_handler_t::replace для избежания исключений из-за некорректного UTF-8
+		std::string content = data.dump(4, ' ', false, nlohmann::json::error_handler_t::replace);  // 4 - отступы для читаемости
+
 		for(int attempt = 0; attempt < retries; ++attempt) {
 			ErrC err = writeText(path, content);
 			if(err == ErrC::Ok)
@@ -423,7 +420,7 @@ public:
 	}
 
 	// Проверка существования файла
-	virtual ErrC exists(const std::string& path) const = 0;
+	virtual ErrC fExists(const std::string& path) const = 0;
 
 	// Чтение текста
 	virtual ErrC readText(const std::string& path, std::string& text) const = 0;
@@ -444,19 +441,7 @@ std::unique_ptr<iFiles> fileMan();
 //auto fm = fileMan();   // получаем указатель на iFiles
 
 
-//! Нужны тесты!!!!!
-//! writeJSONWithRetry
-//! backupFile
-//! readJSONRaw
-//! loadSettings
-
 ////__________________________________________________________________________________________________
- 
-// На основании отработанной логики (псевдокод) нужно реализовать метод loadStructure( файл (const std::string& path), структура (например, Application::gameSettings& settings))
-// При этом возможно придется менять метод iFiles::readJSON(), так как он не предполагает загрузку файла с произвольной структурой. 
-// Или реализовать еще один метод loadJSON( файл (const std::string& path), ... ), который создает произвольную структуру, соответствующую данным в загружаемом файле.
-// Чтобы затем можно было сравнивать имена полей, типы и данные структуры из файла и структуры в программе.
- 
 
 //*********************************************************
 // Создаем рабочую структуру настроек по умолчанию.

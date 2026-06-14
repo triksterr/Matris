@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 // file: application.h
 
 #include "game.h"
@@ -8,70 +8,70 @@
 #include "interface\i_files.h"
 
 
-// само приложение
+// СЃР°РјРѕ РїСЂРёР»РѕР¶РµРЅРёРµ
 class Application
 {
 public:
-// Настройки программы и игры
-	struct gameSettings
+	// РќР°СЃС‚СЂРѕР№РєРё РїСЂРѕРіСЂР°РјРјС‹ Рё РёРіСЂС‹
+	struct GameSettings
 	{
 		std::string sig = "Game Matris settings file JSON. 2026";
-		uint32_t version = 1; //! ++ при любом изменении структуры
-		uint32_t level = 0; // уровень сложности
-		std::string userName = "Alumno"; // имя пользователя 
-		std::string comment = "Это базовая версия файла настроек: полей настроек нет.";
+		uint32_t version = 1; //! ++ РїСЂРё Р»СЋР±РѕРј РёР·РјРµРЅРµРЅРёРё СЃС‚СЂСѓРєС‚СѓСЂС‹
+		uint32_t level = 0; // СѓСЂРѕРІРµРЅСЊ СЃР»РѕР¶РЅРѕСЃС‚Рё (РЅР°С‡Р°Р»СЊРЅС‹Р№/С‚РµРєСѓС‰РёР№)
+		std::string userName = "Alumno"; // РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ 
+		std::string comment = "Р­С‚Рѕ Р±Р°Р·РѕРІР°СЏ РІРµСЂСЃРёСЏ С„Р°Р№Р»Р° РЅР°СЃС‚СЂРѕРµРє: РїРѕР»РµР№ РЅР°СЃС‚СЂРѕРµРє РЅРµС‚.";
 
-		//! Изменения полей отразить здесь: link:application.h:NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE
-	 
-		//TODO ограничение строк по длинне!!!
-	};
+		//! РР·РјРµРЅРµРЅРёСЏ РїРѕР»РµР№ РѕС‚СЂР°Р·РёС‚СЊ Р·РґРµСЃСЊ: link:application.h:NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE
+
+		//TODO РѕРіСЂР°РЅРёС‡РµРЅРёРµ СЃС‚СЂРѕРє РїРѕ РґР»РёРЅРЅРµ!!!
+	};//! gameSettings;
 
 public:
-// Удаляем копирование и присваивание
+// РЈРґР°Р»СЏРµРј РєРѕРїРёСЂРѕРІР°РЅРёРµ Рё РїСЂРёСЃРІР°РёРІР°РЅРёРµ
 	Application(const Application& other) = delete;
 	Application& operator=(const Application& other) = delete;
-	// Получение экземпляра синглтона
-	static Application& get()
+	// РџРѕР»СѓС‡РµРЅРёРµ СЌРєР·РµРјРїР»СЏСЂР° СЃРёРЅРіР»С‚РѕРЅР°
+	static Application& get() //! РІС‹РЅРµСЃС‚Рё РІ CPP С„Р°Р№Р»!
 	{
 		static Application instance;
 		return instance;
 	}
 
-	// Запуск игры
-	// @param mode - режим запуска
-	// @return успех/ошибка, ...
+	// Р—Р°РїСѓСЃРє РёРіСЂС‹
+	// @param mode - СЂРµР¶РёРј Р·Р°РїСѓСЃРєР°
+	// @return СѓСЃРїРµС…/РѕС€РёР±РєР°, ...
 	ErrC start(int mode = 0)
 	{
-		// TODO Работа с файлом настроек
+		// TODO Р Р°Р±РѕС‚Р° СЃ С„Р°Р№Р»РѕРј РЅР°СЃС‚СЂРѕРµРє
 		// https://chatgpt.com/c/6a1b0ab2-720c-83eb-ab97-542d8f0eeefe
 		// Link:.\interface\i_files.h
 		// 
 
 		
-		// Пользовательские настройки (из файла/default - и вручную из экрана настроек)
-		// Генерация базовых параметров игры
+		// РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёРµ РЅР°СЃС‚СЂРѕР№РєРё (РёР· С„Р°Р№Р»Р°/default - Рё РІСЂСѓС‡РЅСѓСЋ РёР· СЌРєСЂР°РЅР° РЅР°СЃС‚СЂРѕРµРє)
+		// Р“РµРЅРµСЂР°С†РёСЏ Р±Р°Р·РѕРІС‹С… РїР°СЂР°РјРµС‚СЂРѕРІ РёРіСЂС‹
 
 
 
 
-		// Инициализируем параметры и правила игры в соответствии с текущими/заданными настройками игры
+		// РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїР°СЂР°РјРµС‚СЂС‹ Рё РїСЂР°РІРёР»Р° РёРіСЂС‹ РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ С‚РµРєСѓС‰РёРјРё/Р·Р°РґР°РЅРЅС‹РјРё РЅР°СЃС‚СЂРѕР№РєР°РјРё РёРіСЂС‹
 
 		// Link:C:\Users\Alex\Documents\prog\matris\base_test\doc\game_loop.md
 
 
 
-		// Запускаем саму игру с передачей настроек
+		// Р—Р°РїСѓСЃРєР°РµРј СЃР°РјСѓ РёРіСЂСѓ СЃ РїРµСЂРµРґР°С‡РµР№ РЅР°СЃС‚СЂРѕРµРє
 		//Game::get().start();
 
 		//RETURN_ERROR_SIMPLE(Game::get().start(), "Game::get().start()");
 
-		// Игра закончена: победа/поражение
+		// РРіСЂР° Р·Р°РєРѕРЅС‡РµРЅР°: РїРѕР±РµРґР°/РїРѕСЂР°Р¶РµРЅРёРµ
 
-		// Новая игра?
+		// РќРѕРІР°СЏ РёРіСЂР°?
 
-		// Выход
+		// Р’С‹С…РѕРґ
 
-		return PartImplemented; // все нормально
+		return PartImplemented; // РІСЃРµ РЅРѕСЂРјР°Р»СЊРЅРѕ
 	}
 
 private:
@@ -80,5 +80,5 @@ private:
 	~Application() = default;
 };
 
-// Макрос для автоматической сериализации/десериализации
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Application::gameSettings, sig, version, level, userName, comment)
+// РњР°РєСЂРѕСЃ РґР»СЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕР№ СЃРµСЂРёР°Р»РёР·Р°С†РёРё/РґРµСЃРµСЂРёР°Р»РёР·Р°С†РёРё
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Application::GameSettings, sig, version, level, userName, comment)
