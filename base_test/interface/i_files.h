@@ -10,8 +10,7 @@
 #include <sstream>
 
 
-#include "json.hpp"
-//#include "..\..\..\!lib\err\err_codes.h"
+#include "json.hpp" // Используем: https://github.com/nlohmann/json  version 3.12.0
 #include "..\..\..\!lib\err\err.h"
 #include "..\application.h"
 
@@ -56,7 +55,7 @@ public:
 			if(write_err != ErrC::Ok)
 				return write_err;
 			// settings остаётся дефолтным
-			return ErrC::Ok;
+			return ErrC::ResetToDefault;
 		}
 
 		// Проверка сигнатуры
@@ -68,7 +67,7 @@ public:
 			ErrC write_err = writeJSONWithRetry(path, default_json);
 			if(write_err != ErrC::Ok)
 				return write_err;
-			return ErrC::Ok;
+			return ErrC::ResetToDefault;
 		}
 
 		// Проверка наличия поля version
@@ -110,7 +109,7 @@ public:
 				ErrC write_err = writeJSONWithRetry(path, default_json);
 				if(write_err != ErrC::Ok)
 					return write_err;
-				return ErrC::Ok;
+				return ErrC::ResetToDefault;
 			}
 			// Все проверки пройдены, загружаем данные из файла в settings
 			try 
@@ -119,7 +118,7 @@ public:
 			}
 			catch(const nlohmann::json::exception&) 
 			{
-				return ErrC::JsonIncorrectStrucrure;
+				return ErrC::JsonIncorrectStructure;
 			}
 			return ErrC::Ok;
 		}
@@ -143,7 +142,7 @@ public:
 						ErrC write_err = writeJSONWithRetry(path, default_json);
 						if(write_err != ErrC::Ok)
 							return write_err;
-						return ErrC::Ok;
+						return ErrC::ResetToDefault;
 					}
 				}
 				else 
@@ -152,7 +151,7 @@ public:
 					ErrC write_err = writeJSONWithRetry(path, default_json);
 					if(write_err != ErrC::Ok)
 						return write_err;
-					return ErrC::Ok;
+					return ErrC::ResetToDefault;
 				}
 			}
 			// Запись обновлённой структуры
@@ -166,7 +165,7 @@ public:
 			}
 			catch(const nlohmann::json::exception&) 
 			{
-				return ErrC::JsonIncorrectStrucrure;
+				return ErrC::JsonIncorrectStructure;
 			}
 			return ErrC::Ok;
 		}
@@ -188,7 +187,7 @@ public:
 					ErrC write_err = writeJSONWithRetry(path, default_json);
 					if(write_err != ErrC::Ok)
 						return write_err;
-					return ErrC::Ok;
+					return ErrC::ResetToDefault;
 				}
 			}
 			ErrC write_err = writeJSONWithRetry(path, result);
@@ -200,7 +199,7 @@ public:
 			}
 			catch(const nlohmann::json::exception&) 
 			{
-				return ErrC::JsonIncorrectStrucrure;
+				return ErrC::JsonIncorrectStructure;
 			}
 			return ErrC::Ok;
 		}
@@ -212,7 +211,7 @@ public:
 	ErrC saveSettings(const Application::GameSettings& settings)
 	{
 		const std::string path = "settings.json";
-		nlohmann::json j = settings;           // сериализация (макрос NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE)
+		nlohmann::json j = settings; // сериализация (макрос NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE - для стуктуры GameSettings)
 		return writeJSONWithRetry(path, j);
 	}
 
@@ -254,7 +253,7 @@ public:
 		// читаем JSON
 		return NotImplemented; // метод не реализован
 	}
-
+	
 	// Загрузка музыки - ????
 	ErrC loadMusic()
 	{
@@ -273,8 +272,14 @@ public:
 		return NotImplemented; // метод не реализован
 	}
 
-//!protected: // Нижний уровень  _________________________________________________________
- 
+friend int main(); //! для тестирования!
+friend void testSaveSettings(iFiles* fm);
+friend void testBackupFile(iFiles* fm);
+friend void testReadJSONRaw(iFiles* fm);
+friend void testLoadSettingsScenarios(iFiles* fm);
+
+protected: // Нижний уровень  _________________________________________________________
+	
 	// Чтение любого JSON в структуру nlohmann::json
 	// @param path - путь к файлу
 	// @param outJson - ссылка на структуру
@@ -303,7 +308,7 @@ public:
 	// Создание бэкапа
 	// @param path - путь к файлу
 	// @param suffix - суффикс имени бэкап-файла
-	ErrC backupFile(const std::string& path, const std::string& suffix)
+	virtual ErrC backupFile(const std::string& path, const std::string& suffix)
 	{
 		using namespace std::chrono;
 		auto now = system_clock::now();
@@ -330,12 +335,11 @@ public:
 		}
 		else 
 		{
-		 // Если не удалось прочитать, бэкап не делаем, но и не мешаем работе
-			return ErrC::Ok;
+			return ErrC::Ok; // Если не удалось прочитать, бэкап не делаем, но и не мешаем работе
 		}
 	}
 
-	// Запись JSON в файл с повторами
+	// Запись JSON в файл с несколькими повторами
 	// @param path - путь к файлу
 	// @param data - ссылка на структуру
 	// @param retries - количество повторов
@@ -344,7 +348,8 @@ public:
 		// Используем error_handler_t::replace для избежания исключений из-за некорректного UTF-8
 		std::string content = data.dump(4, ' ', false, nlohmann::json::error_handler_t::replace);  // 4 - отступы для читаемости
 
-		for(int attempt = 0; attempt < retries; ++attempt) {
+		for(int attempt = 0; attempt < retries; ++attempt) 
+		{
 			ErrC err = writeText(path, content);
 			if(err == ErrC::Ok)
 				return ErrC::Ok;
@@ -386,7 +391,7 @@ public:
 		}
 		catch(const nlohmann::json::type_error&)
 		{
-			return ErrC::JsonIncorrectStrucrure;  // JSON не соответствует структуре
+			return ErrC::JsonIncorrectStructure;  // JSON не соответствует структуре
 		}
 		catch(...)
 		{
@@ -418,6 +423,8 @@ public:
 			return ErrC::UnknownError;
 		}
 	}
+
+	// Специфические для конкретной OS реализации:
 
 	// Проверка существования файла
 	virtual ErrC fExists(const std::string& path) const = 0;
