@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "cube.h"
-#include "figure.h"
+#include "..\cube.h"
+#include "..\figure.h"
 
 // Интерфейс вывода на экран
 class iRender

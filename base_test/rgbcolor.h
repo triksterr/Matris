@@ -13,7 +13,7 @@ public:
 	RGBcolor() = default;
 
 	// конструктор
-	RGBcolor(int r, int g, int b) : r(r), g(g), b(b) {}
+	constexpr RGBcolor(int r, int g, int b) : r(r), g(g), b(b) {}
 
 	// copy конструктор
 	RGBcolor(const RGBcolor& other) : r(other.r), g(other.g), b(other.b) {}

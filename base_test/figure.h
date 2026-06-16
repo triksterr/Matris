@@ -179,6 +179,22 @@ public:
 		return result;
 	}
 
+	// Константный метод доступа к кубикам фигуры
+	const std::vector<Cube*>& getCubes() const
+	{
+		return cubes;
+	}
+
+	// Возвращает кубики (итератор)
+	std::vector<Cube*>::const_iterator begin() const
+	{
+		return cubes.begin();
+	}
+	std::vector<Cube*>::const_iterator end() const
+	{
+		return cubes.end();
+	}
+
 	// Передача владения слоям:
 	// после вызова figure больше не владеет кубиками
 	// и не пытается их удалить в деструкторе.

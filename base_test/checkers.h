@@ -1,7 +1,7 @@
 #pragma once
 
 #include "point.h"
-#include "err.h"
+#include "..\..\!lib\err\err.h"
 
 #include "cube.h"
 #include "figure.h"

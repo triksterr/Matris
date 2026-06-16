@@ -135,6 +135,7 @@
     <ClInclude Include="application.h" />
     <ClInclude Include="checkers.h" />
     <ClInclude Include="cube.h" />
+    <ClInclude Include="win_cons\c_render.h" />
     <None Include="doc\class.md" />
     <None Include="doc\game_loop.md" />
     <None Include="doc\todo.h">
