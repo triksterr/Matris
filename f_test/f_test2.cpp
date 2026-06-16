@@ -10,12 +10,6 @@
 #include "..\base_test\interface\i_files.h"
 #include "..\base_test\application.h"
 
-//! **********************************************************
-
-//! 2. Проверить, почему не проходят тесты 
-
-//! **********************************************************
-
 namespace fs = std::filesystem;
 
 // Вспомогательные функции
@@ -58,6 +52,9 @@ std::string readFileToString(const std::string& path)
 //}
 
 // Улучшенная проверка существования бэкапа (ищет по маске "settings.json.*suffix")
+// @param basePath - базовый путь к бекапу (без суффикса)
+// @param suffix - суффикс бекапа
+// @return true, если бекап с указанным суффиксом существует
 bool backupWithSuffixExists(const std::string& basePath, const std::string& suffix)
 {
     fs::path p(basePath);
@@ -156,10 +153,10 @@ void testLoadSettingsScenarios(iFiles* fm)
     // Базовая структура с дефолтными значениями (версия 1)
     Application::GameSettings defaultSet;
     defaultSet.version = 1;
-    defaultSet.sig = "Game Matris settings file JSON. 2026";
-    defaultSet.userName = "Alumno";
-    defaultSet.level = 0;
-    defaultSet.comment = "Это базовая версия файла настроек: полей настроек нет.";
+    defaultSet.sig = "Default sig.";
+    defaultSet.userName = "Alumno_0";
+    defaultSet.level = 2;
+    defaultSet.comment = "Тестовый дефолт настроек.";
 
     std::cout << "[Test 4.1]\n";
     // ---- 1. Файл отсутствует - должен создаться дефолт ----
@@ -168,23 +165,24 @@ void testLoadSettingsScenarios(iFiles* fm)
 
     Application::GameSettings settings = defaultSet; // копия
     ErrC err = fm->loadSettings(settings);
-    assert(err == ErrC::Ok);
+    assert(err == ErrC::SetToDefault);
     assert(fileExists("settings.json"));
-    assert(settings.userName == "Alumno");
+    assert(settings.userName == "Alumno_0");
+    assert(settings.sig == "Default sig.");
     std::cout << "  Case 1 (no file) PASS\n\n";
 
     // ---- 2. Корректный файл с версией 1 - загрузка ----
     std::cout << "[Test 4.2]\n";
     settings.userName = "Player1";
-    settings.level = 2;
+    settings.level = 10;
     err = fm->saveSettings(settings);
     assert(err == ErrC::Ok);
     Application::GameSettings loaded;
     loaded = defaultSet; // сбрасываем
     err = fm->loadSettings(loaded);
-    assert(err == ErrC::ResetToDefault);
-    //!assert(loaded.userName == "Player1");
-    assert(loaded.level == 0);
+    assert(err == ErrC::Ok);
+    assert(loaded.userName == "Player1");
+    assert(loaded.level == 10);
     std::cout << "  Case 2 (correct file) PASS\n\n";
 
     // ---- 3. Отсутствует сигнатура -> бэкап .bad_sig и дефолт ----
@@ -196,12 +194,12 @@ void testLoadSettingsScenarios(iFiles* fm)
     std::ofstream("settings.json") << badSig.dump(4);
     settings = defaultSet;
     err = fm->loadSettings(settings);
-    assert(err == ErrC::ResetToDefault);
-    assert(settings.userName == "Alumno"); // загрузился дефолт
+    assert(err == ErrC::SetToDefault);
+    assert(settings.userName == "Alumno_0"); // загрузился дефолт
     assert(backupWithSuffixExists("settings.json", ".bad_sig"));
     std::cout << "  Case 3 (missing signature) PASS\n\n";
 
-    // ---- 4. Отсутствует поле version -> сброс без бэкапа ----
+    // ---- 4. Отсутствует поле version -> сброс с бэкапом ----
     std::cout << "[Test 4.4]\n";
     nlohmann::json noVer;
     noVer["sig"] = defaultSet.sig;
@@ -209,8 +207,8 @@ void testLoadSettingsScenarios(iFiles* fm)
     std::ofstream("settings.json") << noVer.dump(4);
     settings = defaultSet;
     err = fm->loadSettings(settings);
-    assert(err == ErrC::ResetToDefault);
-    assert(settings.userName == "Alumno");
+    assert(err == ErrC::SetToDefault);
+    assert(settings.userName == "Alumno_0");
     // Проверяем, что бэкап с .bad_sig не появился (нового нет)
     // Для простоты проверим, что нет файла с суффиксом .bad_sig, который создан после времени записи
     std::cout << "  Case 4 (missing version) PASS\n\n";
@@ -226,9 +224,9 @@ void testLoadSettingsScenarios(iFiles* fm)
     std::ofstream("settings.json") << typeErr.dump(4);
     settings = defaultSet;
     err = fm->loadSettings(settings);
-    assert(err == ErrC::ResetToDefault);
-    assert(settings.level == 0); // дефолт
-    //!assert(backupWithSuffixExists("settings.json", ".type_mismatch"));
+    assert(err == ErrC::SetToDefault);
+    assert(settings.level == 2); // дефолт
+    assert(backupWithSuffixExists("settings.json", ".type_mismatch"));
     std::cout << "  Case 5 (type mismatch) PASS\n\n";
 
     // ---- 6. Апгрейд (программа новее) с лишним полем -> сброс без бэкапа ----
@@ -245,9 +243,9 @@ void testLoadSettingsScenarios(iFiles* fm)
     newDefault.version = 2;
     settings = newDefault; // передаём дефолт с версией 2
     err = fm->loadSettings(settings);
-    assert(err == ErrC::ResetToDefault);
+    assert(err == ErrC::SetToDefault);
     assert(settings.version == 2);
-    assert(settings.userName == "Alumno"); // дефолт, т.к. сброс
+    assert(settings.userName == "Alumno_0"); // дефолт, т.к. сброс
     // Бэкап не должен быть создан
     std::cout << "  Case 6 (upgrade with extra field) PASS\n\n";
 
@@ -256,16 +254,17 @@ void testLoadSettingsScenarios(iFiles* fm)
     // default версия 2, файл версия 1 без поля comment
     nlohmann::json missing;
     missing["sig"] = defaultSet.sig;
-    missing["version"] = 1;
-    missing["userName"] = "UserFromFile";
-    missing["level"] = 3;
+    missing["version"] = 1; // должна обновиться
+    missing["userName"] = "UserFromFile"; // должен остаться
+    missing["level"] = 1; // должен остаться
     std::ofstream("settings.json") << missing.dump(4);
+    newDefault.version = 2;
     settings = newDefault; // версия 2
     err = fm->loadSettings(settings);
-    assert(err == ErrC::ResetToDefault);
-    assert(settings.version == 2);
-    //!assert(settings.userName == "UserFromFile");
-    //!assert(settings.level == 3);
+    assert(err == ErrC::Ok);
+    assert(settings.version == 2); // новая
+    assert(settings.userName == "UserFromFile"); // старое
+    assert(settings.level == 1); // старый
     assert(settings.comment == newDefault.comment); // добавлено из дефолта
     // Прочитаем файл, он должен содержать все поля версии 2
     nlohmann::json written;
@@ -273,7 +272,7 @@ void testLoadSettingsScenarios(iFiles* fm)
     assert(written.contains("comment"));
     std::cout << "  Case 7 (upgrade with missing fields) PASS\n\n";
 
-    // ---- 8. Даунгрейд (программа старше) -> бэкап .vN, загрузка совместимых полей ----
+    // ---- 8. Даунгрейд (программа старше) -> бэкап .vN и загрузка совместимых полей ----
     std::cout << "[Test 4.8]\n";
     // default версия 1, файл версия 2 с новым полем
     nlohmann::json newer;
@@ -282,15 +281,17 @@ void testLoadSettingsScenarios(iFiles* fm)
     newer["userName"] = "NewUser";
     newer["level"] = 7;
     newer["newField"] = "new";
+    newer["comment"] = "new comment";
     std::ofstream("settings.json") << newer.dump(4);
-    settings = defaultSet; // версия 1
+    settings = defaultSet; 
+    settings.version = 1; // версия 1 - должна сохраниться
     err = fm->loadSettings(settings);
-    assert(err == ErrC::ResetToDefault);
-    assert(settings.version == 1);
-    //!assert(settings.userName == "NewUser");   // загрузилось
-    //!assert(settings.level == 7);
+    assert(err == ErrC::Ok);
+    assert(settings.version == 1); // должна сохраниться
+    assert(settings.userName == "NewUser");   // загрузилось из файла
+    assert(settings.level == 7);
     // Поле newField проигнорировано
-    //!assert(backupWithSuffixExists("settings.json", ".v2")); // бэкап с версией
+    assert(backupWithSuffixExists("settings.json", ".v2")); // бэкап с версией
     std::cout << "  Case 8 (downgrade) PASS\n\n";
 
     // ---- 9. Повреждённый JSON -> бэкап .corrupted, сброс ----
@@ -298,8 +299,8 @@ void testLoadSettingsScenarios(iFiles* fm)
     std::ofstream("settings.json") << "{ this is not json";
     settings = defaultSet;
     err = fm->loadSettings(settings);
-    assert(err == ErrC::ResetToDefault);
-    assert(settings.userName == "Alumno");
+    assert(err == ErrC::SetToDefault);
+    assert(settings.userName == "Alumno_0");
     assert(backupWithSuffixExists("settings.json", ".corrupted"));
     std::cout << "  Case 9 (corrupted JSON) PASS\n";
 

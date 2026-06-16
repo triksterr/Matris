@@ -1,6 +1,6 @@
-- реализация файловых операций Windows
-
-- файловый интерфейс с декодированием
+- файловый интерфейс
+	- логику работы в Application с файлами
+file://C:\Users\Alex\Documents\prog\matris\base_test\doc\Curr_AI_TODO.md
 
 - "восстановить" - заставить работать новый рендер в cons_test
 

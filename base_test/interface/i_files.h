@@ -19,15 +19,25 @@
 //универсальный доступ через интерфейс
 //auto fm = fileMan();   // получаем указатель на iFiles
 
-//! Убрать комментарий внизу: //!protected: // Нижний уровень  _________________________________________________________
-
 // Интерфейс работы с файлами
+//! Singleton???
 class iFiles
 {
 public:
+	//! Удалить друзей после тестирования!
+	friend int main(); //! для тестирования!
+	friend void testSaveSettings(iFiles* fm);
+	friend void testBackupFile(iFiles* fm);
+	friend void testReadJSONRaw(iFiles* fm);
+	friend void testLoadSettingsScenarios(iFiles* fm);
+	//! **********************************************
+
 	virtual ~iFiles() = default;
 
 	// Заргузка настроек
+	//! При расхождении версий программы и файла настроек - искать бэкапы с подходящей версией и предлагать загрузить их, сделав бэкап текущих настроек.
+	//! Искать самый свежий бэкап с этой версией. При успешной загрузке - удалять все бэкапы с этой версией. Если нет - этот удалять  и, пробовать загрузть чуть более старый. Если ни один не получается загрузить - оставляем текущие настройки.
+	//! После загрузки и сохранения основного файла настроек - загруженный бэкап удалить.
 	ErrC loadSettings(Application::GameSettings& settings)
 	{
 		const std::string path = "settings.json"; // путь можно параметризовать, если нужно
@@ -40,7 +50,7 @@ public:
 			if(err != ErrC::Ok)
 				return err;
 			// settings уже является дефолтным, ничего менять не нужно
-			return ErrC::Ok;
+			return ErrC::SetToDefault;
 		}
 
 		// Чтение и парсинг JSON из файла
@@ -55,29 +65,30 @@ public:
 			if(write_err != ErrC::Ok)
 				return write_err;
 			// settings остаётся дефолтным
-			return ErrC::ResetToDefault;
+			return ErrC::SetToDefault;
 		}
 
 		// Проверка сигнатуры
 		nlohmann::json default_json = settings;
-		if(!file_json.contains("signature") || file_json["signature"] != default_json["signature"]) 
+		if(!file_json.contains("sig") || file_json["sig"] != default_json["sig"]) 
 		{
 			// бэкап
 			backupFile(path, ".bad_sig");
 			ErrC write_err = writeJSONWithRetry(path, default_json);
 			if(write_err != ErrC::Ok)
 				return write_err;
-			return ErrC::ResetToDefault;
+			return ErrC::SetToDefault;
 		}
 
 		// Проверка наличия поля version
 		if(!file_json.contains("version")) 
 		{
-			// сброс без бэкапа
+			// бэкап
+			backupFile(path, ".no_version");
 			ErrC write_err = writeJSONWithRetry(path, default_json);
 			if(write_err != ErrC::Ok)
 				return write_err;
-			return ErrC::Ok;
+			return ErrC::SetToDefault;
 		}
 
 		int file_version = file_json["version"];
@@ -109,7 +120,7 @@ public:
 				ErrC write_err = writeJSONWithRetry(path, default_json);
 				if(write_err != ErrC::Ok)
 					return write_err;
-				return ErrC::ResetToDefault;
+				return ErrC::SetToDefault;
 			}
 			// Все проверки пройдены, загружаем данные из файла в settings
 			try 
@@ -127,14 +138,14 @@ public:
 		if(prog_version > file_version) 
 		{
 			nlohmann::json result = default_json; // копия дефолта
-			// Проходим по всем полям файла
-			for(auto& [key, value] : file_json.items()) 
+			for(auto& [key, value] : file_json.items())	// Проходим по всем полям файла 
 			{
 				if(result.contains(key)) 
 				{
-					if(value.type() == result[key].type()) 
+					if(value.type() == result[key].type())
 					{
-						result[key] = value;
+						if(key != "version")
+							result[key] = value;
 					}
 					else 
 					{
@@ -142,16 +153,16 @@ public:
 						ErrC write_err = writeJSONWithRetry(path, default_json);
 						if(write_err != ErrC::Ok)
 							return write_err;
-						return ErrC::ResetToDefault;
+						return ErrC::SetToDefault;
 					}
 				}
 				else 
 				{
-				 // Лишнее поле в старом файле -> ошибка БЕЗ бэкапа
+					// Лишнее поле в старом файле -> ошибка БЕЗ бэкапа
 					ErrC write_err = writeJSONWithRetry(path, default_json);
 					if(write_err != ErrC::Ok)
 						return write_err;
-					return ErrC::ResetToDefault;
+					return ErrC::SetToDefault;
 				}
 			}
 			// Запись обновлённой структуры
@@ -179,7 +190,8 @@ public:
 			{
 				if(file_json.contains(key) && file_json[key].type() == default_val.type()) 
 				{
-					result[key] = file_json[key];
+					if(key != "version")
+						result[key] = file_json[key];
 				}
 				else if(file_json.contains(key)) 
 				{
@@ -187,7 +199,7 @@ public:
 					ErrC write_err = writeJSONWithRetry(path, default_json);
 					if(write_err != ErrC::Ok)
 						return write_err;
-					return ErrC::ResetToDefault;
+					return ErrC::SetToDefault;
 				}
 			}
 			ErrC write_err = writeJSONWithRetry(path, result);
@@ -218,9 +230,18 @@ public:
 	// Загрузка текущего состояния игры
 	ErrC loadState()
 	{
-		// читаем JSON
+		// Сигнатура
+		// Версия
+		// Типы и количество полей
+		// 
+		// Логика:
+		// 1. сигнатуры или!!! версии нет - бэкап и дефолт
+		//	если нет и версии и сигнатуоы - без бэкапа дефолт
+		// 2. поля не с теми именами и типами - бэкап и дефолт
+		// При даунгрейде (файл новее) - бэкап и дефолт
+		// При апгрейде (программа новее) - без бэкапа, с дополнением полей + версию обновить!
 
-		//! логику!
+		//! искать бэкапы с подходящей версией и предлагать загрузить их, сделав бэкап текущих настроек.
 
 		return NotImplemented; // метод не реализован
 	}
@@ -271,12 +292,6 @@ public:
 	{
 		return NotImplemented; // метод не реализован
 	}
-
-friend int main(); //! для тестирования!
-friend void testSaveSettings(iFiles* fm);
-friend void testBackupFile(iFiles* fm);
-friend void testReadJSONRaw(iFiles* fm);
-friend void testLoadSettingsScenarios(iFiles* fm);
 
 protected: // Нижний уровень  _________________________________________________________
 	
@@ -467,122 +482,15 @@ std::unique_ptr<iFiles> fileMan();
 // Если версия программы больше версии файла:
 		// сравниваем поля:
 		// Если полей в файле больше - ошибка -> создаем структуру по умолчанию и пишем в файл.
-		// Если полей в файле меньше -> создаем структуру по умолчанию и сверху записваем поля из файла, которые в нем есть, проверяя их типы  (в дальнейшем - будем смотреть на зависимости, если они будут)
+		// Если полей в файле меньше -> создаем структуру по умолчанию и сверху записваем поля из файла, которые в нем есть, проверяя их типы - кроме версии: она должна обновится! (в дальнейшем - будем смотреть на зависимости, если они будут)
 		// пишем структуру в файл
 //
 // Если версия программы меньше версии файла:
 		// делаем бэкап файла с указанием в имени файла версии
-		// создаем структуру по умолчанию и записываем в структуру те поля из файла, которые ей соответствуют, проверяя их типы (в дальнейшем - будем смотреть на зависимости, если они будут)
+		// создаем структуру по умолчанию и записываем в структуру те поля из файла, которые ей соответствуют, кроме версии!, проверяя их типы (в дальнейшем - будем смотреть на зависимости, если они будут)
 		// пишем структуру в файл
 //
 // При несовпадении типов полей - ошибка -> создаем структуру по умолчанию и пишем в файл.
 //***********************************************************
 
-
-// Псевдокод обработчика чтения настроек.
-
 // Используем: https://github.com/nlohmann/json  version 3.12.0
-
-//def load_config(file_path, default_config) :
-//	# default_config : {"signature": "...", "version" : N, ...}
-//
-//# 1. Файл не существует->запись default
-//if not file_exists(file_path) :
-//	write_json_with_retry(file_path, default_config)
-//	return default_config
-//
-//	# 2. Чтение и парсинг
-//	try :
-//	raw = read_file(file_path)
-//	file_config = parse_json(raw)
-//	except(IOError, JSONDecodeError) :
-//	backup(file_path, ".corrupted")
-//	write_json_with_retry(file_path, default_config)
-//	return default_config
-//
-//	# 3. Проверка сигнатуры(всегда)
-//	if "signature" not in file_config or file_config["signature"] != default_config["signature"]:
-//backup(file_path, ".bad_sig")
-//write_json_with_retry(file_path, default_config)
-//return default_config
-//
-//# 4. Проверка наличия поля version(ошибка->дефолт БЕЗ бэкапа)
-//if "version" not in file_config :
-//write_json_with_retry(file_path, default_config)
-//return default_config
-//
-//file_version = file_config["version"]
-//prog_version = default_config["version"]
-//
-//# 5. Случай равных версий
-//if prog_version == file_version:
-//for key, default_value in default_config.items() :
-//	if key not in file_config :
-//file_config[key] = default_value          # добавить отсутствующее поле
-//	else :
-//		if type(file_config[key]) != type(default_value) :
-//			backup(file_path, ".type_mismatch")
-//			write_json_with_retry(file_path, default_config)
-//			return default_config
-//			return file_config
-//
-//			# 6. Программа новее(апгрейд)
-//			elif prog_version > file_version:
-//result = default_config.copy()
-//for key, value in file_config.items() :
-//	if key in result :
-//if type(value) == type(result[key]) :
-//	result[key] = value
-//else :
-//	backup(file_path, ".type_mismatch")
-//	write_json_with_retry(file_path, default_config)
-//	return default_config
-//	else:
-//# Лишнее поле в старом файле->ошибка БЕЗ бэкапа
-//write_json_with_retry(file_path, default_config)
-//return default_config
-//write_json_with_retry(file_path, result)
-//return result
-//
-//# 7. Программа старше(даунгрейд)
-//		else:  # prog_version < file_version
-//			backup(file_path, f".v{file_version}")
-//			result = default_config.copy()
-//			for key in default_config.keys() :
-//				if key in file_config and type(file_config[key]) == type(default_config[key]) :
-//					result[key] = file_config[key]
-//					elif key in file_config :
-//# несовпадение типов : запись default (бэкап уже сделан)
-//write_json_with_retry(file_path, default_config)
-//return default_config
-//write_json_with_retry(file_path, result)
-//return result
-//
-//
-//# Функция записи с повторами(3 попытки, последняя с паузой 1 сек)
-//def write_json_with_retry(file_path, data, retries = 3) :
-//	for attempt in range(retries) :
-//		try :
-//		tmp_path = file_path + ".tmp"
-//		with open(tmp_path, 'w') as f :
-//json.dump(data, f)
-//os.replace(tmp_path, file_path)   # атомарное переименование
-//return
-//except(IOError, OSError) :
-//	if attempt == retries - 1 :
-//		raise   # последняя попытка не удалась – ошибка наверх
-//		if attempt == retries - 2:        # предпоследняя попытка – пауза 1 сек
-//			time.sleep(1)
-//		else:
-//time.sleep(0.1)
-//
-//
-//# Функция бэкапа с уникальным именем(timestamp + суффикс)
-//def backup(file_path, suffix) :
-//	timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-//	backup_path = f"{file_path}.{timestamp}{suffix}"
-//	# Копируем даже повреждённый файл(если read error – просто не копируем)
-//	try :
-//	copy_file(file_path, backup_path)
-//	except :
-//	pass   # не мешаем основной логике, бэкап не критичен

@@ -60,7 +60,7 @@ int main()
     testStr settings2;
 
     // проверка существования
-    if(fm->exists("settings.json") != ErrC::Ok)
+    if(fm->fExists("settings.json") != ErrC::Ok)
         std::cout << "JSON File not exists\n";
 
     // чтение JSON в структуру2
@@ -80,7 +80,7 @@ int main()
      
     // чтение избыточного JSON (в файле больше полей) - более новая версия - но надо как-то читать все поля?
     std::cout << "--- JSON Overflow Test (more fields) ---\n";
-    if(fm->exists("settings1.json") != ErrC::Ok)
+    if(fm->fExists("settings1.json") != ErrC::Ok)
         std::cout << "JSON 1 File not exists\n";
     else
     {
@@ -91,7 +91,7 @@ int main()
 
     // в файле что-то пропало, новое появилось - ошибка!
 	std::cout << "--- JSON Overflow Test (new field) ---\n";
-	if(fm->exists("settings2.json") != ErrC::Ok)
+	if(fm->fExists("settings2.json") != ErrC::Ok)
 		std::cout << "JSON 2 File not exists\n";
     else
     {
@@ -102,7 +102,7 @@ int main()
 
     // чтение недостаточного JSON (меньше полей) - старая версия - надо как-то считать то, что есть?
 	std::cout << "--- JSON Underflow Test (less fields) ---\n";
-	if(fm->exists("settings3.json") != ErrC::Ok)
+	if(fm->fExists("settings3.json") != ErrC::Ok)
 		std::cout << "JSON 3 File not exists\n";
     else
     {
@@ -113,7 +113,7 @@ int main()
 
     // чтение не с теми полями (другие названия полей) - ошибка!
 	std::cout << "--- JSON Overflow Test (wrong fields names) ---\n";
-	if(fm->exists("settings4.json") != ErrC::Ok)
+	if(fm->fExists("settings4.json") != ErrC::Ok)
 		std::cout << "JSON 4 File not exists\n";
     else
     {
@@ -124,7 +124,7 @@ int main()
 
     // чтение не с теми полями (другие типы данных полей) - ошибка!
 	std::cout << "--- JSON Overflow Test (wrong fields types) ---\n";
-	if(fm->exists("settings5.json") != ErrC::Ok)
+	if(fm->fExists("settings5.json") != ErrC::Ok)
 		std::cout << "JSON 5 File not exists\n";
     else
     {
@@ -137,7 +137,7 @@ int main()
     // --- Файловые операции - Тесты пройдены!
     
     // Проверка существования
-    if (fm->exists("test.txt") == ErrC::Ok) 
+    if (fm->fExists("test.txt") == ErrC::Ok)
         std::cout << "File exists\n";
 	else 
         std::cout << "File not exists\n";
