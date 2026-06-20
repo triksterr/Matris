@@ -41,9 +41,9 @@ public:
 		int buttWith = 8; //! ширина кнопки для консоли!
 		int buttHeight = 5;
 		buttZone.sizees.w = buttWith * 4 + 3 * 5; //! 4 кнопки + 3 интервала по 5 - для консоли!
-		buttZone.sizees.h = buttHeight * 2 + 1; // 2 кнопки и интервал
+		buttZone.sizees.h = buttHeight * 2 + 1; // 2 кнопки и интервал - для консоли!
 
-		infoZone.sizees.w = 12; //! в символах
+		infoZone.sizees.w = 12; //! в символах - для консоли!
 		infoZone.sizees.h = 12 + 4 + 6; //! 12 строк + зона предпросмотра + 6 интервалов (для консоли - по 1 БК)
 	}
 
