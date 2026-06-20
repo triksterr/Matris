@@ -37,7 +37,7 @@
 #include "figure.h"
 
 // вывод в консоль Windows
-class cRender final : public iRender
+class cRender final : public IRender
 {
 private:
 

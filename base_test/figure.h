@@ -179,13 +179,13 @@ public:
 		return result;
 	}
 
-	// Константный метод доступа к кубикам фигуры
+	//TODO - TEST Константный метод доступа к кубикам фигуры
 	const std::vector<Cube*>& getCubes() const
 	{
 		return cubes;
 	}
 
-	// Возвращает кубики (итератор)
+	//TODO - TEST Возвращает кубики (итератор) - TEST
 	std::vector<Cube*>::const_iterator begin() const
 	{
 		return cubes.begin();
@@ -195,9 +195,8 @@ public:
 		return cubes.end();
 	}
 
-	// Передача владения слоям:
-	// после вызова figure больше не владеет кубиками
-	// и не пытается их удалить в деструкторе.
+	// Передача владения слоям
+	// после вызова figure больше не владеет кубиками и не пытается их удалить в деструкторе.
 	std::vector<Cube*> releaseCubes()
 	{
 		std::vector<Cube*> released = std::move(cubes);

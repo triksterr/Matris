@@ -20,19 +20,23 @@
 
 ////________________________________________________________________________________________
 
+// Рисовать все объекты мы можем, используя стандартные шрифты (3-4 размера),
+// БК и пиксели.
+// поэтому все можно перенести в iRender, оставить здесь только реализацию этих примиивов для данного варианта/OS
+
+
 // цикл отрисовки в раунде по тактам
-// 
-// const int targetFPS = 30;
-// const auto frameDuration = std::chrono::milliseconds(1000 / targetFPS);
-//
-// auto lastFrame = std::chrono::steady_clock::now();
-// 
 //while(running)
 //{
-//	// 1. обновляем состояние игры - внутриигровая логика (повороты, сдвиги, сбросы, и т.д.)
+//  // 0. Начало тайминга
+//  const int targetFPS = 30; // 30 кадров в секунду
+//  const auto frameDuration = std::chrono::milliseconds(1000 / targetFPS);
+//  auto lastFrame = std::chrono::steady_clock::now();
+// 
+//	// 1. обновляем состояние игры - выполняем всю внутриигровую логику (повороты, сдвиги, сбросы, и т.д.)
 //
+//		Пишем кадр
 //	// 2. начинаем новый кадр - renderer.beginFrame(); - очищаем backbuffer (готовим под новый кадр)
-//
 //	// 3. draw scene - пишем все новое в буфер - drawFrame(), куда входит:
 //	renderer.drawGlass(...);
 //	renderer.drawFigure(currentFigure);
@@ -40,18 +44,22 @@
 //	renderer.drawInfo();
 //  renderer.drawButtons();
 //
+//		Выводим кадр
 //	// 4. отрисовка кадра - renderer.updateFrame(); - вывели в консоль
 //
-//	// 5. тактовая пауза:
-// 	auto now = std::chrono::steady_clock::now();
+//	// 5. тактовая пауза (конец тайминга)
+//  auto now = std::chrono::steady_clock::now();
 //  auto elapsed = now - lastFrame;
-//  if(elapsed < frameDuration) {
+//  if(elapsed < frameDuration)
 //	  std::this_thread::sleep_for(frameDuration - elapsed);
-//  }
 //  lastFrame = std::chrono::steady_clock::now();
 //}
 
 ////________________________________________________________________________________________
+
+// TODO: перенести в iRender независимые реализации!
+
+// TODO: реализовать обсчет параметров экрана
 
 // вывод в консоль Windows
 class cRender final : public iRender
@@ -82,7 +90,7 @@ private:
 	//int cubeW = 3;
 	//int cubeH = 1;
 	//
-	//! Перенесли в конструктор link:c_render.h#L305
+	//! Перенесли в конструктор link:C:\Users\Alex\Documents\prog\matris\base_test\win_cons\c_render.h://%20конструктор%20(инициализация%20консоли)
 	
 	std::vector<CHAR_INFO> backBuffer; // основной framebuffer консоли, в который пишется новый кадр (каждый элемент содержит: символ + цвет)
 	// Одна ячейка = один символ + два цвета
@@ -336,26 +344,25 @@ public:
 		// file://C:\Users\Alex\Documents\prog\matris\prj\user\graph\
 		// Link:C:\Users\Alex\Documents\prog\matris\prj\user\graph\prototype.md
 
-		//! Надо объявлять в интерфейсе!
-		ScreenW = width; // для консоли - в символах
-		ScreenH = height;
+		screenW = width; // для консоли - в символах
+		screenH = height;
 
-		UnitW = 1;
-		UnitH = 1;
+		unitW = 1;
+		unitH = 1;
 
-		FontSize = 16;
+		fontSize = 16;
 
-		FieldW = 1;
-		FieldH = 1;
+		fieldW = 1;
+		fieldH = 1;
 
 		cubeW = 3;
 		cubeH = 1;
 
 		// Задаем размеры
-		setSize(ScreenW, ScreenH);
+		setSize(screenW, screenH);
 
 		// Устанавливаем фонт
-		setFont(L"Consolas", FontSize);
+		setFont(L"Consolas", fontSize);
 
 		// Убираем курсор
 		hideCursor();
@@ -532,8 +539,8 @@ public:
 	{
 		const int c = rgbToConsoleColor(color);
 
-		const int x0 = FieldW;
-		const int y0 = FieldH;
+		const int x0 = fieldW;
+		const int y0 = fieldH;
 
 		// левая стенка
 		drawLine(x0, y0, x0, y0 + glassH * cubeH, c, '|');
@@ -552,16 +559,16 @@ public:
 			return;
 		
 		// формируем цвет кубика
-		const int color = rgbToConsoleColor(cube.getR(), cube.getG(), cube.getB());
+		const int color = rgbToConsoleColor(cube.getColor());
 
 		// Считаем сдвиг по X
-		const int sx = FieldW + 1 + cube.getX() * cubeW;
+		const int sx = fieldW + 1 + cube.getX() * cubeW;
 
 		// Считаем сдвиг по Y
-		const int sy = FieldH + 1 + cube.getY() * cubeH;
+		const int sy = fieldH + 1 + cube.getY() * cubeH;
 
 		// Формируем кубик (текст для вывода)
-		const std::string txt =	"[" + std::to_string(cube.getNum()) + "]";
+		const std::string txt =	"[" + std::to_string(cube.getDigit()) + "]";
 
 		// Выводим кубик
 		drawTxtC(txt, sx, sy, color);
@@ -570,7 +577,7 @@ public:
 	// Рисуем фигуру
 	void drawFigure(const Figure& figure)
 	{
-		for(const Cube* cube : figure.getCubes())
+		for(const Cube* cube : figure.getCubes()) // getCubes() возвращает const std::vector<Cube*>&
 			drawCube(*cube);
 	}
 

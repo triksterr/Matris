@@ -1,8 +1,11 @@
-- файловый интерфейс
-	- логику работы в Application с файлами
+
 file://C:\Users\Alex\Documents\prog\matris\base_test\doc\Curr_AI_TODO.md
 
-- "восстановить" - заставить работать новый рендер в cons_test
+- "восстановить" - заставить работать новый рендер в base_test
+
+- сделать минимальный игровой цикл
+
+- файловый интерфейс - проверить в игровом цикле
 
 Прототип графики - file://C:\Users\Alex\Documents\prog\matris\prj\user\graph
 

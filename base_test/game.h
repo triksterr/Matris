@@ -1,6 +1,7 @@
 ﻿#pragma once
 // file: game.h
 
+#include "point.h"
 #include "round.h"
 #include "..\..\!lib\err\err.h"
 #include "..\..\!lib\err\err_codes.h"
@@ -43,7 +44,28 @@ public:
 		return PartImplemented; // все хорошо
 	}
 
+	// Установка размеров стакана
+	void setGlass(Point sizes)
+	{
+		gassSizes = sizes;
+	}
+
+	// Установка размеров стакана
+	void setGlass(int width, int height)
+	{
+		gassSizes.w = width;
+		gassSizes.h = height;
+	}
+
+	// Получение размеров стакана
+	Point getGlass()
+	{
+		return gassSizes;
+	}
+
 private:
+	Point gassSizes = {10, 20}; //! Default 
+
 // singleton
 	Game() = default;
 	~Game() = default;
