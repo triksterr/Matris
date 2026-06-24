@@ -2,7 +2,7 @@
 // file: point.h
 
 // Алиас класса Point для хранения размеров
-// Size: w, h
+// Size: w, h (width, height)
 using Size = Point;
 
 // Класс двумерной точки (X, Y) - пары int
@@ -11,21 +11,19 @@ class Point
 public:
 	union
 	{
-		int x = 0;
-		int w; // ширина при обращении через алиас Size
-		int width;
+		int x = 0; // координата X
+		int w; // ширина (через алиас Size)
+		int width; // ширина (через алиас Size)
 	};
 
 	union
 	{
-		int y = 0;
-		int h; // высота при обращении через алиас Size
-		int height;
+		int y = 0; // координата Y
+		int h; // высота (через алиас Size)
+		int height; // высота (через алиас Size)
 	};
 
-	//Point() = default;
-
-	Point(int x=0, int y=0) : x(x), y(y) {}
+	Point(int x = 0, int y = 0) : x(x), y(y) {}
 	
 	// copy конструктор
 	Point(const Point& other) : x(other.x), y(other.y) {}

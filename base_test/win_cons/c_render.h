@@ -14,9 +14,9 @@
 #include <vector>
 
 #include "..\interface\i_render.h"
-#include "..\types.h"
-#include "..\cube.h"
-#include "..\figure.h"
+//#include "..\types.h"
+//#include "..\cube.h"
+//#include "..\figure.h"
 
 ////________________________________________________________________________________________
 
@@ -71,27 +71,6 @@ private:
 	CONSOLE_SCREEN_BUFFER_INFO originalScreenInfo {};
 	CONSOLE_FONT_INFOEX originalFontInfo {};
 
-	// Задаем параметры вручную (правильно - надо бы получать и обсчитывать!)
-	//
-	//int width = 0;
-	//int height = 0;
-	//
-	//int ScreenW = 75;
-	//int ScreenH = 33;
-	//
-	//int UnitW = 1;
-	//int UnitH = 1;
-	//
-	//int FontSize = 16;
-	//
-	//int FieldW = 1;
-	//int FieldH = 1;
-	//
-	//int cubeW = 3;
-	//int cubeH = 1;
-	//
-	//! Перенесли в конструктор link:C:\Users\Alex\Documents\prog\matris\base_test\win_cons\c_render.h://%20конструктор%20(инициализация%20консоли)
-	
 	std::vector<CHAR_INFO> backBuffer; // основной framebuffer консоли, в который пишется новый кадр (каждый элемент содержит: символ + цвет)
 	// Одна ячейка = один символ + два цвета
 	//struct Cell
@@ -124,18 +103,25 @@ private:
 	};
 
 private:
-	// Преобразование координат renderer -> console.
+	// Преобразование координаты Y renderer -> console.
 	// Renderer: (0,0) bottom-left -> Console: (0,0) top-left
 	inline int toConsoleY(int y) const noexcept
 	{
 		return field.height - y - 1;
 	}
 
-	// Преобразование координат renderer -> console.
+	// Преобразование координаты X renderer -> console.
 	// Renderer: (0,0) bottom-left -> Console: (0,0) top-left
 	Point toConsoleX(int x) const noexcept
 	{
 		return x;
+	}
+
+	// Преобразование координат renderer -> console.
+	// Renderer: (0,0) bottom-left -> Console: (0,0) top-left
+	Point toConsole(Point coord) const noexcept
+	{
+		return { coord.x, field.height - 1 - coord.y };
 	}
 
 	// Проверка на выход за границы окна
@@ -343,30 +329,31 @@ public:
 
 		checkWinAPI(GetCurrentConsoleFontEx(hConsole, FALSE, &originalFontInfo), "GetCurrentConsoleFontEx");
 
-		//! Задаем параметры вручную (надо бы получать и обсчитывать!) - НАДО ПЕРЕДЕЛАТЬ!
-		// Брать базовые параметры и считать хотя бы то, что можно посчитать
-
-		field.width = 49; // размеры поля в БК
-		field.height = 32;
+		//! Задаем параметры вручную
 		// file://C:\Users\Alex\Documents\prog\matris\prj\user\graph\
-		// Link:C:\Users\Alex\Documents\prog\matris\prj\user\graph\prototype.md
+		// Link:C:\Users\Alex\Documents\prog\matris\prj\user\graph\prototype.md		
+		field.width = 50; // размеры поля в БК
+		field.height = 27;
 
-		screen.w = field.width; // для консоли - в символах
+		screen.w = field.width; // для консоли: пиксель = символ
 		screen.h = field.height;
 
-		baseUnit.w = 1;
+		baseUnit.w = 1; // БК = символ
 		baseUnit.h = 1;
 
-		fontSize = 16;
+		font1.size = font2.size = font3.size = 16; // все три шрифта
+		font1.name = font2.name = font3.name = L"Consolas";
 
 		cubeSize.w = 3;
 		cubeSize.h = 1;
+		buttonSize = { 0, 0 }; // кнопки не выводим
+		buttonField = { 0, 0 };
 
 		// Задаем размеры
 		setSize(screen.w, screen.h);
 
 		// Устанавливаем фонт
-		setFont(L"Consolas", fontSize);
+		setFont(font1.name, font1.size);
 
 		// Убираем курсор
 		hideCursor();
