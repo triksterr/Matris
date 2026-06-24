@@ -128,13 +128,20 @@ private:
 	// Renderer: (0,0) bottom-left -> Console: (0,0) top-left
 	inline int toConsoleY(int y) const noexcept
 	{
-		return height - y - 1;
+		return field.height - y - 1;
 	}
 
-	// Проверка на выход за границы
+	// Преобразование координат renderer -> console.
+	// Renderer: (0,0) bottom-left -> Console: (0,0) top-left
+	Point toConsoleX(int x) const noexcept
+	{
+		return x;
+	}
+
+	// Проверка на выход за границы окна
 	inline bool inBounds(int x, int y) const noexcept
 	{
-		return x >= 0 && y >= 0 && x < width && y < height;
+		return x >= 0 && y >= 0 && x < field.width && y < field.height;
 	}
 
 	// Преобразование координат renderer -> в смещение в backbuffer
@@ -143,7 +150,7 @@ private:
 		if(!inBounds(x, y))
 			return -1; //! ошибка!
 
-		return toConsoleY(y) * width + x;
+		return toConsoleY(y) * field.width + x;
 	}
 
 	// WinAPI обертки
@@ -214,8 +221,8 @@ private:
 		assert(newWidth > 0);
 		assert(newHeight > 0);
 
-		width = newWidth;
-		height = newHeight;
+		field.width = newWidth;
+		field.height = newHeight;
 
 		COORD bufferSize
 		{
@@ -238,9 +245,9 @@ private:
 		checkWinAPI(SetConsoleWindowInfo(hConsole, TRUE, &windowRect), "SetConsoleWindowInfo");
 
 		// resize framebuffers
-		backBuffer.resize(width * height);
+		backBuffer.resize(field.width * field.height);
 
-		frontBuffer.resize(width * height);
+		frontBuffer.resize(field.width * field.height);
 	}
 
 	// Получение ближайшего к RGB цвета консоли
@@ -339,27 +346,24 @@ public:
 		//! Задаем параметры вручную (надо бы получать и обсчитывать!) - НАДО ПЕРЕДЕЛАТЬ!
 		// Брать базовые параметры и считать хотя бы то, что можно посчитать
 
-		width = 49; // размеры поля в БК
-		height = 32;
+		field.width = 49; // размеры поля в БК
+		field.height = 32;
 		// file://C:\Users\Alex\Documents\prog\matris\prj\user\graph\
 		// Link:C:\Users\Alex\Documents\prog\matris\prj\user\graph\prototype.md
 
-		screenW = width; // для консоли - в символах
-		screenH = height;
+		screen.w = field.width; // для консоли - в символах
+		screen.h = field.height;
 
-		unitW = 1;
-		unitH = 1;
+		baseUnit.w = 1;
+		baseUnit.h = 1;
 
 		fontSize = 16;
 
-		fieldW = 1;
-		fieldH = 1;
-
-		cubeW = 3;
-		cubeH = 1;
+		cubeSize.w = 3;
+		cubeSize.h = 1;
 
 		// Задаем размеры
-		setSize(screenW, screenH);
+		setSize(screen.w, screen.h);
 
 		// Устанавливаем фонт
 		setFont(L"Consolas", fontSize);
@@ -419,8 +423,8 @@ public:
 
 		COORD bufferSize
 		{
-			static_cast<SHORT>(width),
-			static_cast<SHORT>(height)
+			static_cast<SHORT>(field.width),
+			static_cast<SHORT>(field.height)
 		};
 
 		COORD bufferCoord
@@ -444,13 +448,13 @@ public:
 	{
 		SMALL_RECT region {};
 
-		for(int y = 0; y < height; ++y)
+		for(int y = 0; y < field.height; ++y)
 		{
 			int runStart = -1;
 
-			for(int x = 0; x < width; ++x)
+			for(int x = 0; x < field.width; ++x)
 			{
-				const int idx = y * width + x;
+				const int idx = y * field.width + x;
 
 				if(!cellEquals(backBuffer[idx], frontBuffer[idx]))
 				{
@@ -470,7 +474,7 @@ public:
 			// хвост строки
 			if(runStart >= 0)
 			{
-				flushRun(y, runStart, width - 1);
+				flushRun(y, runStart, field.width - 1);
 			}
 		}
 
@@ -539,17 +543,17 @@ public:
 	{
 		const int c = rgbToConsoleColor(color);
 
-		const int x0 = fieldW;
-		const int y0 = fieldH;
+		const int x0 = 1;
+		const int y0 = 1; //! а кнопки???
 
 		// левая стенка
-		drawLine(x0, y0, x0, y0 + glassH * cubeH, c, '|');
+		drawLine(x0, y0, x0, y0 + glassH * cubeSize.h, c, '|');
 
 		// правая стенка
-		drawLine(x0 + glassW * cubeW + 1, y0, x0 + glassW * cubeW + 1, y0 + glassH * cubeH, c, '|');
+		drawLine(x0 + glassW * cubeSize.w + 1, y0, x0 + glassW * cubeSize.w + 1, y0 + glassH * cubeSize.h, c, '|');
 
 		// дно
-		drawLine(x0, y0, x0 + glassW * cubeW + 1, y0, c, '-');
+		drawLine(x0, y0, x0 + glassW * cubeSize.w + 1, y0, c, '-');
 	}
 
 	// Рисуем кубик - protected
@@ -562,10 +566,10 @@ public:
 		const int color = rgbToConsoleColor(cube.getColor());
 
 		// Считаем сдвиг по X
-		const int sx = fieldW + 1 + cube.getX() * cubeW;
+		const int sx = 1 + 1 + cube.getX() * cubeW; //! нужно использовать угловой пиксель стакана!!!
 
 		// Считаем сдвиг по Y
-		const int sy = fieldH + 1 + cube.getY() * cubeH;
+		const int sy = 1 + 1 + cube.getY() * cubeH; //! нужно использовать угловой пиксель стакана!!!
 
 		// Формируем кубик (текст для вывода)
 		const std::string txt =	"[" + std::to_string(cube.getDigit()) + "]";
