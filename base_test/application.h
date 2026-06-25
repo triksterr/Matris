@@ -21,7 +21,6 @@ public:
 		std::string userName = "Alumno"; // имя пользователя 
 		std::string comment = "Это базовая версия файла настроек: полей настроек нет.";
 
-		Point gameSize = { 50, 100 }; // Полный размер игрового поля в БК (w, h)
 		Point glassSize = { 10, 20 }; // Размер стакана в кубиках (w, h)
 
 		//! Изменения полей отразить здесь: link:application.h:NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE
@@ -77,4 +76,4 @@ private:
 };
 
 // Макрос для автоматической сериализации/десериализации
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Application::GameSettings, sig, version, level, userName, comment, gameSize, glassSize)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Application::GameSettings, sig, version, level, userName, comment, glassSize)

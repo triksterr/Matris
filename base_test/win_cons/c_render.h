@@ -13,15 +13,14 @@
 #include <string_view>
 #include <vector>
 
-#include "..\interface\i_render.h"
 //#include "..\types.h"
 //#include "..\cube.h"
 //#include "..\figure.h"
+#include "..\interface\i_render.h"
 
 ////________________________________________________________________________________________
 
-// Рисовать все объекты мы можем, используя стандартные шрифты (3-4 размера),
-// БК и пиксели.
+// Рисовать все объекты мы можем, используя стандартные шрифты (3 размера), БК (и пиксели).
 // поэтому все можно перенести в iRender, оставить здесь только реализацию этих примиивов для данного варианта/OS
 
 
@@ -35,7 +34,7 @@
 // 
 //	// 1. обновляем состояние игры - выполняем всю внутриигровую логику (повороты, сдвиги, сбросы, и т.д.)
 //
-//		Пишем кадр
+//	//	Пишем кадр
 //	// 2. начинаем новый кадр - renderer.beginFrame(); - очищаем backbuffer (готовим под новый кадр)
 //	// 3. draw scene - пишем все новое в буфер - drawFrame(), куда входит:
 //	renderer.drawGlass(...);
@@ -124,11 +123,7 @@ private:
 		return { coord.x, field.height - 1 - coord.y };
 	}
 
-	// Проверка на выход за границы окна
-	inline bool inBounds(int x, int y) const noexcept
-	{
-		return x >= 0 && y >= 0 && x < field.width && y < field.height;
-	}
+	//! Поверка на выход за границы в пикселах - ?
 
 	// Преобразование координат renderer -> в смещение в backbuffer
 	inline int bufferIndex(int x, int y) const noexcept
@@ -139,7 +134,7 @@ private:
 		return toConsoleY(y) * field.width + x;
 	}
 
-	// WinAPI обертки
+	// WinAPI обертки ****************************************
 
 	// Проверка ошибок WinAPI
 	void checkWinAPI(BOOL result, const char* msg) const
@@ -207,7 +202,7 @@ private:
 		assert(newWidth > 0);
 		assert(newHeight > 0);
 
-		field.width = newWidth;
+		field.width = newWidth; //! это - не совсем то!!!!
 		field.height = newHeight;
 
 		COORD bufferSize
@@ -329,7 +324,7 @@ public:
 
 		checkWinAPI(GetCurrentConsoleFontEx(hConsole, FALSE, &originalFontInfo), "GetCurrentConsoleFontEx");
 
-		//! Задаем параметры вручную
+		// Задаем параметры вручную
 		// file://C:\Users\Alex\Documents\prog\matris\prj\user\graph\
 		// Link:C:\Users\Alex\Documents\prog\matris\prj\user\graph\prototype.md		
 		field.width = 50; // размеры поля в БК
@@ -346,7 +341,7 @@ public:
 
 		cubeSize.w = 3;
 		cubeSize.h = 1;
-		buttonSize = { 0, 0 }; // кнопки не выводим
+		buttonSize = { 0, 0 }; //! кнопки не выводим
 		buttonField = { 0, 0 };
 
 		// Задаем размеры
@@ -383,7 +378,7 @@ public:
 
 	////_______________________________________________________________
 
-	// Frame lifecycle
+	// Кадровый цикл ***************************************************
 
 	// Начало нового кадра (очистка буфера нового кадра)
 	void beginFrame()
@@ -576,7 +571,7 @@ public:
 	void drawLayers() override
 	{}
 
-	// Рисуем блок инфо справа (и, возможно - внизу правила в 2 строки?)
+	// Рисуем блок инфо справа (и внизу правила в 2 строки?)
 	void drawInfo() override
 	{}
 	
