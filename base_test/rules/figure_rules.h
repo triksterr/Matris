@@ -1,7 +1,7 @@
 #pragma once
 // file: figure_rules.h
 
-// Правила для Figure
+// РџСЂР°РІРёР»Р° РґР»СЏ Figure
 
 #include "rules.h"
 
