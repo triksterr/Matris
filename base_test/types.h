@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 // file: types.h
 
 #include <vector>
@@ -27,6 +27,7 @@ inline const std::vector<std::vector<Point>> figTypes =
 		// . Квадратик 3x3
 };
 // Координаты центров фигур (*2 !!!!!  относительно левого верхнего угла углового кубика привязки фигуры: центр фигуры из одного кубика в левом верхнем углу - (1;-1))
+// Координаты - в половинках БК
 inline const std::vector<Point> figCenters =
 { // _ X  Y
 	{1, -1}, // 0. Одиночный кубик +
