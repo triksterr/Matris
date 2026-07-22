@@ -1,0 +1,99 @@
+# Файловая структура проекта base_test
+
+## Корневая директория: C:\Users\Alex\Documents\prog\matris\base_test
+
+### Поддиректории и файлы:
+
+#### 1. ai/ (Искусственный интеллект / AI)
+- ai/file_structure.txt — описание структуры проекта
+- ai/project_context_template.md — шаблон контекста проекта
+- ai/project_context.md — контекст проекта
+- ai/task_context._template.md — шаблон контекста задачи
+- ai/task_context.md — контекст текущей задачи
+- ai/prompts/ — директория промптов для AI:
+  - ai/prompts/project_start.md
+  - ai/prompts/project_update.md
+  - ai/prompts/role_default.md
+  - ai/prompts/task_end.txt
+  - ai/prompts/task_start.md
+  - ai/prompts/task_zip.md
+
+#### 2. base_test/ (Основной проект)
+- base_test/x64/ — директория для x64 билдов
+- base_test/.gitignore — файл игнорирования Git
+- base_test/application.h — заголовок приложения
+- base_test/base_test.code-workspace — файл workspace VS Code
+- base_test/base_test.cpp — основной исходный код
+- base_test/base_test.vcxproj — проект Visual Studio
+- base_test/base_test.vcxproj.filters — фильтры проекта
+
+#### 3. codex/ (Кодекс / Кодовая база)
+- codex/!todo_шаблон.h — шаблон TODO
+- codex/новый 1.txt — текстовый файл
+- codex/file_structure.md — описание структуры файлов
+- codex/file_tree.cmd — скрипт генерации дерева файлов
+- codex/global_rules.md — глобальные правила проекта
+- codex/project_map.md — карта проекта
+- codex/subsystems.md — подсистемы проекта
+- codex/tasks/ — директория задач:
+  - codex/tasks/backlog.md — бэклог задач
+  - codex/tasks/task_file_template.md — шаблон файла задачи
+  - codex/tasks/TASK-0002.md до TASK-0012.md — файлы задач
+  - codex/tasks/archive/ — архив задач:
+    - codex/tasks/archive/TASK-0001.md
+
+#### 4. doc/ (Документация)
+- doc/!todo_шаблон.h — шаблон TODO с примерами всех тегов
+- doc/ai_todo.md — задачи для AI
+- doc/class.md — классы проекта
+- doc/Curr_AI_TODO.md — текущие задачи AI
+- doc/game_loop.md — игровой цикл
+- doc/info.md — информация о проекте
+- doc/rules.md — правила проекта
+- doc/todo.h — TODO список
+- doc/windsurf.md — Windsurf документация
+- doc/graph/ — графические файлы:
+  - doc/graph/Без имени-1.psd
+  - doc/graph/prototype 2.png
+  - doc/graph/prototype.md
+  - doc/graph/Screen.txt
+  - doc/graph/Screenshot_20260110_121641_RuStore.png
+
+#### 5. interface/ (Интерфейсы)
+- interface/i_audio.h — аудио интерфейс
+- interface/i_files.h — файловый интерфейс
+- interface/i_input.h — ввод интерфейса
+- interface/i_render_old.h — старый рендеринг интерфейс
+- interface/i_render.h — рендеринг интерфейс
+- interface/json.hpp — библиотека JSON
+- interface/Struct_logic.vsdx — диаграмма структур
+
+#### 6. rules/ (Правила)
+- rules/common_rules.h — общие правила
+- rules/cube_rules.h — правила куба
+- rules/figure_rules.h — правила фигуры
+- rules/game_rules.h — правила игры
+- rules/layer_rules.h — правила слоя
+- rules/round_rules.h — правила раунда
+- rules/rules.h — основные правила
+
+#### 7. test/ (Тесты)
+- test/win_cons/ — консольные тесты:
+  - test/win_cons/c_render_old.h
+  - test/win_cons/c_render.h
+- test/win_files/ — файловые тесты:
+  - test/win_files/Новый текстовый документ.txt
+  - test/win_files/w_files.cpp
+  - test/win_files/w_files.h
+
+#### 8. x64/ (x64 директория)
+- Пустая директория для x64 билдов
+
+---
+
+## Итоговая статистика:
+- Всего поддиректорий: ~15
+- Исходных файлов C++ (.h, .cpp): 20+
+- Файлов проекта Visual Studio: 3
+- Конфигурационных файлов: 2
+- Документации и задач: 40+
